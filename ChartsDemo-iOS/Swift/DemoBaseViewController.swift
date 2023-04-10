@@ -50,6 +50,10 @@ enum Option {
     case toggleYLabels
     case toggleRotate
     case toggleHighlightCircle
+    // PolarChart
+    case toggleRadialValues
+    case toggleMajorMinorLabels
+    case toggleRadialLabels
     
     var label: String {
         switch self {
@@ -91,6 +95,10 @@ enum Option {
         case .toggleYLabels: return "Toggle Y-Labels"
         case .toggleRotate: return "Toggle Rotate"
         case .toggleHighlightCircle: return "Toggle highlight circle"
+        // PolarChart
+        case .toggleRadialValues: return "Toggle Radial-Values"
+        case .toggleRadialLabels: return "Toggle Radial-Labels"
+        case .toggleMajorMinorLabels: return "Toggle Major/Minor-Labels"
         }
     }
 }

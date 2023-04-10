@@ -21,7 +21,7 @@ open class BarLineScatterCandleBubbleRenderer: NSObject, DataRenderer
 
     public let animator: Animator
 
-    internal var _xBounds = XBounds() // Reusable XBounds object
+    internal var _xBounds = XBounds() // Reusable ThetaBounds object
     
     public init(animator: Animator, viewPortHandler: ViewPortHandler)
     {

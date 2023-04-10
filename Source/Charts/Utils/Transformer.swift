@@ -159,8 +159,7 @@ open class Transformer: NSObject
     {
         return
             matrixValueToPx.concatenating(viewPortHandler.touchMatrix)
-                .concatenating(matrixOffset
-        )
+                .concatenating(matrixOffset)
     }
     
     @objc open var pixelToValueMatrix: CGAffineTransform

@@ -101,7 +101,7 @@ open class RadarChartRenderer: LineRadarRenderer
             guard let e = dataSet.entryForIndex(j) else { continue }
             
             let p = center.moving(distance: CGFloat((e.y - chart.chartYMin) * Double(factor) * phaseY),
-                                  atAngle: sliceangle * CGFloat(j) * CGFloat(phaseX) + chart.rotationAngle)
+                                  atAngle: sliceangle * CGFloat(j) * CGFloat(phaseX) + chart.rotationAngle, radians: false)
             
             if p.x.isNaN
             {
@@ -123,7 +123,7 @@ open class RadarChartRenderer: LineRadarRenderer
             let accessibilityValueIndex = accessibilityAxisLabelValueTuples[j].2
 
             let axp = center.moving(distance: CGFloat((accessibilityValue - chart.chartYMin) * Double(factor) * phaseY),
-                                    atAngle: sliceangle * CGFloat(accessibilityValueIndex) * CGFloat(phaseX) + chart.rotationAngle)
+                                    atAngle: sliceangle * CGFloat(accessibilityValueIndex) * CGFloat(phaseX) + chart.rotationAngle, radians: false)
 
             let axDescription = description + " - " + accessibilityLabel + ": \(accessibilityValue) \(chart.data?.accessibilityEntryLabelSuffix ?? "")"
             let axElement = createAccessibleElement(withDescription: axDescription,
@@ -226,7 +226,7 @@ open class RadarChartRenderer: LineRadarRenderer
                 guard let e = dataSet.entryForIndex(j) else { continue }
                 
                 let p = center.moving(distance: CGFloat(e.y - chart.chartYMin) * factor * CGFloat(phaseY),
-                                      atAngle: sliceangle * CGFloat(j) * CGFloat(phaseX) + chart.rotationAngle)
+                                      atAngle: sliceangle * CGFloat(j) * CGFloat(phaseX) + chart.rotationAngle, radians: false)
                 
                 let valueFont = dataSet.valueFont
                 
@@ -248,7 +248,7 @@ open class RadarChartRenderer: LineRadarRenderer
                 if let icon = e.icon, dataSet.isDrawIconsEnabled
                 {
                     var pIcon = center.moving(distance: CGFloat(e.y) * factor * CGFloat(phaseY) + iconsOffset.y,
-                                              atAngle: sliceangle * CGFloat(j) * CGFloat(phaseX) + chart.rotationAngle)
+                                              atAngle: sliceangle * CGFloat(j) * CGFloat(phaseX) + chart.rotationAngle, radians: false)
                     pIcon.y += iconsOffset.x
                     
                     context.drawImage(icon,
@@ -295,7 +295,7 @@ open class RadarChartRenderer: LineRadarRenderer
         for i in stride(from: 0, to: maxEntryCount, by: xIncrements)
         {
             let p = center.moving(distance: CGFloat(chart.yRange) * factor,
-                                  atAngle: sliceangle * CGFloat(i) + rotationangle)
+                                  atAngle: sliceangle * CGFloat(i) + rotationangle, radians: false)
             
             _webLineSegmentsBuffer[0].x = center.x
             _webLineSegmentsBuffer[0].y = center.y
@@ -318,8 +318,8 @@ open class RadarChartRenderer: LineRadarRenderer
             {
                 let r = CGFloat(chart.yAxis.entries[j] - chart.chartYMin) * factor
 
-                let p1 = center.moving(distance: r, atAngle: sliceangle * CGFloat(i) + rotationangle)
-                let p2 = center.moving(distance: r, atAngle: sliceangle * CGFloat(i + 1) + rotationangle)
+                let p1 = center.moving(distance: r, atAngle: sliceangle * CGFloat(i) + rotationangle, radians: false)
+                let p2 = center.moving(distance: r, atAngle: sliceangle * CGFloat(i + 1) + rotationangle, radians: false)
                 
                 _webLineSegmentsBuffer[0].x = p1.x
                 _webLineSegmentsBuffer[0].y = p1.y
@@ -381,7 +381,7 @@ open class RadarChartRenderer: LineRadarRenderer
             let y = e.y - chart.chartYMin
             
             _highlightPointBuffer = center.moving(distance: CGFloat(y) * factor * CGFloat(animator.phaseY),
-                                                  atAngle: sliceangle * CGFloat(high.x) * CGFloat(animator.phaseX) + chart.rotationAngle)
+                                                  atAngle: sliceangle * CGFloat(high.x) * CGFloat(animator.phaseX) + chart.rotationAngle, radians: false)
             
             high.setDraw(pt: _highlightPointBuffer)
             

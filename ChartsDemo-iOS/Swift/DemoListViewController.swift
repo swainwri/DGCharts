@@ -87,7 +87,14 @@ class DemoListViewController: UIViewController {
                             class: LineChartFilledViewController.self),
                     ItemDef(title: "Half Pie Chart",
                             subtitle: "This demonstrates how to create a 180 degree PieChart.",
-                            class: HalfPieChartViewController.self)
+                            class: HalfPieChartViewController.self),
+                    ItemDef(title: "Polar Chart",
+                            subtitle: "Demonstrates the use of a polar chart.",
+                            class: PolarChartViewController.self),
+                    ItemDef(title: "VectorField Chart",
+                                    subtitle: "Demonstrates the use of a vector field chart.",
+                                    class: VectorFieldChartViewController.self)
+                    
     ]
     
     override func viewDidLoad() {

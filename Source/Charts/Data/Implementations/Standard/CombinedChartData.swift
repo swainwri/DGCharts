@@ -18,6 +18,7 @@ open class CombinedChartData: BarLineScatterCandleBubbleChartData
     private var _scatterData: ScatterChartData!
     private var _candleData: CandleChartData!
     private var _bubbleData: BubbleChartData!
+    private var _polarData: PolarChartData!
     
     public required init()
     {
@@ -95,6 +96,18 @@ open class CombinedChartData: BarLineScatterCandleBubbleChartData
         set
         {
             _bubbleData = newValue
+            notifyDataChanged()
+        }
+    }
+    
+    @objc open var polarData: PolarChartData!
+    {
+        get {
+            return _polarData
+        }
+        set
+        {
+            _polarData = newValue
             notifyDataChanged()
         }
     }
@@ -193,6 +206,10 @@ open class CombinedChartData: BarLineScatterCandleBubbleChartData
         if bubbleData !== nil
         {
             data.append(bubbleData)
+        }
+        if polarData !== nil
+        {
+            data.append(polarData)
         }
         
         return data

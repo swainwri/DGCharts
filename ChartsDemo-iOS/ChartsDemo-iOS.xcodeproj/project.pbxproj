@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,7 +12,7 @@
 		068A9B191FBBF351003CF1AD /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B8EAF2F1AB32E15009697AA /* Images.xcassets */; };
 		068A9B1A1FBBF355003CF1AD /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B64D06EA1FB199130067418D /* Launch Screen.storyboard */; };
 		068A9B1B1FBBF366003CF1AD /* radar_marker@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B613DA31D526AD5000F1E98 /* radar_marker@3x.png */; };
-		06FF5D7529BD10650002256E /* DGCharts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 06FF5D7229BD10650002256E /* DGCharts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		06FF5D7529BD10650002256E /* DGCharts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 06FF5D7229BD10650002256E /* DGCharts.framework */; platformFilters = (ios, tvos, ); settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		225B36201F6EB9A50005B3D5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225B361F1F6EB9A50005B3D5 /* AppDelegate.swift */; };
 		225B36311F6EB9EE0005B3D5 /* DemoBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225B362F1F6EB9EE0005B3D5 /* DemoBaseViewController.swift */; };
 		225B36321F6EB9EE0005B3D5 /* DemoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225B36301F6EB9EE0005B3D5 /* DemoListViewController.swift */; };
@@ -133,6 +133,12 @@
 		5BEAED401ABC1AC60013F194 /* SinusBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BEAED3E1ABC1AC60013F194 /* SinusBarChartViewController.m */; };
 		5BEAED411ABC1AC60013F194 /* SinusBarChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5BEAED3F1ABC1AC60013F194 /* SinusBarChartViewController.xib */; };
 		B64D06EB1FB199130067418D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B64D06EA1FB199130067418D /* Launch Screen.storyboard */; };
+		E340C92229E238E500E3D66B /* VectorFieldChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E340C92029E238E500E3D66B /* VectorFieldChartViewController.swift */; };
+		E340C92529E23D2800E3D66B /* VectorFieldChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E340C92429E23D2800E3D66B /* VectorFieldChartViewController.xib */; };
+		E340C92629E23D2800E3D66B /* VectorFieldChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E340C92429E23D2800E3D66B /* VectorFieldChartViewController.xib */; };
+		E39995DB29D9D5FB00F6B34A /* PolarChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39995DA29D9D5FB00F6B34A /* PolarChartViewController.swift */; };
+		E39995DD29D9D6CC00F6B34A /* PiNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39995DC29D9D6CC00F6B34A /* PiNumberFormatter.swift */; };
+		E39995F729D9E00300F6B34A /* PolarChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E39995F629D9E00300F6B34A /* PolarChartViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -320,6 +326,11 @@
 		5BEAED3E1ABC1AC60013F194 /* SinusBarChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinusBarChartViewController.m; sourceTree = "<group>"; };
 		5BEAED3F1ABC1AC60013F194 /* SinusBarChartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SinusBarChartViewController.xib; sourceTree = "<group>"; };
 		B64D06EA1FB199130067418D /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		E340C92029E238E500E3D66B /* VectorFieldChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorFieldChartViewController.swift; sourceTree = "<group>"; };
+		E340C92429E23D2800E3D66B /* VectorFieldChartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VectorFieldChartViewController.xib; sourceTree = "<group>"; };
+		E39995DA29D9D5FB00F6B34A /* PolarChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolarChartViewController.swift; sourceTree = "<group>"; };
+		E39995DC29D9D6CC00F6B34A /* PiNumberFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PiNumberFormatter.swift; sourceTree = "<group>"; };
+		E39995F629D9E00300F6B34A /* PolarChartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PolarChartViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -365,6 +376,7 @@
 		225B36331F6EB9FE0005B3D5 /* Formatters */ = {
 			isa = PBXGroup;
 			children = (
+				E39995DC29D9D6CC00F6B34A /* PiNumberFormatter.swift */,
 				225B36351F6EB9FE0005B3D5 /* DayAxisValueFormatter.swift */,
 				225B36361F6EB9FE0005B3D5 /* DateValueFormatter.swift */,
 				225B36341F6EB9FE0005B3D5 /* IntAxisValueFormatter.swift */,
@@ -399,16 +411,18 @@
 				225B36491F6EBA410005B3D5 /* LineChart2ViewController.swift */,
 				225B364F1F6EBA410005B3D5 /* LineChartFilledViewController.swift */,
 				225B36471F6EBA410005B3D5 /* LineChartTimeViewController.swift */,
-				225B36441F6EBA410005B3D5 /* MultipleLinesChartViewController.swift */,
 				225B36451F6EBA410005B3D5 /* MultipleBarChartViewController.swift */,
+				225B36441F6EBA410005B3D5 /* MultipleLinesChartViewController.swift */,
 				225B364B1F6EBA410005B3D5 /* NegativeStackedBarChartViewController.swift */,
 				225B36521F6EBA410005B3D5 /* PieChartViewController.swift */,
 				225B36561F6EBA410005B3D5 /* PiePolylineChartViewController.swift */,
+				E39995DA29D9D5FB00F6B34A /* PolarChartViewController.swift */,
 				225B36501F6EBA410005B3D5 /* PositiveNegativeBarChartViewController.swift */,
 				225B36541F6EBA410005B3D5 /* RadarChartViewController.swift */,
 				225B364C1F6EBA410005B3D5 /* ScatterChartViewController.swift */,
 				225B36591F6EBA410005B3D5 /* SinusBarChartViewController.swift */,
 				225B364D1F6EBA410005B3D5 /* StackedBarChartViewController.swift */,
+				E340C92029E238E500E3D66B /* VectorFieldChartViewController.swift */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -444,12 +458,14 @@
 				5B9624401B38608C007763E2 /* NegativeStackedBarChartViewController.xib */,
 				5B0CC7841ABB875400665592 /* PieChartViewController.xib */,
 				0471CBFB1CA1090A00E52DBC /* PiePolylineChartViewController.xib */,
+				E39995F629D9E00300F6B34A /* PolarChartViewController.xib */,
 				5BE7E7611C693098000A0377 /* PositiveNegativeBarChartViewController.xib */,
 				5BEAED351ABC192F0013F194 /* RadarChartViewController.xib */,
 				5B1B5DA91E911A15006D1375 /* RealmDemosViewController.xib */,
 				5BEAED171ABBFB340013F194 /* ScatterChartViewController.xib */,
 				5BEAED3F1ABC1AC60013F194 /* SinusBarChartViewController.xib */,
 				5BEAED1A1ABBFB340013F194 /* StackedBarChartViewController.xib */,
+				E340C92429E23D2800E3D66B /* VectorFieldChartViewController.xib */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -643,9 +659,10 @@
 		5B57BBA71A9B26AA0036A6CC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = dcg;
 				TargetAttributes = {
 					225B361C1F6EB9A50005B3D5 = {
@@ -715,7 +732,9 @@
 				068A9B1A1FBBF355003CF1AD /* Launch Screen.storyboard in Resources */,
 				225B367A1F6EBA640005B3D5 /* CubicLineChartViewController.xib in Resources */,
 				225B368B1F6EBA640005B3D5 /* StackedBarChartViewController.xib in Resources */,
+				E340C92629E23D2800E3D66B /* VectorFieldChartViewController.xib in Resources */,
 				225B36821F6EBA640005B3D5 /* MultipleLinesChartViewController.xib in Resources */,
+				E39995F729D9E00300F6B34A /* PolarChartViewController.xib in Resources */,
 				068A9B191FBBF351003CF1AD /* Images.xcassets in Resources */,
 				225B36751F6EBA640005B3D5 /* BarChartViewController.xib in Resources */,
 				225B367F1F6EBA640005B3D5 /* LineChartFilledViewController.xib in Resources */,
@@ -769,6 +788,7 @@
 				5BDEDC481ABB871E007D3A60 /* CombinedChartViewController.xib in Resources */,
 				5BE673951D5B4E0900A87BA2 /* LineChartTimeViewController.xib in Resources */,
 				5BEAED1E1ABBFB340013F194 /* StackedBarChartViewController.xib in Resources */,
+				E340C92529E23D2800E3D66B /* VectorFieldChartViewController.xib in Resources */,
 				5B1B5DAB1E911A15006D1375 /* RealmDemosViewController.xib in Resources */,
 				55E356501ADC638F00A57971 /* BubbleChartViewController.xib in Resources */,
 			);
@@ -789,12 +809,14 @@
 				225B36671F6EBA470005B3D5 /* PositiveNegativeBarChartViewController.swift in Sources */,
 				225B363A1F6EBA040005B3D5 /* DateValueFormatter.swift in Sources */,
 				5B442CD223D9B0A300B1F801 /* BalloonMarker.swift in Sources */,
+				E39995DB29D9D5FB00F6B34A /* PolarChartViewController.swift in Sources */,
 				225B366D1F6EBA470005B3D5 /* PiePolylineChartViewController.swift in Sources */,
 				225B366F1F6EBA470005B3D5 /* BarChartViewController.swift in Sources */,
 				225B36601F6EBA470005B3D5 /* LineChart2ViewController.swift in Sources */,
 				225B366C1F6EBA470005B3D5 /* HorizontalBarChartViewController.swift in Sources */,
 				225B36401F6EBA1D0005B3D5 /* XYMarkerView.swift in Sources */,
 				225B36421F6EBA1D0005B3D5 /* RadarMarkerView.swift in Sources */,
+				E340C92229E238E500E3D66B /* VectorFieldChartViewController.swift in Sources */,
 				225B366B1F6EBA470005B3D5 /* RadarChartViewController.swift in Sources */,
 				225B36611F6EBA470005B3D5 /* LineChart1ViewController.swift in Sources */,
 				225B36691F6EBA470005B3D5 /* PieChartViewController.swift in Sources */,
@@ -813,6 +835,7 @@
 				225B36701F6EBA470005B3D5 /* SinusBarChartViewController.swift in Sources */,
 				225B36681F6EBA470005B3D5 /* AnotherBarChartViewController.swift in Sources */,
 				225B36621F6EBA470005B3D5 /* NegativeStackedBarChartViewController.swift in Sources */,
+				E39995DD29D9D6CC00F6B34A /* PiNumberFormatter.swift in Sources */,
 				225B363B1F6EBA040005B3D5 /* LargeValueFormatter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -864,11 +887,16 @@
 		0630AE541D81271B008859B0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Charts;
+			platformFilters = (
+				ios,
+				tvos,
+			);
 			targetProxy = 0630AE531D81271B008859B0 /* PBXContainerItemProxy */;
 		};
 		225B368F1F6EBBB00005B3D5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Charts;
+			platformFilter = ios;
 			targetProxy = 225B368E1F6EBBB00005B3D5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -894,14 +922,20 @@
 				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "$(SRCROOT)/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.dcg.ChartsDemo-Swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -926,12 +960,18 @@
 				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "$(SRCROOT)/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.dcg.ChartsDemo-Swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -982,7 +1022,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1030,10 +1070,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1049,16 +1090,23 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.dcg.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "ChartsDemo-iOS";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvsimulator appletvos";
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Supporting Files/ChartsDemo-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,3";
+				TVOS_DEPLOYMENT_TARGET = 15.6;
 			};
 			name = Debug;
 		};
@@ -1072,15 +1120,22 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.dcg.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "ChartsDemo-iOS";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvsimulator appletvos";
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Supporting Files/ChartsDemo-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2,3";
+				TVOS_DEPLOYMENT_TARGET = 15.6;
 			};
 			name = Release;
 		};

@@ -81,8 +81,8 @@ open class ChartColorTemplates: NSObject
     
     @objc open class func colorFromString(_ colorString: String) -> NSUIColor
     {
-        let leftParenCharset: CharacterSet = CharacterSet(charactersIn: "( ")
-        let commaCharset: CharacterSet = CharacterSet(charactersIn: ", ")
+//        let leftParenCharset: CharacterSet = CharacterSet(charactersIn: "( ")
+//        let commaCharset: CharacterSet = CharacterSet(charactersIn: ", ")
 
         let colorString = colorString.lowercased()
         
@@ -128,16 +128,31 @@ open class ChartColorTemplates: NSObject
             var r: Int32 = 0
             var g: Int32 = 0
             var b: Int32 = 0
+            
             let scanner: Scanner = Scanner(string: colorString)
-            scanner.scanString("rgba", into: nil)
-            scanner.scanCharacters(from: leftParenCharset, into: nil)
-            scanner.scanInt32(&r)
-            scanner.scanCharacters(from: commaCharset, into: nil)
-            scanner.scanInt32(&g)
-            scanner.scanCharacters(from: commaCharset, into: nil)
-            scanner.scanInt32(&b)
-            scanner.scanCharacters(from: commaCharset, into: nil)
-            scanner.scanFloat(&a)
+            if let _ = scanner.scanUpToString("rgba{"),
+               let _r = scanner.scanInt32(),
+               let _ = scanner.scanUpToString(","),
+               let _g = scanner.scanInt32(),
+               let _ = scanner.scanUpToString(","),
+               let _b = scanner.scanInt32(),
+               let _ = scanner.scanUpToString(","),
+               let _a = scanner.scanFloat() {
+                r = _r
+                g = _g
+                b = _b
+                a = _a
+            }
+            
+//            scanner.scanString("rgba", into: nil)
+//            scanner.scanCharacters(from: leftParenCharset, into: nil)
+//            scanner.scanInt32(&r)
+//            scanner.scanCharacters(from: commaCharset, into: nil)
+//            scanner.scanInt32(&g)
+//            scanner.scanCharacters(from: commaCharset, into: nil)
+//            scanner.scanInt32(&b)
+//            scanner.scanCharacters(from: commaCharset, into: nil)
+//            scanner.scanFloat(&a)
             return NSUIColor(
                 red: CGFloat(r) / 255.0,
                 green: CGFloat(g) / 255.0,
@@ -152,15 +167,29 @@ open class ChartColorTemplates: NSObject
             var g: Int32 = 0
             var b: Int32 = 0
             let scanner: Scanner = Scanner(string: colorString)
-            scanner.scanString("argb", into: nil)
-            scanner.scanCharacters(from: leftParenCharset, into: nil)
-            scanner.scanFloat(&a)
-            scanner.scanCharacters(from: commaCharset, into: nil)
-            scanner.scanInt32(&r)
-            scanner.scanCharacters(from: commaCharset, into: nil)
-            scanner.scanInt32(&g)
-            scanner.scanCharacters(from: commaCharset, into: nil)
-            scanner.scanInt32(&b)
+            if let _ = scanner.scanUpToString("argb{"),
+               let _a = scanner.scanFloat(),
+               let _ = scanner.scanUpToString(","),
+               let _r = scanner.scanInt32(),
+               let _ = scanner.scanUpToString(","),
+               let _g = scanner.scanInt32(),
+               let _ = scanner.scanUpToString(","),
+               let _b = scanner.scanInt32(){
+                r = _r
+                g = _g
+                b = _b
+                a = _a
+            }
+            
+//            scanner.scanString("argb", into: nil)
+//            scanner.scanCharacters(from: leftParenCharset, into: nil)
+//            scanner.scanFloat(&a)
+//            scanner.scanCharacters(from: commaCharset, into: nil)
+//            scanner.scanInt32(&r)
+//            scanner.scanCharacters(from: commaCharset, into: nil)
+//            scanner.scanInt32(&g)
+//            scanner.scanCharacters(from: commaCharset, into: nil)
+//            scanner.scanInt32(&b)
             return NSUIColor(
                 red: CGFloat(r) / 255.0,
                 green: CGFloat(g) / 255.0,
@@ -174,13 +203,23 @@ open class ChartColorTemplates: NSObject
             var g: Int32 = 0
             var b: Int32 = 0
             let scanner: Scanner = Scanner(string: colorString)
-            scanner.scanString("rgb", into: nil)
-            scanner.scanCharacters(from: leftParenCharset, into: nil)
-            scanner.scanInt32(&r)
-            scanner.scanCharacters(from: commaCharset, into: nil)
-            scanner.scanInt32(&g)
-            scanner.scanCharacters(from: commaCharset, into: nil)
-            scanner.scanInt32(&b)
+            if let _ = scanner.scanUpToString("rgb{"),
+               let _r = scanner.scanInt32(),
+               let _ = scanner.scanUpToString(","),
+               let _g = scanner.scanInt32(),
+               let _ = scanner.scanUpToString(","),
+               let _b = scanner.scanInt32(){
+                r = _r
+                g = _g
+                b = _b
+            }
+//            scanner.scanString("rgb", into: nil)
+//            scanner.scanCharacters(from: leftParenCharset, into: nil)
+//            scanner.scanInt32(&r)
+//            scanner.scanCharacters(from: commaCharset, into: nil)
+//            scanner.scanInt32(&g)
+//            scanner.scanCharacters(from: commaCharset, into: nil)
+//            scanner.scanInt32(&b)
             return NSUIColor(
                 red: CGFloat(r) / 255.0,
                 green: CGFloat(g) / 255.0,
