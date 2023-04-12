@@ -15,31 +15,12 @@ public class MajorAxisRenderer: NSObject, AxisRenderer {
     @objc public let viewPortHandler: ViewPortHandler
     @objc public let axis: MajorAxis
     @objc public let transformer: Transformer?
+
     
-    private weak var chart: PolarChartView?
-    
-    @objc public init(viewPortHandler: ViewPortHandler, axis: MajorAxis, chart: PolarChartView?) {
+    @objc public init(viewPortHandler: ViewPortHandler, axis: MajorAxis, transformer: Transformer?) {
         self.viewPortHandler = viewPortHandler
         self.axis = axis
-        self.chart = chart
-        
-        if axis.outerCircleRadius > 0 {
-            axis.axisMinimum = -axis.outerCircleRadius
-            axis.axisMaximum = axis.outerCircleRadius
-            axis.axisRange = 2 * axis.outerCircleRadius
-        }
-        if axis.gridLinesToChartRectEdges,
-           let chart = self.chart {
-            let factor = chart.factor
-            let radius: CGFloat = sqrt(pow(chart.contentRect.width, 2) + pow(chart.contentRect.height, 2)) / 2 / factor
-            axis.axisMinimum = -radius
-            axis.axisMaximum = radius
-            axis.axisRange = 2 * radius
-        }
-        
-        let axisTransformer = Transformer(viewPortHandler: viewPortHandler)
-        axisTransformer.prepareMatrixValuePx(chartXMin: axis.axisMinimum, deltaX: CGFloat(axis.axisRange), deltaY: CGFloat(axis.axisRange), chartYMin: axis.axisMinimum)
-        self.transformer = axisTransformer
+        self.transformer = transformer
         
         super.init()
     }
@@ -235,37 +216,37 @@ public class MajorAxisRenderer: NSObject, AxisRenderer {
     
     /// draws the major axis -labels on the specified y-position
     public func drawLabels(context: CGContext, pos: CGFloat, anchor: CGPoint) {
-        guard let transformer = self.transformer else { return }
-        
-        let paraStyle = ParagraphStyle.default.mutableCopy() as! MutableParagraphStyle
-        paraStyle.alignment = .center
-        
-        let labelAttrs: [NSAttributedString.Key : Any] = [.font: axis.labelFont, .foregroundColor: axis.labelTextColor, .paragraphStyle: paraStyle]
-
-        let labelRotationAngleRadians = axis.labelRotationAngle.DEG2RAD
-        let valueToPixelMatrix = transformer.valueToPixelMatrix
-
-        var position = CGPoint.zero
-        var labelMaxSize = CGSize.zero
-        
-        if axis.isWordWrapEnabled {
-            labelMaxSize.width = axis.wordWrapWidthPercent * valueToPixelMatrix.a
-        }
-        
-        let centeringEnabled = axis.isCenterAxisLabelsEnabled
-        
-        
-        for i in 0..<axis.entryCount {
-            // only fill x values
-            position.x = centeringEnabled ? CGFloat(axis.centeredEntries[i]) : CGFloat(axis.entries[i])
-            position.y = 0
-
-            transformer.pointValueToPixel(&position)
-            position.y = pos
+        if let transformer = self.transformer {
             
-            if viewPortHandler.isInBounds(point: position),
-                let label = axis.valueFormatter?.stringForValue(axis.entries[i], axis: axis) {
-                drawLabel(context: context, formattedLabel: label, x: pos, y: position.y, attributes: labelAttrs, constrainedTo: labelMaxSize, anchor: anchor, angleRadians: labelRotationAngleRadians)
+            let paraStyle = ParagraphStyle.default.mutableCopy() as! MutableParagraphStyle
+            paraStyle.alignment = .center
+            
+            let labelAttrs: [NSAttributedString.Key : Any] = [.font: axis.labelFont, .foregroundColor: axis.labelTextColor, .paragraphStyle: paraStyle]
+            
+            let labelRotationAngleRadians = axis.labelRotationAngle.DEG2RAD
+            let valueToPixelMatrix = transformer.valueToPixelMatrix
+            
+            var position = CGPoint.zero
+            var labelMaxSize = CGSize.zero
+            
+            if axis.isWordWrapEnabled {
+                labelMaxSize.width = axis.wordWrapWidthPercent * valueToPixelMatrix.a
+            }
+            
+            let centeringEnabled = axis.isCenterAxisLabelsEnabled
+            
+            for i in 0..<axis.entryCount {
+                // only fill x values
+                position.x = centeringEnabled ? CGFloat(axis.centeredEntries[i]) : CGFloat(axis.entries[i])
+                position.y = 0
+                
+                transformer.pointValueToPixel(&position)
+                position.y = pos
+                
+                if viewPortHandler.isInBounds(point: position),
+                   let label = axis.valueFormatter?.stringForValue(axis.entries[i], axis: axis) {
+                    drawLabel(context: context, formattedLabel: label, x: position.x, y: position.y, attributes: labelAttrs, constrainedTo: labelMaxSize, anchor: anchor, angleRadians: labelRotationAngleRadians)
+                }
             }
         }
     }
@@ -276,13 +257,11 @@ public class MajorAxisRenderer: NSObject, AxisRenderer {
     
     /// Draws the grid lines belonging to the axis.
     @objc public func renderGridLines(context: CGContext) {
-        
-        if let _chart = chart {
+        if let _transformer = self.transformer {
             // calculate the factor that is needed for transforming the value to
             // pixels
-            let factor = _chart.factor
-            
-            let center = _chart.centerOffsets
+            var valueToPixelMatrix = _transformer.valueToPixelMatrix
+            let center: CGPoint = .zero
             
             context.saveGState()
             // draw the inner-web
@@ -292,8 +271,10 @@ public class MajorAxisRenderer: NSObject, AxisRenderer {
             let labelCount = axis.entryCount
             for j in 0 ..< labelCount {
                 if axis.entries[j] > 0 {  // don't need negative entries as psoitive one with take care of concentric circles
-                    let diameter: CGFloat = CGFloat(axis.entries[j]) * factor * 2
-                    context.strokeEllipse(in: CGRect(x: -diameter / 2 + center.x, y: -diameter / 2 + center.y, width: diameter, height: diameter))
+                    let diameter: CGFloat = CGFloat(axis.entries[j]) * 2
+                    let circle = CGPath(ellipseIn: CGRect(x: -diameter / 2 + center.x, y: -diameter / 2 + center.y, width: diameter, height: diameter), transform: &valueToPixelMatrix)
+                    context.addPath(circle)
+                    context.strokePath()
                 }
             }
             
@@ -301,13 +282,14 @@ public class MajorAxisRenderer: NSObject, AxisRenderer {
                 context.setLineWidth(axis.gridLineWidth)
                 context.setStrokeColor(axis.gridColor.cgColor)
                 
-                let granularityInterval = (axis.axisMaximum - axis.axisMinimum) / Double(axis.entryCount) / axis.granularity
-                let granularityCount = Int(axis.granularity)
-                for j in 0 ..< labelCount {
+                for j in 0..<labelCount-1 {
                     if axis.entries[j] > 0 {
-                        for i in 1...granularityCount {
-                            let diameter: CGFloat = CGFloat(axis.entries[j] + Double(i) * granularityInterval) * factor * 2
-                            context.strokeEllipse(in: CGRect(x: -diameter / 2 + center.x, y: -diameter / 2 + center.y, width: diameter, height: diameter))
+                        let granularityCount = Int((axis.entries[j] - axis.entries[j-1]) / axis.granularity)
+                        for i in 1..<granularityCount {
+                            let diameter: CGFloat = CGFloat(axis.entries[j] + Double(i) * axis.granularity) * 2
+                            let circle = CGPath(ellipseIn: CGRect(x: -diameter / 2 + center.x, y: -diameter / 2 + center.y, width: diameter, height: diameter), transform: &valueToPixelMatrix)
+                            context.addPath(circle)
+                            context.strokePath()
                         }
                     }
                 }
@@ -316,7 +298,6 @@ public class MajorAxisRenderer: NSObject, AxisRenderer {
             context.restoreGState()
         }
     }
-    
     
     @objc public func renderLimitLines(context: CGContext) {
         /// MajorAxis LimitLines on PolarChart not yet supported.

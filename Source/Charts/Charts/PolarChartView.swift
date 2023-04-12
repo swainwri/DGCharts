@@ -11,7 +11,7 @@ import CoreGraphics
 
 /// Implementation of the RadarChart, a "spidernet"-like chart. It works best
 /// when displaying 5-10 entries per DataSet.
-public class PolarChartView: PieRadarChartViewBase, PolarChartDataProvider {
+public class PolarChartView: PieRadarChartViewBase, PolarChartDataProvider, ChartViewDelegate {
     
     /// flag indicating if the polar grid lines should be drawn or not
     @objc public var drawGridlines = true
@@ -40,11 +40,13 @@ public class PolarChartView: PieRadarChartViewBase, PolarChartDataProvider {
         
         renderer = PolarChartRenderer(dataProvider: self, chart: self, animator: chartAnimator, viewPortHandler: viewPortHandler)
         
-        _majorAxisRenderer = MajorAxisRenderer(viewPortHandler: viewPortHandler, axis: majorAxis, chart: self)
-        _minorAxisRenderer = MinorAxisRenderer(viewPortHandler: viewPortHandler, axis: minorAxis, chart: self)
-        _radialAxisRenderer = RadialAxisRenderer(viewPortHandler: viewPortHandler, axis: radialAxis, associatedMajorMinorAxis: majorAxis, chart: self)
+        _axisTransformer = Transformer(viewPortHandler: viewPortHandler)
         
-        self.highlighter = RadarHighlighter(chart: self)
+        _majorAxisRenderer = MajorAxisRenderer(viewPortHandler: viewPortHandler, axis: majorAxis, transformer: _axisTransformer)
+        _minorAxisRenderer = MinorAxisRenderer(viewPortHandler: viewPortHandler, axis: minorAxis, associatedMajorAxis: majorAxis, transformer: _axisTransformer)
+        _radialAxisRenderer = RadialAxisRenderer(viewPortHandler: viewPortHandler, axis: radialAxis, chart: self, transformer: _axisTransformer)
+        
+        self.highlighter = PolarHighlighter(chart: self)
     }
     
     /// The default IValueFormatter that has been determined by the chart considering the provided minimum and maximum values.
@@ -131,41 +133,65 @@ public class PolarChartView: PieRadarChartViewBase, PolarChartDataProvider {
     
     public override func notifyDataSetChanged() {
         
-        _axisTransformer?.prepareMatrixValuePx(chartXMin: majorAxis.axisMinimum, deltaX: majorAxis.axisRange, deltaY: minorAxis.axisRange, chartYMin: minorAxis.axisMinimum)
-        
         calcMinMax()
-
-        if majorAxis.outerCircleRadius > 0 {
-            majorAxis.axisMinimum = -majorAxis.outerCircleRadius
-            majorAxis.axisMaximum = majorAxis.outerCircleRadius
-        }
+        
+//        if majorAxis.outerCircleRadius > 0 {
+//            majorAxis.axisMinimum = -majorAxis.outerCircleRadius
+//            majorAxis.axisMaximum = majorAxis.outerCircleRadius
+//            majorAxis.axisRange = 2 * majorAxis.outerCircleRadius
+//        }
+        let factor = self.factor
         if majorAxis.gridLinesToChartRectEdges {
-            let factor = self.factor
             let radius: CGFloat = sqrt(pow(self.contentRect.width, 2) + pow(self.contentRect.height, 2)) / 2 / factor
             majorAxis.axisMinimum = -radius
             majorAxis.axisMaximum = radius
+            majorAxis.axisRange = 2 * radius
         }
-        _majorAxisRenderer?.computeAxis(min: majorAxis.axisMinimum.rounded(.awayFromZero), max: majorAxis.axisMaximum.rounded(.awayFromZero), inverted: false)
-    
-    
-        if minorAxis.outerCircleRadius > 0 {
-            minorAxis.axisMinimum = -minorAxis.outerCircleRadius
-            minorAxis.axisMaximum = minorAxis.outerCircleRadius
-        }
+//        if minorAxis.outerCircleRadius > 0 {
+//            minorAxis.axisMinimum = -minorAxis.outerCircleRadius
+//            minorAxis.axisMaximum = minorAxis.outerCircleRadius
+//            minorAxis.axisRange = 2 * minorAxis.outerCircleRadius
+//        }
         if minorAxis.gridLinesToChartRectEdges {
-            let factor = self.factor
             let radius: CGFloat = sqrt(pow(self.contentRect.width, 2) + pow(self.contentRect.height, 2)) / 2 / factor
             minorAxis.axisMinimum = -radius
             minorAxis.axisMaximum = radius
+            minorAxis.axisRange = 2 * radius
         }
+        
+//        _axisTransformer?.prepareMatrixValuePx(chartXMin: majorAxis.axisMinimum, deltaX: majorAxis.axisRange, deltaY: minorAxis.axisRange, chartYMin: minorAxis.axisMinimum)
+        _axisTransformer?.prepareMatrixValuePx(chartXMin: 0, deltaX: majorAxis.axisRange, deltaY: minorAxis.axisRange, chartYMin: 0)
+        _axisTransformer?.prepareMatrixOffset(inverted: majorAxis.isInverted)
+        
+        
+        _majorAxisRenderer?.computeAxis(min: majorAxis.axisMinimum.rounded(.awayFromZero), max: majorAxis.axisMaximum.rounded(.awayFromZero), inverted: false)
+    
         _minorAxisRenderer?.computeAxis(min: minorAxis.axisMinimum.rounded(.awayFromZero), max: minorAxis.axisMaximum.rounded(.awayFromZero), inverted: false)
-    
-    
-        radialAxis.outerCircleRadius = majorAxis.outerCircleRadius > 0 ? majorAxis.outerCircleRadius : majorAxis.axisMaximum
-        if majorAxis.gridLinesToChartRectEdges {
-            let factor = self.factor
-            let radius: CGFloat = sqrt(pow(self.contentRect.width, 2) + pow(self.contentRect.height, 2)) / 2 / factor
-            radialAxis.outerCircleRadius = radius
+        
+        if majorAxis.isEnabled {
+            radialAxis.axisDependency = .major
+            if majorAxis.gridLinesToChartRectEdges {
+                radialAxis.gridLinesToChartRectEdges = true
+                let radius: CGFloat = sqrt(pow(self.contentRect.width, 2) + pow(self.contentRect.height, 2)) / 2 / self.factor
+                radialAxis.outerCircleRadius = radius
+            }
+            else {
+                radialAxis.outerCircleRadius = majorAxis.axisMaximum
+            }
+        }
+        else if minorAxis.isEnabled {
+            radialAxis.axisDependency = .minor
+            if minorAxis.gridLinesToChartRectEdges {
+                radialAxis.gridLinesToChartRectEdges = true
+                let radius: CGFloat = sqrt(pow(self.contentRect.width, 2) + pow(self.contentRect.height, 2)) / 2 / self.factor
+                radialAxis.outerCircleRadius = radius
+            }
+            else {
+                radialAxis.outerCircleRadius = minorAxis.axisMaximum
+            }
+        }
+        else {
+            radialAxis.axisDependency = .none
         }
         
         _radialAxisRenderer?.computeAxis(min: radialAxis.axisMinimum, max: radialAxis.axisMaximum, inverted: radialAxis.reversed)
@@ -238,7 +264,7 @@ public class PolarChartView: PieRadarChartViewBase, PolarChartDataProvider {
     /// The factor that is needed to transform values into pixels.
     @objc public var factor: CGFloat {
         let content = viewPortHandler.contentRect
-        return min(content.width / 2.0, content.height / 2.0) / CGFloat(majorAxis.axisRange)
+        return min(content.width / 2.0, content.height / 2.0) / CGFloat(majorAxis.axisRange / 2.0)
     }
 
     /// The angle that each slice in the radar chart occupies.

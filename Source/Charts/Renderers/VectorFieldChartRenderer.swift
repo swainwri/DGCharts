@@ -10,17 +10,30 @@ import CoreGraphics
 
 public class VectorFieldChartRenderer: LineScatterCandleRadarRenderer {
     
-    @objc public weak var dataProvider: VectorFieldChartDataProvider?
+    @objc public weak var dataProvider: FieldChartDataProvider?
     
     @objc public weak var delegate: VectorFieldChartViewDelegate?
     
-    @objc public init(dataProvider: VectorFieldChartDataProvider, animator: Animator, viewPortHandler: ViewPortHandler) {
+    @objc public init(dataProvider: FieldChartDataProvider, animator: Animator, viewPortHandler: ViewPortHandler) {
         super.init(animator: animator, viewPortHandler: viewPortHandler)
         
         self.dataProvider = dataProvider
     }
+    
+    /// Checks if the provided entry object is in bounds for drawing considering the current animation phase.
+    internal func isInBoundsY(entry e: ChartDataEntry, dataSet: VectorFieldChartDataSetProtocol) -> Bool {
+        let entryIndex = dataSet.entryIndex(entry: e)
+        // since dataset is sorted by x and then by y in each x column
+        
+        if let columnFirstLast = dataSet.getFirstLastIndexInEntries(forEntryX: e) {
+            return Double(entryIndex) > Double(columnFirstLast[0]) * animator.phaseY && Double(entryIndex) < Double(columnFirstLast[1]) * animator.phaseY
+        }
+        else {
+            return false
+        }
+    }
 
-    open override func drawData(context: CGContext) {
+    public override func drawData(context: CGContext) {
         if let vectorFieldData = dataProvider?.vectorFieldData {
             
             // If we redraw the data, remove and repopulate accessible elements to update label values and frames
@@ -100,8 +113,7 @@ public class VectorFieldChartRenderer: LineScatterCandleRadarRenderer {
                     _delegate.chartValueStyle!(entry: e, vectorWidth: &vectorWidth, color: &color, fill: &theFill)
                 }
                 
-                if !tip.x.isNaN && !tip.y.isNaN/*,
-                   !(theFill is EmptyFill)*/ {
+                if !tip.x.isNaN && !tip.y.isNaN {
                     
                     let vectorPath = CGMutablePath()
                     if base.equalTo(tip) {
@@ -278,51 +290,48 @@ public class VectorFieldChartRenderer: LineScatterCandleRadarRenderer {
     
 //    }
     
-//    public func drawHighlighted(context: CGContext, indices: [Highlight]) {
-//        guard
-//            let dataProvider = dataProvider,
-//            let scatterData = dataProvider.scatterData
-//            else { return }
-//
-//        context.saveGState()
-//
-//        for high in indices
-//        {
-//            guard
-//                let set = scatterData[high.dataSetIndex] as? ScatterChartDataSetProtocol,
-//                set.isHighlightEnabled
-//                else { continue }
-//
-//            guard let entry = set.entryForXValue(high.x, closestToY: high.y) else { continue }
-//
-//            if !isInBoundsX(entry: entry, dataSet: set) { continue }
-//
-//            context.setStrokeColor(set.highlightColor.cgColor)
-//            context.setLineWidth(set.highlightLineWidth)
-//            if set.highlightLineDashLengths != nil
-//            {
-//                context.setLineDash(phase: set.highlightLineDashPhase, lengths: set.highlightLineDashLengths!)
-//            }
-//            else
-//            {
-//                context.setLineDash(phase: 0.0, lengths: [])
-//            }
-//
-//            let x = entry.x // get the x-position
-//            let y = entry.y * Double(animator.phaseY)
-//
-//            let trans = dataProvider.getTransformer(forAxis: set.axisDependency)
-//
-//            let pt = trans.pixelForValues(x: x, y: y)
-//
-//            high.setDraw(pt: pt)
-//
-//            // draw the lines
-//            drawHighlightLines(context: context, point: pt, set: set)
-//        }
-//
-//        context.restoreGState()
-//}
+    public override func drawHighlighted(context: CGContext, indices: [Highlight]) {
+        guard
+            let dataProvider = dataProvider,
+            let vectorFieldData = dataProvider.vectorFieldData
+            else { return }
+
+        context.saveGState()
+
+        for high in indices {
+            guard
+                let set = vectorFieldData[high.dataSetIndex] as? VectorFieldChartDataSetProtocol,
+                set.isHighlightEnabled
+                else { continue }
+
+            guard let entry = set.entryForXValue(high.x, closestToY: high.y) else { continue }
+
+            if !isInBoundsX(entry: entry, dataSet: set) || !isInBoundsY(entry: entry, dataSet: set) { continue }
+
+            context.setStrokeColor(set.highlightColor.cgColor)
+            context.setLineWidth(set.highlightLineWidth)
+            if let _highlightLineDashLengths = set.highlightLineDashLengths {
+                context.setLineDash(phase: set.highlightLineDashPhase, lengths: _highlightLineDashLengths)
+            }
+            else {
+                context.setLineDash(phase: 0.0, lengths: [])
+            }
+
+            let x = entry.x // get the x-position
+            let y = entry.y * Double(animator.phaseY)
+
+            let trans = dataProvider.getTransformer(forAxis: set.axisDependency)
+
+            let pt = trans.pixelForValues(x: x, y: y)
+
+            high.setDraw(pt: pt)
+
+            // draw the lines
+            drawHighlightLines(context: context, point: pt, set: set)
+        }
+
+        context.restoreGState()
+}
             
     private func arrowHeadPath(dataSet: VectorFieldChartDataSetProtocol) -> CGMutablePath {
             
@@ -355,4 +364,44 @@ public class VectorFieldChartRenderer: LineScatterCandleRadarRenderer {
         }
         return arrowHeadPath
     }
+    
+    /// Class representing the bounds of the current viewport in terms of indices in the values array of a DataSet.
+    public class YBounds {
+        /// minimum visible entry index
+        public var min: Int = 0
+
+        /// maximum visible entry index
+        public var max: Int = 0
+
+        /// range of visible entry indices
+        public var range: Int = 0
+
+        public init()  {
+            
+        }
+        
+        public init(chart: FieldChartDataProvider, dataSet: VectorFieldChartDataSetProtocol, animator: Animator?){
+            self.set(chart: chart, dataSet: dataSet, animator: animator)
+        }
+        
+        /// Calculates the minimum and maximum x values as well as the range between them.
+        public func set(chart: FieldChartDataProvider, dataSet: VectorFieldChartDataSetProtocol, animator: Animator?) {
+            let phaseY = Swift.max(0.0, Swift.min(1.0, animator?.phaseY ?? 1.0))
+            
+            let low = chart.lowestVisibleX
+            let high = chart.highestVisibleX
+            
+            let lowY = chart.lowestVisibleY
+            let highY = chart.highestVisibleY
+            
+            let entryFrom = dataSet.entryForXValue(low, closestToY: lowY, rounding: .down)
+            let entryTo = dataSet.entryForXValue(high, closestToY: highY, rounding: .up)
+            
+            self.min = entryFrom == nil ? 0 : dataSet.entryIndex(entry: entryFrom!)
+            self.max = entryTo == nil ? 0 : dataSet.entryIndex(entry: entryTo!)
+            range = Int(Double(self.max - self.min) * phaseY)
+        }
+    }
 }
+
+

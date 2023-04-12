@@ -13,7 +13,7 @@ import DGCharts
 
 class VectorFieldChartViewController: DemoBaseViewController, VectorFieldChartViewDelegate {
     
-    @IBOutlet var chartView: VectorFieldChartView!
+    @IBOutlet var chartView: VectorFieldChartView?
     @IBOutlet var sliderX: UISlider!
    
     @IBOutlet var sliderTextX: UITextField!
@@ -34,49 +34,71 @@ class VectorFieldChartViewController: DemoBaseViewController, VectorFieldChartVi
                         .toggleAutoScaleMinMax,
                         .toggleData]
         
-        chartView.delegate = self
+        chartView?.delegate = self
 
-        chartView.chartDescription.enabled = false
+        chartView?.chartDescription.enabled = false
         
-        chartView.dragEnabled = true
-        chartView.setScaleEnabled(true)
-        chartView.maxVisibleCount = 128 * 128
-        chartView.pinchZoomEnabled = true
+        chartView?.dragEnabled = true
+        chartView?.setScaleEnabled(true)
+        chartView?.maxVisibleCount = 128 * 128
+        chartView?.pinchZoomEnabled = true
         
-        let l = chartView.legend
-        l.horizontalAlignment = .right
-        l.verticalAlignment = .top
-        l.orientation = .vertical
-        l.drawInside = false
-        l.font = .systemFont(ofSize: 10, weight: .light)
-        l.xOffset = 5
+        if let l = chartView?.legend {
+            l.horizontalAlignment = .right
+            l.verticalAlignment = .top
+            l.orientation = .vertical
+            l.drawInside = true
+            l.font = .systemFont(ofSize: 10, weight: .light)
+            l.xOffset = 5
+        }
         
-        let leftAxis = chartView.leftAxis
-        leftAxis.labelFont = .systemFont(ofSize: 10, weight: .light)
-        leftAxis.axisMinimum = -2 * .pi
         let piFormatter = PiNumberFormatter()
         piFormatter.multiplier = 16
-        leftAxis.valueFormatter = piFormatter
-        leftAxis.granularity = .pi / 4
-        chartView.rightAxis.enabled = false
+        if let leftAxis = chartView?.leftAxis {
+            leftAxis.labelFont = .systemFont(ofSize: 10, weight: .light)
+            leftAxis.axisMinimum = -2 * .pi
+            leftAxis.axisMaximum = 2 * .pi
+            leftAxis.valueFormatter = piFormatter
+            leftAxis.granularity = .pi / 4
+            chartView?.rightAxis.enabled = false
+        }
         
-        
-        let xAxis = chartView.xAxis
-        xAxis.labelFont = .systemFont(ofSize: 10, weight: .light)
-        xAxis.valueFormatter = piFormatter
-        xAxis.granularity = .pi / 4
-        xAxis.forceLabelsEnabled = true
+        if let xAxis = chartView?.xAxis {
+            xAxis.labelFont = .systemFont(ofSize: 10, weight: .light)
+            xAxis.valueFormatter = piFormatter
+            xAxis.granularity = .pi / 4
+            xAxis.axisMinimum = -2 * .pi
+            xAxis.axisMaximum = 2 * .pi
+            //xAxis.forceLabelsEnabled = true
+        }
         
         sliderX.maximumValue = 32
         sliderX.minimumValue = 8
         sliderX.value = 16
         
         slidersValueChanged(nil)
+        
+        if let _chartView = self.chartView,
+           let xAxisValueFormatter = _chartView.xAxis.valueFormatter,
+           let yAxisValueFormatter = _chartView.leftAxis.valueFormatter {
+            let angleFormatter = NumberFormatter() //DegreeFormatter()
+            angleFormatter.maximumFractionDigits = 3
+            let marker = VectorFieldMarkerView(color: UIColor(white: 180/250, alpha: 1),
+                                               font: .systemFont(ofSize: 12),
+                                               textColor: .white,
+                                               insets: UIEdgeInsets(top: 8, left: 8, bottom: 20, right: 8),
+                                               xAxisValueFormatter: xAxisValueFormatter,
+                                               yAxisValueFormatter: yAxisValueFormatter,
+                                               directionFormatter: angleFormatter)
+            marker.chartView = _chartView
+            marker.minimumSize = CGSize(width: 80, height: 40)
+            chartView?.marker = marker
+        }
     }
     
     override func updateChartData() {
         if self.shouldHideData {
-            chartView.data = nil
+            chartView?.data = nil
             return
         }
         
@@ -104,7 +126,7 @@ class VectorFieldChartViewController: DemoBaseViewController, VectorFieldChartVi
             x += .pi / 8.0 * divisor
         }
         
-        let set1 = VectorFieldChartDataSet(entries: values1, label: "DS 1")
+        let set1 = VectorFieldChartDataSet(entries: values1, label: "sin(x) sin(y)")
         set1.arrowType = .solid
         set1.setColor(ChartColorTemplates.colorful()[0])
         set1.arrowSize = 5
@@ -113,17 +135,25 @@ class VectorFieldChartViewController: DemoBaseViewController, VectorFieldChartVi
         let data: VectorFieldChartData = [set1]
         data.setValueFont(.systemFont(ofSize: 7, weight: .light))
 
-        chartView.data = data
+        chartView?.data = data
     }
     
     override func optionTapped(_ option: Option) {
-        super.handleOption(option, forChartView: chartView)
+        super.handleOption(option, forChartView: chartView!)
     }
     
     @IBAction func slidersValueChanged(_ sender: Any?) {
         sliderTextX.text = "\(Int(sliderX.value))"
         
         self.updateChartData()
+    }
+    
+    // MARK: - ChartViewDelegate
+    
+    override func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+        super.chartValueSelected(chartView, entry: entry, highlight: highlight)
+        
+        chartView.marker?.refreshContent(entry: entry, highlight: highlight)
     }
     
     // MARK: - VectorFieldChartViewDelegate

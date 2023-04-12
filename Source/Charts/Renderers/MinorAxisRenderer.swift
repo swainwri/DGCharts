@@ -16,29 +16,13 @@ public class MinorAxisRenderer: NSObject, AxisRenderer {
     @objc public let axis: MinorAxis
     @objc public let transformer: Transformer?
     
-    private weak var chart: PolarChartView?
+    private weak var majorAxis: MajorAxis?
 
-    @objc public init(viewPortHandler: ViewPortHandler, axis: MinorAxis, chart: PolarChartView?) {
+    @objc public init(viewPortHandler: ViewPortHandler, axis: MinorAxis, associatedMajorAxis: MajorAxis? = nil, transformer: Transformer?) {
         self.viewPortHandler = viewPortHandler
         self.axis = axis
-        self.chart = chart
-        
-        if axis.outerCircleRadius > 0 {
-            axis.axisMinimum = -axis.outerCircleRadius
-            axis.axisMaximum = axis.outerCircleRadius
-        }
-        if axis.gridLinesToChartRectEdges,
-           let chart = self.chart {
-            let factor = chart.factor
-            let radius: CGFloat = sqrt(pow(chart.contentRect.width, 2) + pow(chart.contentRect.height, 2)) / 2 / factor
-            axis.axisMinimum = -radius
-            axis.axisMaximum = radius
-        }
-        
-        let axisTransformer = Transformer(viewPortHandler: viewPortHandler)
-        axisTransformer.prepareMatrixValuePx(chartXMin: axis.axisMinimum, deltaX: CGFloat(axis.axisRange), deltaY: CGFloat(axis.axisRange), chartYMin: axis.axisMinimum)
-        axisTransformer.prepareMatrixOffset(inverted: axis.isInverted)
-        self.transformer = axisTransformer
+        self.majorAxis = associatedMajorAxis
+        self.transformer = transformer
         
         super.init()
     }
@@ -115,8 +99,7 @@ public class MinorAxisRenderer: NSObject, AxisRenderer {
 
             n = labelCount
         }
-        else
-        {
+        else {
             // no forced count
 
             var first = interval == 0.0 ? 0.0 : ceil(yMin / interval) * interval
@@ -277,7 +260,51 @@ public class MinorAxisRenderer: NSObject, AxisRenderer {
     /// Draws the grid lines belonging to the axis.
     @objc public func renderGridLines(context: CGContext) {
         
-        // no need as major axis renderer does this, perhaps if don't want major axis need to render gridlines for minor??
+        // no need as major axis renderer does this, although if don't want major axis need to render gridlines for minor
+        if let _majorAxis = self.majorAxis,
+           _majorAxis.drawGridLinesEnabled {
+    
+        }
+        else if let _transformer = self.transformer {
+            // calculate the factor that is needed for transforming the value to
+            // pixels
+            var valueToPixelMatrix = _transformer.valueToPixelMatrix
+            let center: CGPoint = .zero
+            
+            context.saveGState()
+            // draw the inner-web
+            context.setLineWidth(axis.axisLineWidth)
+            context.setStrokeColor(axis.axisLineColor.cgColor)
+            
+            let labelCount = axis.entryCount
+            for j in 0 ..< labelCount {
+                if axis.entries[j] > 0 {  // don't need negative entries as psoitive one with take care of concentric circles
+                    let diameter: CGFloat = CGFloat(axis.entries[j]) * 2
+                    let circle = CGPath(ellipseIn: CGRect(x: -diameter / 2 + center.x, y: -diameter / 2 + center.y, width: diameter, height: diameter), transform: &valueToPixelMatrix)
+                    context.addPath(circle)
+                    context.strokePath()
+                }
+            }
+            
+            if axis.granularityEnabled {
+                context.setLineWidth(axis.gridLineWidth)
+                context.setStrokeColor(axis.gridColor.cgColor)
+                
+                for j in 0..<labelCount-1 {
+                    if axis.entries[j] > 0 {
+                        let granularityCount = Int((axis.entries[j] - axis.entries[j-1]) / axis.granularity)
+                        for i in 1..<granularityCount {
+                            let diameter: CGFloat = CGFloat(axis.entries[j] + Double(i) * axis.granularity) * 2
+                            let circle = CGPath(ellipseIn: CGRect(x: -diameter / 2 + center.x, y: -diameter / 2 + center.y, width: diameter, height: diameter), transform: &valueToPixelMatrix)
+                            context.addPath(circle)
+                            context.strokePath()
+                        }
+                    }
+                }
+            }
+            
+            context.restoreGState()
+        }
     }
     
     @objc public func renderLimitLines(context: CGContext) {

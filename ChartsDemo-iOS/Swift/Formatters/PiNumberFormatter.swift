@@ -76,11 +76,7 @@ public class PiNumberFormatter : NumberFormatter, ValueFormatter, AxisValueForma
         return format(value: value)
     }
     
-    public func stringForValue(
-        _ value: Double,
-        entry: ChartDataEntry,
-        dataSetIndex: Int,
-        viewPortHandler: ViewPortHandler?) -> String {
+    public func stringForValue(_ value: Double, entry: ChartDataEntry, dataSetIndex: Int, viewPortHandler: ViewPortHandler?) -> String {
         return format(value: value)
     }
 }

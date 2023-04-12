@@ -50,18 +50,16 @@ class PolarChartViewController: DemoBaseViewController {
             majorAxis.labelCount = 11
             majorAxis.granularity = 5
             majorAxis.granularityEnabled = true
-            majorAxis.outerCircleRadius = 120
             majorAxis.axisLineWidth = 2
-            majorAxis.gridLinesToChartRectEdges = true
+//            majorAxis.gridLinesToChartRectEdges = true
         }
         
         if let minorAxis = chartView?.minorAxis {
             minorAxis.labelFont = .systemFont(ofSize: 11, weight: .light)
             minorAxis.labelCount = 11
             minorAxis.labelTextColor = .blue
-            minorAxis.outerCircleRadius = 120
             minorAxis.axisLineWidth = 2
-            minorAxis.gridLinesToChartRectEdges = true
+//            minorAxis.gridLinesToChartRectEdges = true
         }
         
         if let radialAxis = chartView?.radialAxis {
@@ -89,9 +87,24 @@ class PolarChartViewController: DemoBaseViewController {
             l.yEntrySpace = 5
             l.textColor = .darkGray
         }
+        
         self.updateChartData()
+//        if let majorAxis = chartView?.minorAxis {
+//            majorAxis.outerCircleRadius = chartView?.polarData?.radialMax ?? 0
+//        }
+//        if let minorAxis = chartView?.minorAxis {
+//            minorAxis.outerCircleRadius = chartView?.polarData?.radialMax ?? 0
+//        }
         
         chartView?.animate(xAxisDuration: 1.4, yAxisDuration: 1.4, easingOption: .easeOutBack)
+        
+        let angleFormatter = NumberFormatter() //DegreeFormatter()
+        angleFormatter.maximumFractionDigits = 3
+        let marker = PolarMarkerView(color: UIColor(white: 180/250, alpha: 1), font: .systemFont(ofSize: 12), textColor: .white,
+                                  insets: UIEdgeInsets(top: 8, left: 8, bottom: 20, right: 8), angleValueFormatter: angleFormatter)
+        marker.chartView = chartView
+        marker.minimumSize = CGSize(width: 80, height: 40)
+        chartView?.marker = marker
     }
 
     override func updateChartData() {
@@ -117,25 +130,28 @@ class PolarChartViewController: DemoBaseViewController {
         let entries2 = (0..<cnt).map(block2)
         
         let set1 = PolarChartDataSet(entries: entries1, label: "Random")
-        set1.setColor(UIColor(red: 103/255, green: 110/255, blue: 129/255, alpha: 1))
-        set1.fillColor = UIColor(red: 103/255, green: 110/255, blue: 129/255, alpha: 0.6)
+        set1.setColor(UIColor.red)
+        set1.fillColor = UIColor.red
         set1.drawFilledEnabled = false
         set1.fillAlpha = 0.7
         set1.lineWidth = 2
         set1.drawHighlightCircleEnabled = true
         set1.setDrawHighlightIndicators(false)
+        set1.polarMode = .stepped
+        set1.polarHistogram = .skipSecond
+        set1.polarClosePath = true
         
         
         let set2 = PolarChartDataSet(entries: entries2, label: "Sin Wave")
-        set2.setColor(UIColor(red: 121/255, green: 162/255, blue: 175/255, alpha: 1))
-        set2.fillColor = UIColor(red: 121/255, green: 162/255, blue: 175/255, alpha: 0.6)
+        set2.setColor(UIColor.orange)
+        set2.fillColor = UIColor.orange
         set2.drawFilledEnabled = false
         set2.fillAlpha = 0.7
         set2.lineWidth = 2
         set2.drawHighlightCircleEnabled = true
         set2.setDrawHighlightIndicators(false)
         set2.polarMode = .cubicBezier
-        set2.polarCurvedInterpolation = .catmullCustomAlpha
+        set2.polarCurvedInterpolation = .catmullRomUniform
         set2.polarCatmullCustomAlpha = 0.25
         
         let data: PolarChartData = [set1, set2]
@@ -194,6 +210,14 @@ class PolarChartViewController: DemoBaseViewController {
         default:
             super.handleOption(option, forChartView: _chartView)
         }
+    }
+    
+    // MARK: - ChartViewDelegate
+    
+    override func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+        super.chartValueSelected(chartView, entry: entry, highlight: highlight)
+        
+        chartView.marker?.refreshContent(entry: entry, highlight: highlight)
     }
 }
 

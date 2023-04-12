@@ -16,45 +16,13 @@ public class RadialAxisRenderer: NSObject, AxisRenderer {
     @objc public let axis: RadialAxis
     @objc public let transformer: Transformer?
     
-    private weak var majorAxis: MajorAxis?
-    private weak var minorAxis: MinorAxis?
     private weak var chart: PolarChartView?
     
-    @objc public init(viewPortHandler: ViewPortHandler, axis: RadialAxis, associatedMajorMinorAxis: Any?, chart: PolarChartView?) {
+    @objc public init(viewPortHandler: ViewPortHandler, axis: RadialAxis, chart: PolarChartView?, transformer: Transformer?) {
         self.viewPortHandler = viewPortHandler
         self.axis = axis
         self.chart = chart
-        
-        if associatedMajorMinorAxis is MajorAxis,
-           let _associatedMajorMinorAxis = associatedMajorMinorAxis as? MajorAxis {
-            self.majorAxis = _associatedMajorMinorAxis
-            self.axis.axisDependency = .major
-            if _associatedMajorMinorAxis.gridLinesToChartRectEdges {
-                axis.gridLinesToChartRectEdges = true
-            }
-        }
-        else if associatedMajorMinorAxis is MinorAxis,
-            let _associatedMajorMinorAxis = associatedMajorMinorAxis as? MinorAxis {
-            self.minorAxis = _associatedMajorMinorAxis
-            self.axis.axisDependency = .minor
-            if _associatedMajorMinorAxis.gridLinesToChartRectEdges {
-                axis.gridLinesToChartRectEdges = true
-            }
-        }
-        else {
-            self.axis.axisDependency = .none
-        }
-        
-        if axis.gridLinesToChartRectEdges,
-           let chart = self.chart {
-            let factor = chart.factor
-            let radius: CGFloat = sqrt(pow(chart.contentRect.width, 2) + pow(chart.contentRect.height, 2)) / 2 / factor
-            axis.outerCircleRadius = radius
-        }
-        
-        let axisTransformer = Transformer(viewPortHandler: viewPortHandler)
-        axisTransformer.prepareMatrixValuePx(chartXMin: axis.axisMinimum, deltaX: CGFloat(axis.axisRange), deltaY: CGFloat(axis.axisRange), chartYMin: axis.axisMinimum)
-        self.transformer = axisTransformer
+        self.transformer = transformer
         
         super.init()
     }
@@ -64,30 +32,31 @@ public class RadialAxisRenderer: NSObject, AxisRenderer {
     /// Draws the grid lines belonging to the axis.
     public func renderGridLines(context: CGContext) {
         
-        if let _chart = chart {
+        if let _transformer = self.transformer {
             var sliceangle = axis.radialAngleMode == .radians ? axis.webInterval : axis.webInterval * .pi / 180 // needs to be in degrees
             
             context.saveGState()
             
             // calculate the factor that is needed for transforming the value to
             // pixels
-            let rotationangle = _chart.rotationAngle.DEG2RAD
-            let factor = _chart.factor
-            let center = _chart.centerOffsets
+            let rotationangle = self.chart?.rotationAngle.DEG2RAD ?? 0
+            let valueToPixelMatrix = _transformer.valueToPixelMatrix
+            let center: CGPoint = .zero
+            let centerPx = center.applying(valueToPixelMatrix)
             
             // draw the web lines that come from the center
             context.setLineWidth(axis.axisLineWidth)
             context.setStrokeColor(axis.axisLineColor.cgColor)
             //context.setAlpha(axis.axisLineColor.)
             
-            let radius: CGFloat = axis.outerCircleRadius * factor
+            let radius: CGFloat = axis.outerCircleRadius
             let maxEntryCount = axis.entryCount
             
             for i in 0..<maxEntryCount {
-                let p = center.moving(distance: radius, atAngle: sliceangle * CGFloat(i) + rotationangle)
+                let p = center.moving(distance: radius, atAngle: sliceangle * CGFloat(i) + rotationangle).applying(valueToPixelMatrix)
                 
-                _webLineSegmentsBuffer[0].x = center.x
-                _webLineSegmentsBuffer[0].y = center.y
+                _webLineSegmentsBuffer[0].x = centerPx.x
+                _webLineSegmentsBuffer[0].y = centerPx.y
                 _webLineSegmentsBuffer[1].x = p.x
                 _webLineSegmentsBuffer[1].y = p.y
                 
@@ -101,10 +70,10 @@ public class RadialAxisRenderer: NSObject, AxisRenderer {
                 let maxEntryCount = Int(axis.webInterval / axis.granularity) * (axis.entryCount - 1) + 1
                 sliceangle = axis.radialAngleMode == .radians ? axis.granularity : axis.granularity * .pi / 180 // needs to be in degrees
                 for i in 0..<maxEntryCount {
-                    let p = center.moving(distance: radius, atAngle: sliceangle * CGFloat(i) + rotationangle)
+                    let p = center.moving(distance: radius, atAngle: sliceangle * CGFloat(i) + rotationangle).applying(valueToPixelMatrix)
                     
-                    _webLineSegmentsBuffer[0].x = center.x
-                    _webLineSegmentsBuffer[0].y = center.y
+                    _webLineSegmentsBuffer[0].x = centerPx.x
+                    _webLineSegmentsBuffer[0].y = centerPx.y
                     _webLineSegmentsBuffer[1].x = p.x
                     _webLineSegmentsBuffer[1].y = p.y
                     

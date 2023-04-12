@@ -136,9 +136,12 @@
 		E340C92229E238E500E3D66B /* VectorFieldChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E340C92029E238E500E3D66B /* VectorFieldChartViewController.swift */; };
 		E340C92529E23D2800E3D66B /* VectorFieldChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E340C92429E23D2800E3D66B /* VectorFieldChartViewController.xib */; };
 		E340C92629E23D2800E3D66B /* VectorFieldChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E340C92429E23D2800E3D66B /* VectorFieldChartViewController.xib */; };
+		E37E97EA29E4491300748D6C /* VectorFieldMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37E97E929E4491300748D6C /* VectorFieldMarkerView.swift */; };
+		E37E97ED29E44B9200748D6C /* DegreesFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37E97EC29E44B9200748D6C /* DegreesFormatter.swift */; };
 		E39995DB29D9D5FB00F6B34A /* PolarChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39995DA29D9D5FB00F6B34A /* PolarChartViewController.swift */; };
 		E39995DD29D9D6CC00F6B34A /* PiNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39995DC29D9D6CC00F6B34A /* PiNumberFormatter.swift */; };
 		E39995F729D9E00300F6B34A /* PolarChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E39995F629D9E00300F6B34A /* PolarChartViewController.xib */; };
+		E3EC355229E67C1700F9934C /* PolarMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EC355129E67C1700F9934C /* PolarMarkerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -328,9 +331,12 @@
 		B64D06EA1FB199130067418D /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		E340C92029E238E500E3D66B /* VectorFieldChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorFieldChartViewController.swift; sourceTree = "<group>"; };
 		E340C92429E23D2800E3D66B /* VectorFieldChartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VectorFieldChartViewController.xib; sourceTree = "<group>"; };
+		E37E97E929E4491300748D6C /* VectorFieldMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorFieldMarkerView.swift; sourceTree = "<group>"; };
+		E37E97EC29E44B9200748D6C /* DegreesFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DegreesFormatter.swift; sourceTree = "<group>"; };
 		E39995DA29D9D5FB00F6B34A /* PolarChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolarChartViewController.swift; sourceTree = "<group>"; };
 		E39995DC29D9D6CC00F6B34A /* PiNumberFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PiNumberFormatter.swift; sourceTree = "<group>"; };
 		E39995F629D9E00300F6B34A /* PolarChartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PolarChartViewController.xib; sourceTree = "<group>"; };
+		E3EC355129E67C1700F9934C /* PolarMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolarMarkerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -381,6 +387,7 @@
 				225B36361F6EB9FE0005B3D5 /* DateValueFormatter.swift */,
 				225B36341F6EB9FE0005B3D5 /* IntAxisValueFormatter.swift */,
 				225B36371F6EB9FE0005B3D5 /* LargeValueFormatter.swift */,
+				E37E97EC29E44B9200748D6C /* DegreesFormatter.swift */,
 			);
 			path = Formatters;
 			sourceTree = "<group>";
@@ -391,6 +398,8 @@
 				5BD47E5A1ABB0263008FCEC6 /* BalloonMarker.swift */,
 				225B363F1F6EBA180005B3D5 /* RadarMarkerView.swift */,
 				225B363D1F6EBA180005B3D5 /* XYMarkerView.swift */,
+				E37E97E929E4491300748D6C /* VectorFieldMarkerView.swift */,
+				E3EC355129E67C1700F9934C /* PolarMarkerView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -801,6 +810,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E37E97ED29E44B9200748D6C /* DegreesFormatter.swift in Sources */,
 				225B365E1F6EBA470005B3D5 /* LineChartTimeViewController.swift in Sources */,
 				225B36311F6EB9EE0005B3D5 /* DemoBaseViewController.swift in Sources */,
 				225B36391F6EBA040005B3D5 /* DayAxisValueFormatter.swift in Sources */,
@@ -811,11 +821,13 @@
 				5B442CD223D9B0A300B1F801 /* BalloonMarker.swift in Sources */,
 				E39995DB29D9D5FB00F6B34A /* PolarChartViewController.swift in Sources */,
 				225B366D1F6EBA470005B3D5 /* PiePolylineChartViewController.swift in Sources */,
+				E3EC355229E67C1700F9934C /* PolarMarkerView.swift in Sources */,
 				225B366F1F6EBA470005B3D5 /* BarChartViewController.swift in Sources */,
 				225B36601F6EBA470005B3D5 /* LineChart2ViewController.swift in Sources */,
 				225B366C1F6EBA470005B3D5 /* HorizontalBarChartViewController.swift in Sources */,
 				225B36401F6EBA1D0005B3D5 /* XYMarkerView.swift in Sources */,
 				225B36421F6EBA1D0005B3D5 /* RadarMarkerView.swift in Sources */,
+				E37E97EA29E4491300748D6C /* VectorFieldMarkerView.swift in Sources */,
 				E340C92229E238E500E3D66B /* VectorFieldChartViewController.swift in Sources */,
 				225B366B1F6EBA470005B3D5 /* RadarChartViewController.swift in Sources */,
 				225B36611F6EBA470005B3D5 /* LineChart1ViewController.swift in Sources */,

@@ -263,6 +263,7 @@ public class PolarChartDataSet: RadarChartDataSet, PolarChartDataSetProtocol {
             _polarFillFormatter = newValue ?? DefaultPolarFillFormatter()
         }
     }
+    
     public var fillFormatter: FillFormatter? {
         get {
             return nil
@@ -271,4 +272,7 @@ public class PolarChartDataSet: RadarChartDataSet, PolarChartDataSetProtocol {
             
         }
     }
+    
+    /// since this is a polar plot on may want the first point joing the last poin
+    public var polarClosePath: Bool = false
 }

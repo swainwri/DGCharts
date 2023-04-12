@@ -21,7 +21,7 @@ public protocol VectorFieldChartViewDelegate: NSObjectProtocol {
 
 }
 
-public class VectorFieldChartView: BarLineChartViewBase, VectorFieldChartDataProvider, VectorFieldChartViewDelegate {
+public class VectorFieldChartView: BarLineChartViewBase, FieldChartDataProvider, VectorFieldChartViewDelegate {
     
     public override func initialize() {
         super.initialize()
@@ -32,6 +32,7 @@ public class VectorFieldChartView: BarLineChartViewBase, VectorFieldChartDataPro
         xAxis.spaceMin = 0.5
         xAxis.spaceMax = 0.5
         
+        self.highlighter = ChartHighlighter(chart: self)
     }
     
     public override var delegate: ChartViewDelegate? {
@@ -40,6 +41,24 @@ public class VectorFieldChartView: BarLineChartViewBase, VectorFieldChartDataPro
                 _renderer.delegate = delegate as? any VectorFieldChartViewDelegate
             }
         }
+    }
+    
+    /// The lowest y-index (value on the y-axis) that is still visible on he chart.
+    public var lowestVisibleY: Double {
+        var pt = CGPoint(x: viewPortHandler.contentLeft, y: viewPortHandler.contentBottom)
+        
+        getTransformer(forAxis: .left).pixelToValues(&pt)
+        
+        return max(leftAxis._axisMinimum, Double(pt.y))
+    }
+    
+    /// The highest x-index (value on the x-axis) that is still visible on the chart.
+    public var highestVisibleY: Double {
+        var pt = CGPoint(x: viewPortHandler.contentRight, y: viewPortHandler.contentBottom)
+        
+        getTransformer(forAxis: .left).pixelToValues(&pt)
+
+        return min(leftAxis._axisMaximum, Double(pt.y))
     }
     
     // MARK: - ScatterChartDataProvider

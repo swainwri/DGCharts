@@ -61,10 +61,7 @@ public class MinorAxis: AxisBase {
     ///
     /// **default**: 1.0
     @objc open var wordWrapWidthPercent: CGFloat = 1.0
-    
-    /// outer circle gridline of the major-axis
-    @objc public var outerCircleRadius = CGFloat(0.0)
-    
+   
     /// draw circle gridlines of the radial-axis to fill chart.rect
     @objc public var gridLinesToChartRectEdges = false
     

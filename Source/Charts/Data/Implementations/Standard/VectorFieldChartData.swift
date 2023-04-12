@@ -8,8 +8,7 @@
 import Foundation
 import CoreGraphics
 
-open class VectorFieldChartData: BarLineScatterCandleBubbleChartData
-{
+public class VectorFieldChartData: BarLineScatterCandleBubbleChartData {
     public required init() {
         super.init()
     }
@@ -23,10 +22,10 @@ open class VectorFieldChartData: BarLineScatterCandleBubbleChartData
     }
     
     /// - Returns: The maximum arrow-size across all DataSets.
-    @objc open func getGreatestArrowSize() -> CGFloat
-    {
+    @objc public func getGreatestArrowSize() -> CGFloat {
         return (_dataSets as? [VectorFieldChartDataSetProtocol])?
             .max { $0.arrowSize < $1.arrowSize }?
             .arrowSize ?? 0
     }
+    
 }

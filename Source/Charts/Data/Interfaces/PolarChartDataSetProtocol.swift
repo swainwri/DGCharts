@@ -95,4 +95,7 @@ public protocol PolarChartDataSetProtocol: LineChartDataSetProtocol {
     /// Sets a custom FillFormatterProtocol to the chart that handles the position of the filled-line for each DataSet. Set this to null to use the default logic.
     var polarFillFormatter: PolarFillFormatter? { get set }
     
+    /// since this is a polar plot on may want the first point joing the last poin
+    var polarClosePath: Bool { get set }
+    
 }

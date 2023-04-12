@@ -13,6 +13,9 @@ public protocol VectorFieldChartDataSetProtocol: LineScatterCandleRadarChartData
 
     // MARK: - Data functions and accessors
     
+    func getFirstLastIndexInEntries(forEntryX e: ChartDataEntry) -> [Int]? 
+    
+    
     // MARK: - Styling functions and accessors
     
     var arrowType: VectorFieldChartDataSet.ArrowType { get set }

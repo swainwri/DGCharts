@@ -20,6 +20,27 @@ public class VectorFieldChartDataSet: LineRadarChartDataSet, VectorFieldChartDat
         case swept ///< Swept arrow.
     }
     
+    @objc public override convenience init(entries: [ChartDataEntry], label: String) {
+        
+        self.init()
+        
+        // default color
+        colors.append(NSUIColor(red: 140.0/255.0, green: 234.0/255.0, blue: 255.0/255.0, alpha: 1.0))
+        valueColors.append(.labelOrBlack)
+        
+        self.label = label
+        
+        if var _entries = entries as? [FieldChartDataEntry] {
+            // need to sort the Field in to x columns of y rows, in order to redeem YBounds on each x column
+            _entries.sort(by: {  $0.x == $1.x ? $0.y < $1.y : $0.x < $1.x } )
+            self.replaceEntries(_entries)
+        }
+        else {
+            self.replaceEntries(entries)
+        }
+        
+    }
+    
     public var arrowType: ArrowType = .none
     
     /// - Returns: The size the vector field arrow will have
@@ -49,6 +70,26 @@ public class VectorFieldChartDataSet: LineRadarChartDataSet, VectorFieldChartDat
             }
         }
     }
+    
+    public func getFirstLastIndexInEntries(forEntryX e: ChartDataEntry) -> [Int]? {
+        if let _entries = entries as? [FieldChartDataEntry],
+           let first = _entries.firstIndex(where: { $0.x == e.x }),
+           let last = _entries.firstIndex(where: { $0.x > e.x }) {
+            return [ first, last ]
+        }
+        else {
+            return nil
+        }
+    }
+    
+    public func sortEntries() {
+        if var _entries = entries as? [FieldChartDataEntry] {
+            _entries.sort(by: {  $0.x == $1.x ? $0.y < $1.y : $0.x < $1.x } )
+            self.replaceEntries(_entries)
+        }
+    }
+    
+    
     // MARK: NSCopying
     
     open override func copy(with zone: NSZone? = nil) -> Any {

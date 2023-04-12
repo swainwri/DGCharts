@@ -105,9 +105,6 @@ public class MajorAxis: AxisBase {
     /// **default**: CGFloat.infinity
     @objc open var maxWidth = CGFloat(CGFloat.infinity)
     
-    /// outer circle gridline of the major-axis
-    @objc public var outerCircleRadius = CGFloat(0.0)
-    
     /// draw circle gridlines of the radial-axis to fill chart.rect
     @objc public var gridLinesToChartRectEdges = false
     

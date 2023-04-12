@@ -52,8 +52,7 @@ class PolarChartRenderer: LineRadarRenderer {
                 return chart.contentRect.contains(point)
             }
             else {
-                let radius = max(chart.majorAxis.axisMaximum, chart.majorAxis.outerCircleRadius)
-                return e.radial < radius
+                return e.radial < chart.majorAxis.axisMaximum
             }
         }
         else {
@@ -133,9 +132,8 @@ class PolarChartRenderer: LineRadarRenderer {
         
             let trans = dataProvider.getTransformer(forAxis: .major)
             
-            let factor = chart?.factor ?? 1
             let phase = sqrt(pow(animator.phaseX, 2) + pow(animator.phaseY, 2))
-            let centre: CGPoint = self.chart?.centerOffsets ?? .zero
+            let centre: CGPoint = .zero
             
             _thetaBounds.set(chart: dataProvider, dataSet: dataSet, animator: animator)
             
@@ -168,12 +166,13 @@ class PolarChartRenderer: LineRadarRenderer {
                     var prevCGPoint: CGPoint = .zero
                     if let _prev = dataSet.entryForIndex(max(firstIndex - 2, 0))  as? PolarChartDataEntry {
                         prev = _prev
-                        prevCGPoint = centre.moving(distance: prev.radial * factor * phase, atAngle: prev.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians)
+                        prevCGPoint = centre.moving(distance: prev.radial * phase, atAngle: prev.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
                     }
-                    var curCGPoint: CGPoint = centre.moving(distance: cur.radial * factor * phase, atAngle: cur.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians)
+                    var curCGPoint: CGPoint = centre.moving(distance: cur.radial * phase, atAngle: cur.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
+                    
 //                    var nextCGPoint: CGPoint = curCGPoint
                     // let the spline start
-                    cubicPath.move(to: curCGPoint, transform: valueToPixelMatrix)
+                    cubicPath.move(to: curCGPoint)
                     
                     for j in _thetaBounds.dropFirst() { // same as firstIndex
 //                        prevPrev = prev
@@ -191,17 +190,17 @@ class PolarChartRenderer: LineRadarRenderer {
                                 break
                             }
                         }
-                        curCGPoint = centre.moving(distance: cur.radial * factor * phase, atAngle: cur.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians)
+                        curCGPoint = centre.moving(distance: cur.radial * phase, atAngle: cur.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
                         nextIndex = j + 1 < dataSet.entryCount ? j + 1 : j
                         if let _next = dataSet.entryForIndex(nextIndex) as? PolarChartDataEntry {
                             next = _next
-                            let nextCGPoint = centre.moving(distance: next.radial * factor * phase, atAngle: next.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians)
+                            let nextCGPoint = centre.moving(distance: next.radial * phase, atAngle: next.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
                             prevDx = CGFloat(curCGPoint.x - prevPrevCGPoint.x) * intensity
                             prevDy = CGFloat(curCGPoint.y - prevPrevCGPoint.y) * intensity
                             curDx = CGFloat(nextCGPoint.x - prevCGPoint.x) * intensity
                             curDy = CGFloat(nextCGPoint.y - prevCGPoint.y) * intensity
                             
-                            cubicPath.addCurve( to: curCGPoint, control1: CGPoint(x: prevCGPoint.x + prevDx, y: prevCGPoint.y + prevDy), control2: CGPoint(x: curCGPoint.x - curDx, y: cur.y - curDy), transform: valueToPixelMatrix)
+                            cubicPath.addCurve( to: curCGPoint, control1: CGPoint(x: prevCGPoint.x + prevDx, y: prevCGPoint.y + prevDy), control2: CGPoint(x: curCGPoint.x - curDx, y: cur.y - curDy))
                         }
                         else {
                             break
@@ -243,8 +242,7 @@ class PolarChartRenderer: LineRadarRenderer {
             let trans = dataProvider.getTransformer(forAxis: .major)
             
             let phase = sqrt(pow(animator.phaseX, 2) + pow(animator.phaseY, 2))
-//            let factor = chart?.factor ?? 1
-            let centre: CGPoint = self.chart?.centerOffsets ?? .zero
+            let centre: CGPoint = .zero
             
             _thetaBounds.set(chart: dataProvider, dataSet: dataSet, animator: animator)
             
@@ -275,11 +273,11 @@ class PolarChartRenderer: LineRadarRenderer {
                     var p1: CGPoint = .zero
                     if let _prev = dataSet.entryForIndex(max(firstIndex - 2, 0))  as? PolarChartDataEntry {
                         prev = _prev
-                        p1 = centre.moving(distance: prev.radial /* factor*/ * phase, atAngle: prev.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians)
+                        p1 = centre.moving(distance: prev.radial * phase, atAngle: prev.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
                     }
-                    var p2: CGPoint = centre.moving(distance: cur.radial /* factor*/ * phase, atAngle: cur.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians)
+                    var p2: CGPoint = centre.moving(distance: cur.radial * phase, atAngle: cur.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
                     // let the spline start
-                    cubicPath.move(to: p2, transform: valueToPixelMatrix)
+                    cubicPath.move(to: p2)
                     
                     for j in _thetaBounds.dropFirst() { // same as firstIndex
 //                        prevPrev = prev
@@ -297,11 +295,11 @@ class PolarChartRenderer: LineRadarRenderer {
                                 break
                             }
                         }
-                        p2 = centre.moving(distance: cur.radial /* factor*/ * phase, atAngle: cur.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians)
+                        p2 = centre.moving(distance: cur.radial /* factor*/ * phase, atAngle: cur.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
                         nextIndex = j + 1 < dataSet.entryCount ? j + 1 : j
                         if let _next = dataSet.entryForIndex(nextIndex) as? PolarChartDataEntry {
                             next = _next
-                            let p3 = centre.moving(distance: next.radial /* factor*/ * phase, atAngle: next.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians)
+                            let p3 = centre.moving(distance: next.radial /* factor*/ * phase, atAngle: next.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
                             // distance between the points
                             let d1: CGFloat = hypot(p1.x - p0.x, p1.y - p0.y);
                             let d2: CGFloat = hypot(p2.x - p1.x, p2.y - p1.y);
@@ -333,8 +331,7 @@ class PolarChartRenderer: LineRadarRenderer {
                                 cp2 = CGPoint(x: (d3_2a * p1.x - d2_2a * p3.x + (2 * d3_2a + 3 * d3_a * d2_a + d2_2a) * p2.x) / divisor, y: (d3_2a * p1.y - d2_2a * p3.y + (2 * d3_2a + 3 * d3_a * d2_a + d2_2a) * p2.y) / divisor )
                             }
 
-                            
-                            cubicPath.addCurve( to: p2, control1: cp1, control2: cp2, transform: valueToPixelMatrix)
+                            cubicPath.addCurve( to: p2, control1: cp1, control2: cp2)
                         }
                         else {
                             break
@@ -379,9 +376,8 @@ class PolarChartRenderer: LineRadarRenderer {
             
             let trans = dataProvider.getTransformer(forAxis: .major)
             
-            let factor = chart?.factor ?? 1
             let phase = sqrt(pow(animator.phaseX, 2) + pow(animator.phaseY, 2))
-            let centre: CGPoint = self.chart?.centerOffsets ?? .zero
+            let centre: CGPoint = .zero
             
             _thetaBounds.set(chart: dataProvider, dataSet: dataSet, animator: animator)
             
@@ -408,11 +404,11 @@ class PolarChartRenderer: LineRadarRenderer {
                     var p1: CGPoint
                     if let _prev = dataSet.entryForIndex(max(firstIndex - 2, 0))  as? PolarChartDataEntry {
                         prev = _prev
-                        p1 = centre.moving(distance: prev.radial * factor * phase, atAngle: prev.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians)
+                        p1 = centre.moving(distance: prev.radial * phase, atAngle: prev.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
                     }
-                    var p2: CGPoint = centre.moving(distance: cur.radial * factor * phase, atAngle: cur.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians)
+                    var p2: CGPoint = centre.moving(distance: cur.radial * phase, atAngle: cur.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
                     // let the spline start
-                    cubicPath.move(to: p2, transform: valueToPixelMatrix)
+                    cubicPath.move(to: p2)
                     
                     let monotonic = monotonicViewPoints(dataSet)
                     
@@ -431,11 +427,11 @@ class PolarChartRenderer: LineRadarRenderer {
                                 break
                             }
                         }
-                        p2 = centre.moving(distance: cur.radial * factor * phase, atAngle: cur.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians)
+                        p2 = centre.moving(distance: cur.radial * phase, atAngle: cur.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
                         nextIndex = j + 1 < dataSet.entryCount ? j + 1 : j
                         if let _next = dataSet.entryForIndex(nextIndex) as? PolarChartDataEntry {
                             next = _next
-                            let p3 = centre.moving(distance: next.radial * factor * phase, atAngle: next.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians)
+                            let p3 = centre.moving(distance: next.radial * phase, atAngle: next.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
                             var m = CGVector(dx: 0, dy: 0)
                             if j == firstIndex {
                                 let p2 = p3
@@ -480,7 +476,7 @@ class PolarChartRenderer: LineRadarRenderer {
                             let rhsControlPoint = CGPoint(x: p1.x + m.dx, y: p1.y + m.dy)
                             let lhsControlPoint = CGPoint(x: p1.x - m.dx, y: p1.y - m.dy)
 
-                            cubicPath.addCurve( to: p2, control1: lhsControlPoint, control2: rhsControlPoint, transform: valueToPixelMatrix)
+                            cubicPath.addCurve( to: p2, control1: lhsControlPoint, control2: rhsControlPoint)
                         }
                         else {
                             break
@@ -635,9 +631,8 @@ class PolarChartRenderer: LineRadarRenderer {
             let isDrawSteppedEnabled = dataSet.mode == .stepped
             let pointsPerEntryPair = isDrawSteppedEnabled ? 4 : 2
             
-            let factor = chart?.factor ?? 1
             let phase = sqrt(pow(animator.phaseX, 2) + pow(animator.phaseY, 2))
-            let centre: CGPoint = self.chart?.centerOffsets ?? .zero
+            let centre: CGPoint = .zero
             
             _thetaBounds.set(chart: dataProvider, dataSet: dataSet, animator: animator)
             
@@ -659,7 +654,7 @@ class PolarChartRenderer: LineRadarRenderer {
                 for j in _thetaBounds.dropLast() {
                     if let e  = dataSet.entryForIndex(j) as? PolarChartDataEntry {
                         
-                        var point = centre.moving(distance: e.radial * factor * phase, atAngle: e.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians)
+                        var point = centre.moving(distance: e.radial * phase, atAngle: e.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians)
                         
                         _lineSegments[0].x = point.x
                         _lineSegments[0].y = point.y
@@ -670,7 +665,7 @@ class PolarChartRenderer: LineRadarRenderer {
                             // Keeping this check for a while, if xBounds have no further breaking changes, it should be safe to remove the check
                             if let eNext = dataSet.entryForIndex(j + 1) as? PolarChartDataEntry {
                                 
-                                point = centre.moving(distance: eNext.radial * factor * phase, atAngle: eNext.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians)
+                                point = centre.moving(distance: eNext.radial * phase, atAngle: eNext.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians)
                                 
                                 if isDrawSteppedEnabled {
                                     _lineSegments[1] = CGPoint(x: point.x, y: _lineSegments[0].y)
@@ -709,13 +704,15 @@ class PolarChartRenderer: LineRadarRenderer {
                 if let _ = dataSet.entryForIndex(_thetaBounds.min) {
                     
                     var firstPoint = true
+//                    var lastPointSkipped = true
+                    var lastPoint: CGPoint = .zero
                     
                     let path = CGMutablePath()
                     for i in _thetaBounds.min..<_thetaBounds.range + _thetaBounds.min {
                         if let e1 = dataSet.entryForIndex(i == 0 ? 0 : (i - 1)) as? PolarChartDataEntry,
                            let e2 = dataSet.entryForIndex(i) as? PolarChartDataEntry {
                             
-                            let startPoint = centre.moving(distance: e1.radial * factor * phase, atAngle: e1.theta, radians: chart?.radialAxis.radialAngleMode == .radians).applying(valueToPixelMatrix)
+                            let startPoint = centre.moving(distance: e1.radial * phase, atAngle: e1.theta, radians: chart?.radialAxis.radialAngleMode == .radians).applying(valueToPixelMatrix)
                             
                             if firstPoint {
                                 path.move(to: startPoint)
@@ -726,13 +723,19 @@ class PolarChartRenderer: LineRadarRenderer {
                             }
                             
                             if isDrawSteppedEnabled  {
-                                let steppedPoint = centre.moving(distance: e2.radial * factor * phase, atAngle: e2.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
+                                let steppedPoint = centre.moving(distance: e2.radial * phase, atAngle: e2.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
                                 path.addLine(to: steppedPoint)
                             }
                             
-                            let endPoint = centre.moving(distance: e2.radial * factor * phase, atAngle: e2.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
+                            let endPoint = centre.moving(distance: e2.radial * phase, atAngle: e2.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
                             path.addLine(to: endPoint)
+                            lastPoint = endPoint
                         }
+                    }
+                    if dataSet.polarClosePath,
+                       let e2 = dataSet.entryForIndex(0 ) as? PolarChartDataEntry {
+                        let endPoint = centre.moving(distance: e2.radial * phase, atAngle: e2.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
+                        path.addLine(to: endPoint)
                     }
                     
                     if !firstPoint {
@@ -812,9 +815,8 @@ class PolarChartRenderer: LineRadarRenderer {
            let data = dataProvider.polarData,
            isDrawingValuesAllowed(dataProvider: dataProvider) {
             
-            let factor = chart?.factor ?? 1
             let phase = sqrt(pow(animator.phaseX, 2) + pow(animator.phaseY, 2))
-            let centre: CGPoint = self.chart?.centerOffsets ?? .zero
+            let centre: CGPoint = .zero
             
             for i in data.indices {
                 if let dataSet = data[i] as? PolarChartDataSetProtocol,
@@ -837,7 +839,7 @@ class PolarChartRenderer: LineRadarRenderer {
                     for j in 0..<_thetaBounds.max {
                         if let e = dataSet.entryForIndex(j) as? PolarChartDataEntry {
             
-                            let pt = centre.moving(distance: e.radial * factor * phase, atAngle: e.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
+                            let pt = centre.moving(distance: e.radial * phase, atAngle: e.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
                             if viewPortHandler.isInBounds(point: pt) {
                                 if dataSet.isDrawValuesEnabled {
                                     let text = formatter.stringForPoint(entry: e, dataSetIndex: i, viewPortHandler: viewPortHandler)
@@ -868,9 +870,9 @@ class PolarChartRenderer: LineRadarRenderer {
            let data = dataProvider.polarData {
     
             let chartRadialMax = dataProvider.chartRadialMax
-            let factor = chart?.factor ?? 1
+            
             let phase = sqrt(pow(animator.phaseX, 2) + pow(animator.phaseY, 2))
-            let centre: CGPoint = self.chart?.centerOffsets ?? .zero
+            let centre: CGPoint = .zero
             
             context.saveGState()
             
@@ -890,7 +892,7 @@ class PolarChartRenderer: LineRadarRenderer {
                             context.setLineDash(phase: 0.0, lengths: [])
                         }
                         
-                        let point = centre.moving(distance: e.radial * factor * phase, atAngle: e.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians)
+                        let point = centre.moving(distance: e.radial * phase, atAngle: e.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians)
                         
                         if point.x > chartRadialMax || point.y > chartRadialMax {
                             continue
