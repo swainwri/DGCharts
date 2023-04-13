@@ -15,7 +15,7 @@ public class PolarChartDataSet: RadarChartDataSet, PolarChartDataSetProtocol {
     public enum Mode: Int {
         case linear
         case stepped
-        case cubicBezier
+        case cubic
     }
     
     /**
@@ -28,7 +28,7 @@ public class PolarChartDataSet: RadarChartDataSet, PolarChartDataSetProtocol {
         case catmullRomCentripetal ///< Catmull-Rom Spline Interpolation with alpha = @num{0.5}.
         case catmullRomChordal    ///< Catmull-Rom Spline Interpolation with alpha = @num{1.0}.
         case catmullCustomAlpha  ///< Catmull-Rom Spline Interpolation with a custom alpha value.
-        case hermiteCubic       ///< Hermite Cubic Spline Interpolation
+        case hermite       ///< Hermite Cubic Spline Interpolation
     }
 
     /**
@@ -39,7 +39,7 @@ public class PolarChartDataSet: RadarChartDataSet, PolarChartDataSetProtocol {
         case normal   ///< Standard histogram.
         case skipFirst ///< Skip the first step of the histogram.
         case skipSecond///< Skip the second step of the histogram.
-        case optionCount///< The number of histogram options available.
+       // case optionCount///< The number of histogram options available.
     }
 
     
@@ -275,4 +275,5 @@ public class PolarChartDataSet: RadarChartDataSet, PolarChartDataSetProtocol {
     
     /// since this is a polar plot on may want the first point joing the last poin
     public var polarClosePath: Bool = false
+    
 }

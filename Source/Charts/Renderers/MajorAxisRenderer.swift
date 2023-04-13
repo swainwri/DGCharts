@@ -263,15 +263,30 @@ public class MajorAxisRenderer: NSObject, AxisRenderer {
             var valueToPixelMatrix = _transformer.valueToPixelMatrix
             let center: CGPoint = .zero
             
+            var adjustedEntries: [Double] = Array(axis.entries)
+            let deltaEntries: Double = adjustedEntries[1] - adjustedEntries[0]
+            
+            if self.axis.gridLinesToChartRectEdges {
+                // in the case of polar chart extending to the edges of the content viewPortHandler need to account for extra
+                // axis entries
+                let centreToCorner: CGFloat = sqrt(pow(self.viewPortHandler.contentRect.width, 2) + pow(self.viewPortHandler.contentRect.height, 2)) / 2
+                let cornerEntry: CGFloat = centreToCorner / self.viewPortHandler.contentRect.width * 2 * axis.axisMaximum
+
+                var i = adjustedEntries.count - 1
+                repeat {
+                    adjustedEntries.append(adjustedEntries[i] + deltaEntries)
+                    i += 1
+                } while adjustedEntries[i] < cornerEntry
+            }
             context.saveGState()
             // draw the inner-web
             context.setLineWidth(axis.axisLineWidth)
             context.setStrokeColor(axis.axisLineColor.cgColor)
             
-            let labelCount = axis.entryCount
+            let labelCount = adjustedEntries.count
             for j in 0 ..< labelCount {
-                if axis.entries[j] > 0 {  // don't need negative entries as psoitive one with take care of concentric circles
-                    let diameter: CGFloat = CGFloat(axis.entries[j]) * 2
+                if adjustedEntries[j] > 0 {  // don't need negative entries as positive one with take care of concentric circles
+                    let diameter: CGFloat = CGFloat(adjustedEntries[j]) * 2
                     let circle = CGPath(ellipseIn: CGRect(x: -diameter / 2 + center.x, y: -diameter / 2 + center.y, width: diameter, height: diameter), transform: &valueToPixelMatrix)
                     context.addPath(circle)
                     context.strokePath()
@@ -283,10 +298,10 @@ public class MajorAxisRenderer: NSObject, AxisRenderer {
                 context.setStrokeColor(axis.gridColor.cgColor)
                 
                 for j in 0..<labelCount-1 {
-                    if axis.entries[j] > 0 {
-                        let granularityCount = Int((axis.entries[j] - axis.entries[j-1]) / axis.granularity)
+                    if adjustedEntries[j] > 0 {
+                        let granularityCount = Int((adjustedEntries[j] - adjustedEntries[j-1]) / axis.granularity)
                         for i in 1..<granularityCount {
-                            let diameter: CGFloat = CGFloat(axis.entries[j] + Double(i) * axis.granularity) * 2
+                            let diameter: CGFloat = CGFloat(adjustedEntries[j] + Double(i) * axis.granularity) * 2
                             let circle = CGPath(ellipseIn: CGRect(x: -diameter / 2 + center.x, y: -diameter / 2 + center.y, width: diameter, height: diameter), transform: &valueToPixelMatrix)
                             context.addPath(circle)
                             context.strokePath()

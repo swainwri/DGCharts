@@ -125,9 +125,22 @@ class PolarChartViewController: DemoBaseViewController {
         var t: Double = -Double.pi / 24
         let block2: (Int) -> PolarChartDataEntry = { i in
             t += Double.pi / 24
-            return PolarChartDataEntry(radial: 40 + 40 * cos(3.0 * t), theta: t/* Double.pi / 4 - sin(t)*/) }
+            return PolarChartDataEntry(radial: 50 + 50 * cos(3.0 * t), theta: t/* Double.pi / 4 - sin(t)*/) }
         let entries1 = (0..<cnt).map(block1)
         let entries2 = (0..<cnt).map(block2)
+        
+        let pointBlock: (_ entry: ChartDataEntry, _ dataSetIndex: Int, _ viewPortHandler: ViewPortHandler?) -> String = { (entry, dataSetIndex, viewPortHandler) in
+            let formatter = NumberFormatter()
+            formatter.maximumFractionDigits = 3
+            
+            if let _radial = formatter.string(from: NSNumber(floatLiteral: entry.y)),
+               let _theta = formatter.string(from: NSNumber(floatLiteral: entry.x)) {
+                return _radial + "," + _theta
+            }
+            else {
+                return ""
+            }
+        }
         
         let set1 = PolarChartDataSet(entries: entries1, label: "Random")
         set1.setColor(UIColor.red)
@@ -136,11 +149,14 @@ class PolarChartViewController: DemoBaseViewController {
         set1.fillAlpha = 0.7
         set1.lineWidth = 2
         set1.drawHighlightCircleEnabled = true
+        set1.drawValuesEnabled = true
+        set1.highlightCircleStrokeColor = UIColor.red
         set1.setDrawHighlightIndicators(false)
-        set1.polarMode = .stepped
+        set1.polarMode = .cubic// .stepped
+        set1.polarCurvedInterpolation = .catmullRomCentripetal
         set1.polarHistogram = .skipSecond
         set1.polarClosePath = true
-        
+        set1.setCircleColor(.red)
         
         let set2 = PolarChartDataSet(entries: entries2, label: "Sin Wave")
         set2.setColor(UIColor.orange)
@@ -149,17 +165,22 @@ class PolarChartViewController: DemoBaseViewController {
         set2.fillAlpha = 0.7
         set2.lineWidth = 2
         set2.drawHighlightCircleEnabled = true
+        set2.highlightCircleStrokeColor = UIColor.orange
         set2.setDrawHighlightIndicators(false)
-        set2.polarMode = .cubicBezier
+        set2.polarMode = .cubic
         set2.polarCurvedInterpolation = .catmullRomUniform
         set2.polarCatmullCustomAlpha = 0.25
+        set2.setCircleColor(.orange)
+        set2.drawValuesEnabled = true
         
         let data: PolarChartData = [set1, set2]
         data.setValueFont(.systemFont(ofSize: 10, weight: .light))
-        data.setDrawValues(false)
         data.setValueTextColor(.blue)
         
         chartView?.data = data
+        
+        (data[0] as! any PolarChartDataSetProtocol).pointFormatter = DefaultPointFormatter(block: pointBlock)
+        (data[1] as! any PolarChartDataSetProtocol).pointFormatter = DefaultPointFormatter(block: pointBlock)
     }
     
     override func optionTapped(_ option: Option) {

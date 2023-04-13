@@ -11,8 +11,12 @@ import CoreGraphics
 
 @objc(ChartPolarChartRenderer)
 class PolarChartRenderer: LineRadarRenderer {
+    
+    // NOTE: Unlike the other renderers, LineChartRenderer populates accessibleChartElements in drawCircles due to the nature of its drawing options.
+    /// A nested array of elements ordered logically (i.e not in visual/drawing order) for use with VoiceOver.
+    private lazy var accessibilityOrderedElements: [[NSUIAccessibilityElement]] = accessibilityCreateEmptyOrderedElements()
 
-    private lazy var accessibilityXLabels: [String] = {
+    private lazy var accessibilityPointLabels: [String] = {
         guard let chart = chart else { return [] }
         guard let formatter = chart.xAxis.valueFormatter else { return [] }
 
@@ -95,12 +99,11 @@ class PolarChartRenderer: LineRadarRenderer {
                 switch dataSet.polarHistogram {
                     case .normal, .skipFirst, .skipSecond:
                     drawLinear(context: context, dataSet: dataSet)
-                    case .optionCount:
-                        break
+                    
             }
                 
             
-            case .cubicBezier:
+            case .cubic:
                 switch dataSet.polarCurvedInterpolation {
                     case .normal:
                         drawCubicBezier(context: context, dataSet: dataSet)
@@ -112,7 +115,7 @@ class PolarChartRenderer: LineRadarRenderer {
                         drawCatmullRom(context: context, dataSet: dataSet , alpha: 1)
                     case .catmullCustomAlpha:
                         drawCatmullRom(context: context, dataSet: dataSet , alpha: dataSet.polarCatmullCustomAlpha)
-                    case .hermiteCubic:
+                    case .hermite:
                         drawHermite(context: context, dataSet:dataSet)
                 }
         }
@@ -295,11 +298,11 @@ class PolarChartRenderer: LineRadarRenderer {
                                 break
                             }
                         }
-                        p2 = centre.moving(distance: cur.radial /* factor*/ * phase, atAngle: cur.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
+                        p2 = centre.moving(distance: cur.radial * phase, atAngle: cur.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
                         nextIndex = j + 1 < dataSet.entryCount ? j + 1 : j
                         if let _next = dataSet.entryForIndex(nextIndex) as? PolarChartDataEntry {
                             next = _next
-                            let p3 = centre.moving(distance: next.radial /* factor*/ * phase, atAngle: next.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
+                            let p3 = centre.moving(distance: next.radial * phase, atAngle: next.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
                             // distance between the points
                             let d1: CGFloat = hypot(p1.x - p0.x, p1.y - p0.y);
                             let d2: CGFloat = hypot(p2.x - p1.x, p2.y - p1.y);
@@ -628,7 +631,7 @@ class PolarChartRenderer: LineRadarRenderer {
             let valueToPixelMatrix = trans.valueToPixelMatrix
             
             let entryCount = dataSet.entryCount
-            let isDrawSteppedEnabled = dataSet.mode == .stepped
+            let isDrawSteppedEnabled = dataSet.polarMode == .stepped
             let pointsPerEntryPair = isDrawSteppedEnabled ? 4 : 2
             
             let phase = sqrt(pow(animator.phaseX, 2) + pow(animator.phaseY, 2))
@@ -776,7 +779,7 @@ class PolarChartRenderer: LineRadarRenderer {
     private func generateFilledPath(dataSet: PolarChartDataSetProtocol, fillMinRadius: CGFloat, bounds: ThetaBounds, matrix: CGAffineTransform) -> CGPath {
         
         let phase = sqrt(pow(animator.phaseX, 2) + pow(animator.phaseY, 2))
-        let isDrawSteppedEnabled = dataSet.mode == .stepped
+        let isDrawSteppedEnabled = dataSet.polarMode == .stepped
         let matrix = matrix
         let centre: CGPoint = self.chart?.centerOffsets ?? .zero
         
@@ -862,7 +865,126 @@ class PolarChartRenderer: LineRadarRenderer {
     }
     
     public override func drawExtras(context: CGContext) {
-        
+        drawCircles(context: context)
+    }
+    
+    private func drawCircles(context: CGContext) {
+        if let dataProvider = dataProvider,
+           let data = dataProvider.polarData {
+            
+            let phase = sqrt(pow(animator.phaseX, 2) + pow(animator.phaseY, 2))
+            
+            var pt = CGPoint()
+            var rect = CGRect()
+            let centre: CGPoint = .zero
+            
+            // If we redraw the data, remove and repopulate accessible elements to update label values and frames
+            accessibleChartElements.removeAll()
+            accessibilityOrderedElements = accessibilityCreateEmptyOrderedElements()
+            
+            // Make the chart header the first element in the accessible elements array
+            if let chart = dataProvider as? PolarChartView {
+                let element = createAccessibleHeader(usingChart: chart, andData: data, withDefaultDescription: "Polar Chart")
+                accessibleChartElements.append(element)
+            }
+            
+            context.saveGState()
+            
+            for i in data.indices {
+                if let dataSet = data[i] as? PolarChartDataSetProtocol {
+                    
+                    // Skip Circles and Accessibility if not enabled,
+                    // reduces CPU significantly if not needed
+                    if !dataSet.isVisible || !dataSet.isDrawCirclesEnabled || dataSet.entryCount == 0 {
+                        continue
+                    }
+                    
+                    let trans = dataProvider.getTransformer(forAxis: .none)
+                    let valueToPixelMatrix = trans.valueToPixelMatrix
+                    
+                    _thetaBounds.set(chart: dataProvider, dataSet: dataSet, animator: animator)
+                    
+                    let circleRadius = dataSet.circleRadius
+                    let circleDiameter = circleRadius * 2.0
+                    let circleHoleRadius = dataSet.circleHoleRadius
+                    let circleHoleDiameter = circleHoleRadius * 2.0
+                    
+                    let drawCircleHole = dataSet.isDrawCircleHoleEnabled && circleHoleRadius < circleRadius &&  circleHoleRadius > 0.0
+                    let drawTransparentCircleHole = drawCircleHole && (dataSet.circleHoleColor == nil || dataSet.circleHoleColor == NSUIColor.clear)
+                    
+                    for j in _thetaBounds {
+                        if let e = dataSet.entryForIndex(j) as? PolarChartDataEntry {
+                            
+                            pt = centre.moving(distance: e.radial * phase, atAngle: e.theta).applying(valueToPixelMatrix)
+                            
+                            // make sure the circles don't do shitty things outside bounds
+                            if !viewPortHandler.isInBounds(point: pt) {
+                                continue
+                            }
+                            
+                            // Accessibility element geometry
+                            let scaleFactor: CGFloat = 3
+                            let accessibilityRect = CGRect(x: pt.x - (scaleFactor * circleRadius), y: pt.y - (scaleFactor * circleRadius), width: scaleFactor * circleDiameter, height: scaleFactor * circleDiameter)
+                            // Create and append the corresponding accessibility element to accessibilityOrderedElements
+                            if let chart = dataProvider as? PolarChartView {
+                                let element = createAccessibleElement(withIndex: j, container: chart, dataSet: dataSet, dataSetIndex: i) { element in
+                                    element.accessibilityFrame = accessibilityRect
+                                }
+                                
+                                accessibilityOrderedElements[i].append(element)
+                            }
+                            
+                            context.setFillColor((dataSet.getCircleColor(atIndex: j) ?? .black).cgColor)
+                            
+                            rect.origin.x = pt.x - circleRadius
+                            rect.origin.y = pt.y - circleRadius
+                            rect.size.width = circleDiameter
+                            rect.size.height = circleDiameter
+                            
+                            if drawTransparentCircleHole {
+                                // Begin path for circle with hole
+                                context.beginPath()
+                                context.addEllipse(in: rect)
+                                
+                                // Cut hole in path
+                                rect.origin.x = pt.x - circleHoleRadius
+                                rect.origin.y = pt.y - circleHoleRadius
+                                rect.size.width = circleHoleDiameter
+                                rect.size.height = circleHoleDiameter
+                                context.addEllipse(in: rect)
+                                
+                                // Fill in-between
+                                context.fillPath(using: .evenOdd)
+                            }
+                            else {
+                                context.fillEllipse(in: rect)
+                                
+                                if drawCircleHole {
+                                    context.setFillColor((dataSet.circleHoleColor ?? .white).cgColor)
+                                    
+                                    // The hole rect
+                                    rect.origin.x = pt.x - circleHoleRadius
+                                    rect.origin.y = pt.y - circleHoleRadius
+                                    rect.size.width = circleHoleDiameter
+                                    rect.size.height = circleHoleDiameter
+                                    
+                                    context.fillEllipse(in: rect)
+                                }
+                            }
+                        }
+                        else {
+                            break
+                        }
+                    }
+                }
+            }
+            
+            context.restoreGState()
+            
+            // Merge nested ordered arrays into the single accessibleChartElements.
+            accessibleChartElements.append(contentsOf: accessibilityOrderedElements.flatMap { $0 } )
+            accessibilityPostLayoutChangedNotification()
+        }
     }
     
     public override func drawHighlighted(context: CGContext, indices: [Highlight]) {
@@ -977,7 +1099,7 @@ class PolarChartRenderer: LineRadarRenderer {
     
     public func isDrawingValuesAllowed(dataProvider: PolarChartDataProvider?) -> Bool {
         if let data = dataProvider?.polarData {
-            return data.entryCount < Int(CGFloat(dataProvider?.maxVisibleCount ?? 0) * viewPortHandler.scaleX)
+            return data.entryCount <= dataProvider?.maxVisibleCount ?? 0
         }
         else {
             return false
@@ -985,16 +1107,51 @@ class PolarChartRenderer: LineRadarRenderer {
         
     }
     
+    /// Creates a nested array of empty subarrays each of which will be populated with NSUIAccessibilityElements.
+    /// This is marked internal to support HorizontalBarChartRenderer as well.
+    private func accessibilityCreateEmptyOrderedElements() -> [[NSUIAccessibilityElement]] {
+        if let chart = dataProvider as? PolarChartView  {
+        
+            let dataSetCount = chart.polarData?.dataSetCount ?? 0
+        
+            return Array(repeating: [NSUIAccessibilityElement](), count: dataSetCount)
+        }
+        else {
+            return []
+        }
+    }
+
+    /// Creates an NSUIAccessibleElement representing the smallest meaningful bar of the chart
+    /// i.e. in case of a stacked chart, this returns each stack, not the combined bar.
+    /// Note that it is marked internal to support subclass modification in the HorizontalBarChart.
+    private func createAccessibleElement(withIndex idx: Int, container: PolarChartView, dataSet: PolarChartDataSetProtocol, dataSetIndex: Int, modifier: (NSUIAccessibilityElement) -> ()) -> NSUIAccessibilityElement {
+        let element = NSUIAccessibilityElement(accessibilityContainer: container)
+        
+        if let e = dataSet.entryForIndex(idx),
+           let dataProvider = dataProvider {
+        
+            let elementPointText = dataSet.pointFormatter.stringForPoint(entry: e, dataSetIndex: dataSetIndex, viewPortHandler: viewPortHandler)
+            
+            let dataSetCount = dataProvider.polarData?.dataSetCount ?? -1
+            let doesContainMultipleDataSets = dataSetCount > 1
+            
+            element.accessibilityLabel = "\(doesContainMultipleDataSets ? (dataSet.label ?? "")  + ", " : "") : \(elementPointText)"
+            
+            modifier(element)
+        }
+        return element
+    }
+    
     /// Class representing the bounds of the current viewport in terms of indices in the values array of a DataSet.
-    open class ThetaBounds {
+    public class ThetaBounds {
         /// minimum visible entry index
-        open var min: Int = 0
+        public var min: Int = 0
 
         /// maximum visible entry index
-        open var max: Int = 0
+        public var max: Int = 0
 
         /// range of visible entry indices
-        open var range: Int = 0
+        public var range: Int = 0
 
         public init() {
             

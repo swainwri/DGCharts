@@ -49,7 +49,27 @@ public class RadialAxisRenderer: NSObject, AxisRenderer {
             context.setStrokeColor(axis.axisLineColor.cgColor)
             //context.setAlpha(axis.axisLineColor.)
             
-            let radius: CGFloat = axis.outerCircleRadius
+            var radius: CGFloat = axis.outerCircleRadius
+            if self.axis.gridLinesToChartRectEdges {
+                // in the case of polar chart extending to the edges of the content viewPortHandler need to account for extra
+                // axis entries
+                let centreToCorner: CGFloat = sqrt(pow(self.viewPortHandler.contentRect.width, 2) + pow(self.viewPortHandler.contentRect.height, 2)) / 2
+                switch axis.axisDependency {
+                    case .major:
+                        if let dependentAxis = self.chart?.majorAxis {
+                            let cornerEntry = centreToCorner / self.viewPortHandler.contentRect.width * 2 * dependentAxis.axisMaximum
+                            radius = cornerEntry
+                        }
+                    case .minor:
+                        if let dependentAxis = self.chart?.minorAxis {
+                            let cornerEntry = centreToCorner / self.viewPortHandler.contentRect.height * 2 * dependentAxis.axisMaximum
+                            radius = cornerEntry
+                        }
+                    case .none:
+                        break
+                }
+                
+            }
             let maxEntryCount = axis.entryCount
             
             for i in 0..<maxEntryCount {
@@ -129,17 +149,17 @@ public class RadialAxisRenderer: NSObject, AxisRenderer {
     public func computeAxis(min: Double, max: Double, inverted: Bool) {
         var min = min, max = max
         
-        if let transformer = self.transformer,
-            viewPortHandler.contentWidth > 10,
-            !viewPortHandler.isFullyZoomedOutX {
-            // calculate the starting and entry point of the y-labels (depending on
-            // zoom / contentrect bounds)
-            let p1 = transformer.valueForTouchPoint(CGPoint(x: viewPortHandler.contentLeft, y: viewPortHandler.contentTop))
-            let p2 = transformer.valueForTouchPoint(CGPoint(x: viewPortHandler.contentRight, y: viewPortHandler.contentTop))
-
-            min = inverted ? Double(p2.x) : Double(p1.x)
-            max = inverted ? Double(p1.x) : Double(p2.x)
-        }
+//        if let transformer = self.transformer,
+//            viewPortHandler.contentWidth > 10,
+//            !viewPortHandler.isFullyZoomedOutX {
+//            // calculate the starting and entry point of the y-labels (depending on
+//            // zoom / contentrect bounds)
+//            let p1 = transformer.valueForTouchPoint(CGPoint(x: viewPortHandler.contentLeft, y: viewPortHandler.contentTop))
+//            let p2 = transformer.valueForTouchPoint(CGPoint(x: viewPortHandler.contentRight, y: viewPortHandler.contentTop))
+//
+//            min = inverted ? Double(p2.x) : Double(p1.x)
+//            max = inverted ? Double(p1.x) : Double(p2.x)
+//        }
         
         computeAxisValues(min: min, max: max)
     }

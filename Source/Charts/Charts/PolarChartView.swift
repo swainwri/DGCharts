@@ -9,7 +9,7 @@ import Foundation
 import CoreGraphics
 
 
-/// Implementation of the RadarChart, a "spidernet"-like chart. It works best
+/// Implementation of the PolarChart chart. It works best
 /// when displaying 5-10 entries per DataSet.
 public class PolarChartView: PieRadarChartViewBase, PolarChartDataProvider, ChartViewDelegate {
     
@@ -135,32 +135,23 @@ public class PolarChartView: PieRadarChartViewBase, PolarChartDataProvider, Char
         
         calcMinMax()
         
-//        if majorAxis.outerCircleRadius > 0 {
-//            majorAxis.axisMinimum = -majorAxis.outerCircleRadius
-//            majorAxis.axisMaximum = majorAxis.outerCircleRadius
-//            majorAxis.axisRange = 2 * majorAxis.outerCircleRadius
-//        }
         let factor = self.factor
         if majorAxis.gridLinesToChartRectEdges {
-            let radius: CGFloat = sqrt(pow(self.contentRect.width, 2) + pow(self.contentRect.height, 2)) / 2 / factor
+            let radius: CGFloat = self.contentRect.width / 2 / factor
             majorAxis.axisMinimum = -radius
             majorAxis.axisMaximum = radius
             majorAxis.axisRange = 2 * radius
         }
-//        if minorAxis.outerCircleRadius > 0 {
-//            minorAxis.axisMinimum = -minorAxis.outerCircleRadius
-//            minorAxis.axisMaximum = minorAxis.outerCircleRadius
-//            minorAxis.axisRange = 2 * minorAxis.outerCircleRadius
-//        }
+
         if minorAxis.gridLinesToChartRectEdges {
-            let radius: CGFloat = sqrt(pow(self.contentRect.width, 2) + pow(self.contentRect.height, 2)) / 2 / factor
+            let radius: CGFloat = self.contentRect.height / 2 / factor
             minorAxis.axisMinimum = -radius
             minorAxis.axisMaximum = radius
             minorAxis.axisRange = 2 * radius
         }
         
-//        _axisTransformer?.prepareMatrixValuePx(chartXMin: majorAxis.axisMinimum, deltaX: majorAxis.axisRange, deltaY: minorAxis.axisRange, chartYMin: minorAxis.axisMinimum)
-        _axisTransformer?.prepareMatrixValuePx(chartXMin: 0, deltaX: majorAxis.axisRange, deltaY: minorAxis.axisRange, chartYMin: 0)
+        _axisTransformer?.prepareMatrixValuePx(chartXMin: majorAxis.axisMinimum, deltaX: majorAxis.axisRange, deltaY: minorAxis.axisRange, chartYMin: minorAxis.axisMinimum)
+//        _axisTransformer?.prepareMatrixValuePx(chartXMin: 0, deltaX: majorAxis.axisRange, deltaY: minorAxis.axisRange, chartYMin: 0)
         _axisTransformer?.prepareMatrixOffset(inverted: majorAxis.isInverted)
         
         
@@ -245,12 +236,13 @@ public class PolarChartView: PieRadarChartViewBase, PolarChartDataProvider, Char
                 
                 renderer.drawData(context: context)
                 
-                
                 if valuesToHighlight() {
                     renderer.drawHighlighted(context: context, indices: highlighted)
                 }
                 
                 renderer.drawValues(context: context)
+                
+                renderer.drawExtras(context: context)
                 
                 legendRenderer.renderLegend(context: context)
                 
@@ -264,7 +256,7 @@ public class PolarChartView: PieRadarChartViewBase, PolarChartDataProvider, Char
     /// The factor that is needed to transform values into pixels.
     @objc public var factor: CGFloat {
         let content = viewPortHandler.contentRect
-        return min(content.width / 2.0, content.height / 2.0) / CGFloat(majorAxis.axisRange / 2.0)
+        return min(content.width / CGFloat(majorAxis.axisRange / 2.0), content.height / CGFloat(minorAxis.axisRange))
     }
 
     /// The angle that each slice in the radar chart occupies.
