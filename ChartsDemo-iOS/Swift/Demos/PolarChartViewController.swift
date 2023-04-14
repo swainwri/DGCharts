@@ -142,21 +142,21 @@ class PolarChartViewController: DemoBaseViewController {
             }
         }
         
-        let set1 = PolarChartDataSet(entries: entries1, label: "Random")
-        set1.setColor(UIColor.red)
-        set1.fillColor = UIColor.red
-        set1.drawFilledEnabled = false
-        set1.fillAlpha = 0.7
-        set1.lineWidth = 2
-        set1.drawHighlightCircleEnabled = true
-        set1.drawValuesEnabled = true
-        set1.highlightCircleStrokeColor = UIColor.red
-        set1.setDrawHighlightIndicators(false)
-        set1.polarMode = .cubic// .stepped
-        set1.polarCurvedInterpolation = .catmullRomCentripetal
-        set1.polarHistogram = .skipSecond
-        set1.polarClosePath = true
-        set1.setCircleColor(.red)
+//        let set1 = PolarChartDataSet(entries: entries1, label: "Random")
+//        set1.setColor(UIColor.red)
+//        set1.fillColor = UIColor.red
+//        set1.drawFilledEnabled = false
+//        set1.fillAlpha = 0.7
+//        set1.lineWidth = 2
+//        set1.drawHighlightCircleEnabled = true
+//        set1.drawValuesEnabled = true
+//        set1.highlightCircleStrokeColor = UIColor.red
+//        set1.setDrawHighlightIndicators(false)
+//        set1.polarMode = .cubic// .stepped
+//        set1.polarCurvedInterpolation = .normal
+////        set1.polarHistogram = .skipSecond
+//        set1.polarClosePath = true
+//        set1.setCircleColor(.red)
         
         let set2 = PolarChartDataSet(entries: entries2, label: "Sin Wave")
         set2.setColor(UIColor.orange)
@@ -173,14 +173,14 @@ class PolarChartViewController: DemoBaseViewController {
         set2.setCircleColor(.orange)
         set2.drawValuesEnabled = true
         
-        let data: PolarChartData = [set1, set2]
+        let data: PolarChartData = /*[set1,*/[set2]
         data.setValueFont(.systemFont(ofSize: 10, weight: .light))
         data.setValueTextColor(.blue)
         
         chartView?.data = data
         
         (data[0] as! any PolarChartDataSetProtocol).pointFormatter = DefaultPointFormatter(block: pointBlock)
-        (data[1] as! any PolarChartDataSetProtocol).pointFormatter = DefaultPointFormatter(block: pointBlock)
+//        (data[1] as! any PolarChartDataSetProtocol).pointFormatter = DefaultPointFormatter(block: pointBlock)
     }
     
     override func optionTapped(_ option: Option) {
