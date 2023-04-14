@@ -135,7 +135,7 @@ class PolarChartViewController: DemoBaseViewController {
             
             if let _radial = formatter.string(from: NSNumber(floatLiteral: entry.y)),
                let _theta = formatter.string(from: NSNumber(floatLiteral: entry.x)) {
-                return _radial + "," + _theta
+                return _radial + "\n" + _theta
             }
             else {
                 return ""

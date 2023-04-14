@@ -135,7 +135,7 @@ class PolarChartRenderer: LineRadarRenderer {
 //
 //            let trans = dataProvider.getTransformer(forAxis: .major)
 //
-//            let phase = sqrt(pow(animator.phaseX, 2) + pow(animator.phaseY, 2))
+//            let phase = animator.phaseY
 //            let centre: CGPoint = .zero
 //
 //            _thetaBounds.set(chart: dataProvider, dataSet: dataSet, animator: animator)
@@ -431,8 +431,6 @@ class PolarChartRenderer: LineRadarRenderer {
                     if let _prev = dataSet.entryForIndex(max(firstIndex - 2, 0))  as? PolarChartDataEntry {
                         prev = _prev
                         p1 = centre.moving(distance: prev.radial * phaseY, atAngle: prev.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
-                        var p = centre.moving(distance: prev.radial * phaseY, atAngle: prev.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians)
-                        trans.pointValueToPixel(&p)
                     }
                     var p2: CGPoint = centre.moving(distance: cur.radial * phaseY, atAngle: cur.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians).applying(valueToPixelMatrix)
                     // let the spline start
@@ -678,7 +676,7 @@ class PolarChartRenderer: LineRadarRenderer {
         if let dataProvider = dataProvider {
             
             
-            let phase = sqrt(pow(animator.phaseX, 2) + pow(animator.phaseY, 2))
+            let phase = animator.phaseY
             let centre: CGPoint = .zero
             
             _thetaBounds.set(chart: dataProvider, dataSet: dataSet, animator: animator)
@@ -789,7 +787,7 @@ class PolarChartRenderer: LineRadarRenderer {
             let isDrawSteppedEnabled = dataSet.polarMode == .stepped
             let pointsPerEntryPair = isDrawSteppedEnabled ? 4 : 2
             
-            let phase = sqrt(pow(animator.phaseX, 2) + pow(animator.phaseY, 2))
+            let phase = animator.phaseY
             let centre: CGPoint = .zero
             
             _thetaBounds.set(chart: dataProvider, dataSet: dataSet, animator: animator)
@@ -933,7 +931,7 @@ class PolarChartRenderer: LineRadarRenderer {
     /// Generates the path that is used for filled drawing.
     private func generateFilledPath(dataSet: PolarChartDataSetProtocol, fillMinRadius: CGFloat, bounds: ThetaBounds, matrix: CGAffineTransform) -> CGPath {
         
-        let phase = sqrt(pow(animator.phaseX, 2) + pow(animator.phaseY, 2))
+        let phase = animator.phaseY
         let isDrawSteppedEnabled = dataSet.polarMode == .stepped
         let matrix = matrix
         let centre: CGPoint = self.chart?.centerOffsets ?? .zero
@@ -973,7 +971,7 @@ class PolarChartRenderer: LineRadarRenderer {
            let data = dataProvider.polarData,
            isDrawingValuesAllowed(dataProvider: dataProvider) {
             
-            let phase = sqrt(pow(animator.phaseX, 2) + pow(animator.phaseY, 2))
+            let phase = animator.phaseY
             let centre: CGPoint = .zero
             
             for i in data.indices {
@@ -1027,7 +1025,7 @@ class PolarChartRenderer: LineRadarRenderer {
         if let dataProvider = dataProvider,
            let data = dataProvider.polarData {
             
-            let phase = sqrt(pow(animator.phaseX, 2) + pow(animator.phaseY, 2))
+            let phase = animator.phaseY
             
             var pt = CGPoint()
             var rect = CGRect()
@@ -1148,7 +1146,7 @@ class PolarChartRenderer: LineRadarRenderer {
     
             let chartRadialMax = dataProvider.chartRadialMax
             
-            let phase = sqrt(pow(animator.phaseX, 2) + pow(animator.phaseY, 2))
+            let phase = animator.phaseY
             let centre: CGPoint = .zero
             
             context.saveGState()
