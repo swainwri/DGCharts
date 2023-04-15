@@ -270,7 +270,8 @@ public class MajorAxisRenderer: NSObject, AxisRenderer {
                 // in the case of polar chart extending to the edges of the content viewPortHandler need to account for extra
                 // axis entries
                 let centreToCorner: CGFloat = sqrt(pow(self.viewPortHandler.contentRect.width, 2) + pow(self.viewPortHandler.contentRect.height, 2)) / 2
-                let cornerEntry: CGFloat = centreToCorner / self.viewPortHandler.contentRect.width * 2 * axis.axisMaximum
+                let pixelPointAxisMaximim: CGPoint = _transformer.pixelForValues(x: axis.axisMaximum, y: 0)
+                let cornerEntry: CGFloat = centreToCorner / pixelPointAxisMaximim.x * 2 * axis.axisMaximum * 1.1
 
                 var i = adjustedEntries.count - 1
                 repeat {
@@ -278,6 +279,7 @@ public class MajorAxisRenderer: NSObject, AxisRenderer {
                     i += 1
                 } while adjustedEntries[i] < cornerEntry
             }
+            
             context.saveGState()
             // draw the inner-web
             context.setLineWidth(axis.axisLineWidth)

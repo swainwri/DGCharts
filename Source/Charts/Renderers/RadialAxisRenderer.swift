@@ -50,6 +50,19 @@ public class RadialAxisRenderer: NSObject, AxisRenderer {
             //context.setAlpha(axis.axisLineColor.)
             
             var radius: CGFloat = axis.outerCircleRadius
+            switch axis.axisDependency {
+                case .major:
+                    if let dependentAxis = self.chart?.majorAxis {
+                        radius = dependentAxis.entries.last ?? axis.outerCircleRadius
+                    }
+                case .minor:
+                    if let dependentAxis = self.chart?.minorAxis {
+                        radius = dependentAxis.entries.last ?? axis.outerCircleRadius
+                    }
+                case .none:
+                    break
+            }
+            
             if self.axis.gridLinesToChartRectEdges {
                 // in the case of polar chart extending to the edges of the content viewPortHandler need to account for extra
                 // axis entries
@@ -57,12 +70,14 @@ public class RadialAxisRenderer: NSObject, AxisRenderer {
                 switch axis.axisDependency {
                     case .major:
                         if let dependentAxis = self.chart?.majorAxis {
-                            let cornerEntry = centreToCorner / self.viewPortHandler.contentRect.width * 2 * dependentAxis.axisMaximum
+                            let pixelPointAxisMaximim: CGPoint = _transformer.pixelForValues(x: dependentAxis.axisMaximum, y: 0)
+                            let cornerEntry: CGFloat = centreToCorner / pixelPointAxisMaximim.x * 2 * dependentAxis.axisMaximum * 1.1
                             radius = cornerEntry
                         }
                     case .minor:
                         if let dependentAxis = self.chart?.minorAxis {
-                            let cornerEntry = centreToCorner / self.viewPortHandler.contentRect.height * 2 * dependentAxis.axisMaximum
+                            let pixelPointAxisMaximim: CGPoint = _transformer.pixelForValues(x: 0, y: dependentAxis.axisMaximum)
+                            let cornerEntry: CGFloat = centreToCorner / pixelPointAxisMaximim.y * 2 * dependentAxis.axisMaximum * 1.1
                             radius = cornerEntry
                         }
                     case .none:

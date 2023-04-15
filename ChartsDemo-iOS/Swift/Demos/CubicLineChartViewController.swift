@@ -49,7 +49,7 @@ class CubicLineChartViewController: DemoBaseViewController {
         chartView.delegate = self
 
         chartView.setViewPortOffsets(left: 0, top: 20, right: 0, bottom: 0)
-        chartView.backgroundColor = UIColor(red: 104/255, green: 241/255, blue: 175/255, alpha: 1)
+        chartView.backgroundColor = UIColor(red: 104/255, green: 241/255, blue: 175/255, alpha: 0.1)
         
         chartView.dragEnabled = true
         chartView.setScaleEnabled(true)

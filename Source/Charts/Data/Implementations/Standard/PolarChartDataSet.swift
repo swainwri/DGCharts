@@ -15,6 +15,7 @@ public class PolarChartDataSet: RadarChartDataSet, PolarChartDataSetProtocol {
     public enum Mode: Int {
         case linear
         case stepped
+        case histogram
         case cubic
     }
     
@@ -276,4 +277,28 @@ public class PolarChartDataSet: RadarChartDataSet, PolarChartDataSetProtocol {
     /// since this is a polar plot on may want the first point joing the last poin
     public var polarClosePath: Bool = false
     
+    
+    // MARK: NSCopying
+    
+    public override func copy(with zone: NSZone? = nil) -> Any {
+        let copy = super.copy(with: zone) as! PolarChartDataSet
+        copy.polarMode = polarMode
+        copy.polarCurvedInterpolation = polarCurvedInterpolation
+        copy.polarCatmullCustomAlpha = polarCatmullCustomAlpha
+        copy.polarHistogram = polarHistogram
+        copy.gradientPositions = gradientPositions
+        copy.circleRadius = circleRadius
+        copy.circleHoleRadius = circleHoleRadius
+        copy.circleColors = circleColors
+        copy.drawCirclesEnabled = drawCirclesEnabled
+        copy.circleHoleColor = circleHoleColor
+        copy.drawCircleHoleEnabled = drawCircleHoleEnabled
+        copy.lineDashPhase = lineDashPhase
+        copy.lineDashLengths = lineDashLengths
+        copy.lineCapType = lineCapType
+        copy.polarFillFormatter = polarFillFormatter
+        copy.polarClosePath = polarClosePath
+        
+        return copy
+    }
 }

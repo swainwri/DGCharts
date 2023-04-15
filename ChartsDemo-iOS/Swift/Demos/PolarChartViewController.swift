@@ -89,12 +89,6 @@ class PolarChartViewController: DemoBaseViewController {
         }
         
         self.updateChartData()
-//        if let majorAxis = chartView?.minorAxis {
-//            majorAxis.outerCircleRadius = chartView?.polarData?.radialMax ?? 0
-//        }
-//        if let minorAxis = chartView?.minorAxis {
-//            minorAxis.outerCircleRadius = chartView?.polarData?.radialMax ?? 0
-//        }
         
         chartView?.animate(xAxisDuration: 1.4, yAxisDuration: 1.4, easingOption: .easeOutBack)
         
@@ -119,7 +113,7 @@ class PolarChartViewController: DemoBaseViewController {
     func setChartData() {
         let mult: UInt32 = 100
         let min: UInt32 = 20
-        let cnt = 50
+        let cnt = 49
         
         let block1: (Int) -> PolarChartDataEntry = { i in return PolarChartDataEntry(radial: Double(arc4random_uniform(mult) + min), theta: Double(i) / 24.0 * Double.pi) }
         var t: Double = -Double.pi / 24
@@ -142,21 +136,21 @@ class PolarChartViewController: DemoBaseViewController {
             }
         }
         
-//        let set1 = PolarChartDataSet(entries: entries1, label: "Random")
-//        set1.setColor(UIColor.red)
-//        set1.fillColor = UIColor.red
-//        set1.drawFilledEnabled = false
-//        set1.fillAlpha = 0.7
-//        set1.lineWidth = 2
-//        set1.drawHighlightCircleEnabled = true
-//        set1.drawValuesEnabled = true
-//        set1.highlightCircleStrokeColor = UIColor.red
-//        set1.setDrawHighlightIndicators(false)
-//        set1.polarMode = .cubic// .stepped
-//        set1.polarCurvedInterpolation = .normal
-////        set1.polarHistogram = .skipSecond
-//        set1.polarClosePath = true
-//        set1.setCircleColor(.red)
+        let set1 = PolarChartDataSet(entries: entries1, label: "Random")
+        set1.setColor(UIColor.red)
+        set1.fillColor = UIColor.red
+        set1.drawFilledEnabled = false
+        set1.fillAlpha = 0.7
+        set1.lineWidth = 2
+        set1.drawHighlightCircleEnabled = true
+        set1.drawValuesEnabled = true
+        set1.highlightCircleStrokeColor = UIColor.red
+        set1.setDrawHighlightIndicators(false)
+        set1.polarMode = .cubic
+        set1.polarCurvedInterpolation = .normal
+        set1.polarHistogram = .skipFirst
+        set1.polarClosePath = true
+        set1.setCircleColor(.red)
         
         let set2 = PolarChartDataSet(entries: entries2, label: "Sin Wave")
         set2.setColor(UIColor.orange)
@@ -164,6 +158,7 @@ class PolarChartViewController: DemoBaseViewController {
         set2.drawFilledEnabled = false
         set2.fillAlpha = 0.7
         set2.lineWidth = 2
+        set2.drawCirclesEnabled = false
         set2.drawHighlightCircleEnabled = true
         set2.highlightCircleStrokeColor = UIColor.orange
         set2.setDrawHighlightIndicators(false)
@@ -171,9 +166,9 @@ class PolarChartViewController: DemoBaseViewController {
         set2.polarCurvedInterpolation = .catmullRomUniform
         set2.polarCatmullCustomAlpha = 0.25
         set2.setCircleColor(.orange)
-        set2.drawValuesEnabled = true
+//        set2.drawValuesEnabled = true
         
-        let data: PolarChartData = /*[set1,*/[set2]
+        let data: PolarChartData = [set1, set2]
         data.setValueFont(.systemFont(ofSize: 10, weight: .light))
         data.setValueTextColor(.blue)
         
