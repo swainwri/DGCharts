@@ -111,7 +111,11 @@ class PolarChartRenderer: LineRadarRenderer {
                         drawCatmullRom(context: context, dataSet: dataSet , alpha: dataSet.polarCatmullCustomAlpha)
                     case .hermite:
                         drawHermite(context: context, dataSet:dataSet)
+                    case .optionCount:
+                        break
                 }
+            case .optionCount:
+                break
         }
         
         context.restoreGState()
@@ -239,17 +243,21 @@ class PolarChartRenderer: LineRadarRenderer {
             let cubicPath = CGMutablePath()
             let valueToPixelMatrix = trans.valueToPixelMatrix
             
+            _thetaBounds.set(chart: dataProvider, dataSet: dataSet, animator: animator)
+            
             var _dataSet: PolarChartDataSet
             if dataSet.polarClosePath {
                 _dataSet = (dataSet as! PolarChartDataSet).copy() as! PolarChartDataSet
                 if let e = dataSet.entryForIndex(0) {
                     _dataSet.append(e)
+                    _thetaBounds.max += 1
+                    _thetaBounds.range += 1
                 }
             }
             else {
                 _dataSet = dataSet as! PolarChartDataSet
             }
-            _thetaBounds.set(chart: dataProvider, dataSet: _dataSet, animator: animator)
+            
 
             if _thetaBounds.range > 2 {
                 let n = _thetaBounds.range - 1
@@ -267,7 +275,7 @@ class PolarChartRenderer: LineRadarRenderer {
                 
                 
                 let firstIndex = _thetaBounds.min + 1
-                if var cur = _dataSet.entryForIndex(max(firstIndex - 1, 0)) as? PolarChartDataEntry {
+                if var cur = _dataSet.subscript(index: max(firstIndex - 1, 0)) as? PolarChartDataEntry {
                     var nextIndex: Int = -1
                     var prevPrev: PolarChartDataEntry = PolarChartDataEntry()
                     var prev: PolarChartDataEntry = PolarChartDataEntry()
@@ -275,7 +283,7 @@ class PolarChartRenderer: LineRadarRenderer {
                     
                     var prevPrevCGPoint: CGPoint
                     var prevCGPoint: CGPoint = .zero
-                    if let _prev = _dataSet.entryForIndex(max(firstIndex - 2, 0))  as? PolarChartDataEntry {
+                    if let _prev = _dataSet.subscript(index: max(firstIndex - 2, 0))  as? PolarChartDataEntry {
                         prev = _prev
                         prevCGPoint = centre.moving(distance: prev.radial * phase, atAngle: prev.theta, radians: chart?.radialAxis.radialAngleMode ?? .radians == .radians)
                     }
@@ -891,22 +899,22 @@ class PolarChartRenderer: LineRadarRenderer {
                             }
                             else {
                                 switch dataSet.polarMode {
-                                case .linear:
-                                    path.addLine(to: point)
-                                case .stepped:
-                                    path.addLine(to: CGPoint(x: point.x, y: lastPoint.y))
-                                    path.addLine(to: point)
-                                case .histogram:
-                                    let x = (lastPoint.x + point.x) / 2
-                                    if dataSet.polarHistogram != .skipFirst {
-                                        path.addLine(to: CGPoint(x: x, y: lastPoint.y))
-                                    }
-                                    if dataSet.polarHistogram != .skipSecond {
-                                        path.addLine(to: CGPoint(x: x, y: point.y))
-                                    }
-                                    path.addLine(to: point)
-                                case .cubic:
-                                    break;
+                                    case .linear:
+                                        path.addLine(to: point)
+                                    case .stepped:
+                                        path.addLine(to: CGPoint(x: point.x, y: lastPoint.y))
+                                        path.addLine(to: point)
+                                    case .histogram:
+                                        let x = (lastPoint.x + point.x) / 2
+                                        if dataSet.polarHistogram != .skipFirst {
+                                            path.addLine(to: CGPoint(x: x, y: lastPoint.y))
+                                        }
+                                        if dataSet.polarHistogram != .skipSecond {
+                                            path.addLine(to: CGPoint(x: x, y: point.y))
+                                        }
+                                        path.addLine(to: point)
+                                    case .cubic, .optionCount:
+                                        break
                                 }
                                 
                                 

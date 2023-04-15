@@ -54,6 +54,9 @@ enum Option {
     case toggleRadialValues
     case toggleMajorMinorLabels
     case toggleRadialLabels
+    case togglePolarMode
+    case togglePolarCurvedInterpolationOption
+    case togglePolarHistogramOption
     
     var label: String {
         switch self {
@@ -99,6 +102,9 @@ enum Option {
         case .toggleRadialValues: return "Toggle Radial-Values"
         case .toggleRadialLabels: return "Toggle Radial-Labels"
         case .toggleMajorMinorLabels: return "Toggle Major/Minor-Labels"
+        case .togglePolarMode: return "Toggle thru' Interpolations"
+        case .togglePolarCurvedInterpolationOption: return "Toggle thru' Cubic Interpolations"
+        case .togglePolarHistogramOption: return "Toggle thru' Histogram Options"
         }
     }
 }
