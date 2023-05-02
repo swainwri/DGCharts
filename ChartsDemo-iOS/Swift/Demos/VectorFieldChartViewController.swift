@@ -107,8 +107,8 @@ class VectorFieldChartViewController: DemoBaseViewController, VectorFieldChartVi
     
     func setDataCount(_ count: Int) {
         
-        var values1: [FieldChartDataEntry] = []
-        values1.reserveCapacity(count * count)
+        var values: [FieldChartDataEntry] = []
+        values.reserveCapacity(count * count)
 
         let divisor = Double(16) / Double(count)
         
@@ -120,19 +120,19 @@ class VectorFieldChartViewController: DemoBaseViewController, VectorFieldChartVi
                 let fy = sin(y)
                 let length = sqrt(fx * fx + fy * fy) / sqrt(2.0)
                 let direction = atan2(fy, fx)
-                values1.append(FieldChartDataEntry(x: x, y: y, magnitude: length, direction: direction))
+                values.append(FieldChartDataEntry(x: x, y: y, magnitude: length, direction: direction))
                 y += .pi / 8.0 * divisor
             }
             x += .pi / 8.0 * divisor
         }
         
-        let set1 = VectorFieldChartDataSet(entries: values1, label: "sin(x) sin(y)")
-        set1.arrowType = .solid
-        set1.setColor(ChartColorTemplates.colorful()[0])
-        set1.arrowSize = 5
-        set1.normalisedVectorLength = 20
+        let set = VectorFieldChartDataSet(entries: values, label: "sin(x) sin(y)")
+        set.arrowType = .solid
+        set.setColor(ChartColorTemplates.colorful()[0])
+        set.arrowSize = 5
+        set.normalisedVectorLength = 20
         
-        let data: VectorFieldChartData = [set1]
+        let data: VectorFieldChartData = [set]
         data.setValueFont(.systemFont(ofSize: 7, weight: .light))
 
         chartView?.data = data

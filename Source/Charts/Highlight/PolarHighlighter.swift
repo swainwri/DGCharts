@@ -5,7 +5,7 @@
 //  Created by Steve Wainwright on 12/04/2023.
 //
 
-import UIKit
+import Foundation
 import CoreGraphics
 
 @objc(PolarChartHighlighter)

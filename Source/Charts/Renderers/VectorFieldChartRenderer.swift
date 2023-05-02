@@ -10,11 +10,11 @@ import CoreGraphics
 
 public class VectorFieldChartRenderer: LineScatterCandleRadarRenderer {
     
-    @objc public weak var dataProvider: FieldChartDataProvider?
+    @objc public weak var dataProvider: VectorFieldChartDataProvider?
     
     @objc public weak var delegate: VectorFieldChartViewDelegate?
     
-    @objc public init(dataProvider: FieldChartDataProvider, animator: Animator, viewPortHandler: ViewPortHandler) {
+    @objc public init(dataProvider: VectorFieldChartDataProvider, animator: Animator, viewPortHandler: ViewPortHandler) {
         super.init(animator: animator, viewPortHandler: viewPortHandler)
         
         self.dataProvider = dataProvider
@@ -331,7 +331,7 @@ public class VectorFieldChartRenderer: LineScatterCandleRadarRenderer {
         }
 
         context.restoreGState()
-}
+    }
             
     private func arrowHeadPath(dataSet: VectorFieldChartDataSetProtocol) -> CGMutablePath {
             
@@ -380,12 +380,12 @@ public class VectorFieldChartRenderer: LineScatterCandleRadarRenderer {
             
         }
         
-        public init(chart: FieldChartDataProvider, dataSet: VectorFieldChartDataSetProtocol, animator: Animator?){
+        public init(chart: VectorFieldChartDataProvider, dataSet: VectorFieldChartDataSetProtocol, animator: Animator?){
             self.set(chart: chart, dataSet: dataSet, animator: animator)
         }
         
         /// Calculates the minimum and maximum x values as well as the range between them.
-        public func set(chart: FieldChartDataProvider, dataSet: VectorFieldChartDataSetProtocol, animator: Animator?) {
+        public func set(chart: VectorFieldChartDataProvider, dataSet: VectorFieldChartDataSetProtocol, animator: Animator?) {
             let phaseY = Swift.max(0.0, Swift.min(1.0, animator?.phaseY ?? 1.0))
             
             let low = chart.lowestVisibleX

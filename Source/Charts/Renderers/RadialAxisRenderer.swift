@@ -162,7 +162,7 @@ public class RadialAxisRenderer: NSObject, AxisRenderer {
     /// - parameter min: the minimum value in the data object for this axis
     /// - parameter max: the maximum value in the data object for this axis
     public func computeAxis(min: Double, max: Double, inverted: Bool) {
-        var min = min, max = max
+//        var min = min, max = max
         
 //        if let transformer = self.transformer,
 //            viewPortHandler.contentWidth > 10,

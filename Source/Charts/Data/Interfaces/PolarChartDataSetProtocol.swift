@@ -71,7 +71,7 @@ public protocol PolarChartDataSetProtocol: RadarChartDataSetProtocol {
     ///
     /// **default**: normal bezier curve
     /// 
-    var polarCurvedInterpolation: PolarChartDataSet.CurvedInterpolationOption { get set }
+    var polarCurvedInterpolation: PolarChartDataSet.CubicInterpolation { get set }
     
     /// The drawing alpha option for this catmullCustomAlpha cubic line
     ///

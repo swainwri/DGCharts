@@ -57,7 +57,7 @@ open class BarDemoViewController: NSViewController
     @IBAction func save(_ sender: Any)
     {
         let panel = NSSavePanel()
-        panel.allowedFileTypes = ["png"]
+        panel.allowedContentTypes = [ .png]
         panel.beginSheetModal(for: self.view.window!) { (result) -> Void in
             if result == NSApplication.ModalResponse.OK
             {

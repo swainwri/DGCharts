@@ -93,7 +93,10 @@ class DemoListViewController: UIViewController {
                             class: PolarChartViewController.self),
                     ItemDef(title: "VectorField Chart",
                                     subtitle: "Demonstrates the use of a vector field chart.",
-                                    class: VectorFieldChartViewController.self)
+                                    class: VectorFieldChartViewController.self),
+                    ItemDef(title: "Contour Chart",
+                                    subtitle: "Demonstrates the use of a contour chart.",
+                                    class: ContourChartViewController.self)
                     
     ]
     

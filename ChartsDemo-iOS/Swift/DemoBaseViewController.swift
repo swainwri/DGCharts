@@ -57,6 +57,13 @@ enum Option {
     case togglePolarMode
     case togglePolarCurvedInterpolationOption
     case togglePolarHistogramOption
+    // ContourChart
+    case toggleContourNoIsoCurves
+    case toggleContourInterpolationMethod
+    case toggleGridPrimaryResolution
+    case toggleGridSecondaryResolution
+    case toggleExtrapolateToCorners
+    case toggleSurfaceInterpolation
     
     var label: String {
         switch self {
@@ -105,6 +112,13 @@ enum Option {
         case .togglePolarMode: return "Toggle thru' Interpolations"
         case .togglePolarCurvedInterpolationOption: return "Toggle thru' Cubic Interpolations"
         case .togglePolarHistogramOption: return "Toggle thru' Histogram Options"
+        // ContourChart
+        case .toggleContourNoIsoCurves: return "Toggle thru' No of IsoCurves"
+        case .toggleContourInterpolationMethod: return "Toggle thru' Interpolation Options"
+        case .toggleGridPrimaryResolution: return "Toggle thru' Grid Primary Resolution"
+        case .toggleGridSecondaryResolution: return "Toggle thru' Grid Secondary Resolution"
+        case .toggleExtrapolateToCorners: return "Toggle Extrapolate To Corners"
+        case .toggleSurfaceInterpolation: return "Toggle Surface Interpolation Method"
         }
     }
 }
@@ -202,7 +216,7 @@ class DemoBaseViewController: UIViewController, ChartViewDelegate {
         }
         
         let optionsTableView = UITableView()
-        optionsTableView.backgroundColor = UIColor(white: 0, alpha: 0.9)
+        optionsTableView.backgroundColor = UIColor(white: 0, alpha: 0.4)
         optionsTableView.delegate = self
         optionsTableView.dataSource = self
         
@@ -212,13 +226,13 @@ class DemoBaseViewController: UIViewController, ChartViewDelegate {
         
         var constraints = [NSLayoutConstraint]()
         
-        constraints.append(NSLayoutConstraint(item: optionsTableView,
-                                              attribute: .leading,
-                                              relatedBy: .equal,
-                                              toItem: self.view,
-                                              attribute: .leading,
-                                              multiplier: 1,
-                                              constant: 40))
+//        constraints.append(NSLayoutConstraint(item: optionsTableView,
+//                                              attribute: .leading,
+//                                              relatedBy: .equal,
+//                                              toItem: self.view,
+//                                              attribute: .leading,
+//                                              multiplier: 1,
+//                                              constant: 40))
         
         constraints.append(NSLayoutConstraint(item: optionsTableView,
                                               attribute: .trailing,
@@ -239,14 +253,22 @@ class DemoBaseViewController: UIViewController, ChartViewDelegate {
         self.view.addSubview(optionsTableView)
         constraints.forEach { $0.isActive = true }
         
-        let constraint = NSLayoutConstraint(item: optionsTableView,
+        let constraint1 = NSLayoutConstraint(item: optionsTableView,
                                             attribute: .height,
                                             relatedBy: .equal,
                                             toItem: nil,
                                             attribute: .height,
                                             multiplier: 1,
                                             constant: 220)
-        constraint.isActive = true
+        let constraint2 = NSLayoutConstraint(item: optionsTableView,
+                                            attribute: .width,
+                                            relatedBy: .equal,
+                                            toItem: nil,
+                                            attribute: .width,
+                                            multiplier: 1,
+                                            constant: 320)
+        constraint1.isActive = true
+        constraint2.isActive = true
     }
     
     func updateChartData() {

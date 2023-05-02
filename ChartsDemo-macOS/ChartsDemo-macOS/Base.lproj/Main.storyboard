@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21701"/>
+        <capability name="Combo buttons" minToolsVersion="14.0" minSystemVersion="13.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -672,37 +672,42 @@
         <!--Tab View Controller-->
         <scene sceneID="D8r-LN-ETo">
             <objects>
-                <tabViewController selectedTabViewItemIndex="3" id="MdU-M1-yR2" sceneMemberID="viewController">
+                <tabViewController selectedTabViewItemIndex="0" id="MdU-M1-yR2" sceneMemberID="viewController">
                     <tabViewItems>
-                        <tabViewItem label="Bar" identifier="" id="75m-u6-Lg4"/>
-                        <tabViewItem identifier="" id="Yby-Hr-Gbs"/>
-                        <tabViewItem id="1nR-kL-Mxb"/>
-                        <tabViewItem id="WOB-FI-izp"/>
+                        <tabViewItem id="lNC-LC-pZf"/>
+                        <tabViewItem id="E2I-Nv-QyY"/>
+                        <tabViewItem id="qDa-dl-FWY"/>
+                        <tabViewItem id="glX-4q-et0"/>
+                        <tabViewItem id="bdK-wH-xsM"/>
+                        <tabViewItem id="FDZ-EW-tbn"/>
+                        <tabViewItem id="w77-ON-AuZ"/>
                     </tabViewItems>
                     <tabView key="tabView" type="noTabsNoBorder" id="4aI-t7-jgI">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <font key="font" metaFont="message"/>
                         <connections>
-                            <outlet property="delegate" destination="MdU-M1-yR2" id="s53-W6-MQq"/>
+                            <outlet property="delegate" destination="MdU-M1-yR2" id="ahy-Bj-q8G"/>
                         </connections>
                     </tabView>
                     <connections>
-                        <outlet property="tabView" destination="4aI-t7-jgI" id="H36-1r-bl2"/>
-                        <segue destination="4fu-uG-om0" kind="relationship" relationship="tabItems" id="LFV-tq-WGj"/>
-                        <segue destination="vkP-1b-D8k" kind="relationship" relationship="tabItems" id="gGD-RY-5OB"/>
-                        <segue destination="CQR-9h-gXY" kind="relationship" relationship="tabItems" id="rqo-tR-9a7"/>
-                        <segue destination="KI5-K5-PrY" kind="relationship" relationship="tabItems" id="pWA-3O-1hN"/>
+                        <segue destination="4fu-uG-om0" kind="relationship" relationship="tabItems" id="6Pr-f0-gcQ"/>
+                        <segue destination="KI5-K5-PrY" kind="relationship" relationship="tabItems" id="WN2-yQ-Jyc"/>
+                        <segue destination="CQR-9h-gXY" kind="relationship" relationship="tabItems" id="3BV-17-Tl8"/>
+                        <segue destination="vkP-1b-D8k" kind="relationship" relationship="tabItems" id="2HM-8N-gKD"/>
+                        <segue destination="9ln-fI-n5F" kind="relationship" relationship="tabItems" id="e3n-Vr-grV"/>
+                        <segue destination="XKa-Sk-LWY" kind="relationship" relationship="tabItems" id="rYW-lu-I4x"/>
+                        <segue destination="Rwb-Ra-HcB" kind="relationship" relationship="tabItems" id="Rjh-G8-46i"/>
                     </connections>
                 </tabViewController>
                 <customObject id="VRA-wT-PQh" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="726" y="432"/>
+            <point key="canvasLocation" x="720" y="465"/>
         </scene>
-        <!--Bar Demo View Controller-->
+        <!--Bar-->
         <scene sceneID="A6I-3s-knM">
             <objects>
-                <viewController title="Bar Demo View Controller" id="4fu-uG-om0" customClass="BarDemoViewController" customModule="ChartsDemo_macOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Bar" id="4fu-uG-om0" customClass="BarDemoViewController" customModule="ChartsDemo_macOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="U2J-4p-9ti">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -818,7 +823,159 @@
                 </viewController>
                 <customObject id="nwz-zo-FQ4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1060" y="1088"/>
+            <point key="canvasLocation" x="1047" y="1060"/>
+        </scene>
+        <!--Polar-->
+        <scene sceneID="Upi-M7-4tE">
+            <objects>
+                <viewController title="Polar" id="9ln-fI-n5F" customClass="PolarDemoViewController" customModule="ChartsDemo_macOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="Vcg-V9-dQW">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="8eQ-Gc-9xc" customClass="PolarChartView" customModule="DGCharts">
+                                <rect key="frame" x="5" y="5" width="440" height="290"/>
+                            </customView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="8eQ-Gc-9xc" firstAttribute="leading" secondItem="Vcg-V9-dQW" secondAttribute="leading" constant="5" id="DWS-x5-0S1"/>
+                            <constraint firstAttribute="bottom" secondItem="8eQ-Gc-9xc" secondAttribute="bottom" constant="5" id="JuB-3T-Q09"/>
+                            <constraint firstItem="8eQ-Gc-9xc" firstAttribute="top" secondItem="Vcg-V9-dQW" secondAttribute="top" constant="5" id="eVa-AM-nkt"/>
+                            <constraint firstAttribute="trailing" secondItem="8eQ-Gc-9xc" secondAttribute="trailing" constant="5" id="kN7-X5-Ccc"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="chartView" destination="8eQ-Gc-9xc" id="Fkw-rW-Lg1"/>
+                    </connections>
+                </viewController>
+                <customObject id="yY2-Nh-hbV" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1047" y="1449"/>
+        </scene>
+        <!--Vector Field-->
+        <scene sceneID="n7J-w5-MQs">
+            <objects>
+                <viewController title="Vector Field" id="XKa-Sk-LWY" customClass="VectorFieldDemoViewController" customModule="ChartsDemo_macOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="6D4-In-UoB">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Tg1-gU-wog" customClass="VectorFieldChartView" customModule="DGCharts">
+                                <rect key="frame" x="5" y="5" width="440" height="290"/>
+                            </customView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="Tg1-gU-wog" firstAttribute="top" secondItem="6D4-In-UoB" secondAttribute="top" constant="5" id="6aA-pb-rId"/>
+                            <constraint firstAttribute="trailing" secondItem="Tg1-gU-wog" secondAttribute="trailing" constant="5" id="IFs-9h-2Nt"/>
+                            <constraint firstItem="Tg1-gU-wog" firstAttribute="leading" secondItem="6D4-In-UoB" secondAttribute="leading" constant="5" id="k0s-15-14D"/>
+                            <constraint firstAttribute="bottom" secondItem="Tg1-gU-wog" secondAttribute="bottom" constant="5" id="nNJ-fa-FRD"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="chartView" destination="Tg1-gU-wog" id="Omc-Lf-4ez"/>
+                    </connections>
+                </viewController>
+                <customObject id="hoG-H5-6i9" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1538" y="1060"/>
+        </scene>
+        <!--Contour-->
+        <scene sceneID="twW-Lf-SYL">
+            <objects>
+                <viewController title="Contour" id="Rwb-Ra-HcB" customClass="ContourDemoViewController" customModule="ChartsDemo_macOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="FSN-AN-8rv">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <comboButton verticalHuggingPriority="750" baseWritingDirection="leftToRight" alignment="center" title="Change" imageScaling="proportionallyDown" translatesAutoresizingMaskIntoConstraints="NO" id="qy5-HA-xSm">
+                                <rect key="frame" x="364" y="276" width="81" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="75" id="3h9-ze-UXc"/>
+                                    <constraint firstAttribute="height" constant="20" id="kPi-kr-GhC"/>
+                                </constraints>
+                                <menu key="menu" id="pTy-NF-iPG">
+                                    <items>
+                                        <menuItem title="Contour Data" id="9xY-dg-8bO">
+                                            <connections>
+                                                <action selector="changeContour" target="Rwb-Ra-HcB" id="Lag-jS-WaD"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="No IsoCurves" tag="1" id="Xwu-9E-d0a">
+                                            <connections>
+                                                <action selector="changeNoOfIsoCurves" target="Rwb-Ra-HcB" id="aly-RX-Rx8"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Fill/UnFill" tag="2" id="sSz-3q-SlF">
+                                            <connections>
+                                                <action selector="changeFilled" target="Rwb-Ra-HcB" id="tOq-Zo-PWc"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Grid Primary Resolution" tag="3" id="n2r-iO-Zma">
+                                            <connections>
+                                                <action selector="changePrimaryResolution" target="Rwb-Ra-HcB" id="Y4A-2Y-eZD"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Grid Secondary Resolution" tag="4" id="6CS-K3-FwB">
+                                            <connections>
+                                                <action selector="changeSecondaryResolution" target="Rwb-Ra-HcB" id="G6t-ZU-Lny"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Contour Line Interpolation" tag="5" id="bv9-b4-C6y">
+                                            <connections>
+                                                <action selector="changeInterpolationMethod" target="Rwb-Ra-HcB" id="7yJ-Qt-7Or"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Extrapolate To Edges" tag="6" enabled="NO" id="kVt-J6-reZ">
+                                            <connections>
+                                                <action selector="changeExtrapolateToCorners" target="Rwb-Ra-HcB" id="P6K-V2-jAN"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Surface Interpolation" tag="7" enabled="NO" id="9xC-vE-VjB">
+                                            <connections>
+                                                <action selector="changeSurfaceInterpolationMethod:" target="Rwb-Ra-HcB" id="hln-Ms-qeg"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </comboButton>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="e4P-kd-I9n" customClass="ContourChartView" customModule="DGCharts">
+                                <rect key="frame" x="5" y="5" width="440" height="270"/>
+                            </customView>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="P3i-tB-imE">
+                                <rect key="frame" x="282" y="271" width="59" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="Q43-rZ-yJF"/>
+                                    <constraint firstAttribute="width" constant="45" id="tB7-mB-wEw"/>
+                                </constraints>
+                                <buttonCell key="cell" type="push" title="PDF" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bqi-Dn-NGr">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="savePDF:" target="Rwb-Ra-HcB" id="4hZ-5n-KCq"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="e4P-kd-I9n" firstAttribute="leading" secondItem="FSN-AN-8rv" secondAttribute="leading" constant="5" id="03W-kH-IXn"/>
+                            <constraint firstItem="qy5-HA-xSm" firstAttribute="leading" secondItem="P3i-tB-imE" secondAttribute="trailing" constant="33" id="1Ka-b2-C3v"/>
+                            <constraint firstAttribute="trailing" secondItem="qy5-HA-xSm" secondAttribute="trailing" constant="8" id="YeM-Jb-aLV"/>
+                            <constraint firstItem="qy5-HA-xSm" firstAttribute="top" secondItem="FSN-AN-8rv" secondAttribute="top" constant="2" id="bUe-n8-hHb"/>
+                            <constraint firstItem="P3i-tB-imE" firstAttribute="top" secondItem="FSN-AN-8rv" secondAttribute="top" constant="2" id="g7f-io-Du3"/>
+                            <constraint firstItem="e4P-kd-I9n" firstAttribute="top" secondItem="FSN-AN-8rv" secondAttribute="top" constant="25" id="p2z-ev-daq"/>
+                            <constraint firstAttribute="bottom" secondItem="e4P-kd-I9n" secondAttribute="bottom" constant="5" id="tqX-JS-bgz"/>
+                            <constraint firstAttribute="trailing" secondItem="e4P-kd-I9n" secondAttribute="trailing" constant="5" id="vpk-lO-mgh"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="changeButton" destination="qy5-HA-xSm" id="S4a-uA-2lQ"/>
+                        <outlet property="chartView" destination="e4P-kd-I9n" id="s5e-9y-4XQ"/>
+                        <outlet property="pdfButton" destination="P3i-tB-imE" id="HsJ-Fw-GaJ"/>
+                    </connections>
+                </viewController>
+                <customObject id="mEu-aB-GLm" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1538" y="1437"/>
         </scene>
     </scenes>
 </document>

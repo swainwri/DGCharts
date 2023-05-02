@@ -36,6 +36,7 @@ public class FieldChartDataEntry: ChartDataEntry {
             }
         }
     }
+    
     /// the direction value
     @objc public var direction: Double {
         get {
@@ -49,6 +50,23 @@ public class FieldChartDataEntry: ChartDataEntry {
         set {
             if let _data = self.data as? Field {
                 _data.direction = newValue
+            }
+        }
+    }
+    
+    /// the magnitude value
+    @objc public var fxy: Double {
+        get {
+            if let _data = self.data as? Field {
+                return _data.magnitude
+            }
+            else {
+                return 0
+            }
+        }
+        set {
+            if let _data = self.data as? Field {
+                _data.magnitude = newValue
             }
         }
     }
@@ -84,9 +102,9 @@ public class FieldChartDataEntry: ChartDataEntry {
     ///   - x: the x value
     ///   - y: the y value
     ///   - magnitude: magnitude  value.
-    ///   - direction: direction value
+    ///   - direction: direction  value.
     
-    @objc public init(x: Double, y: Double, magnitude: Double, direction: Double = 0) {
+    @objc public init(x: Double, y: Double, magnitude: Double, direction: Double) {
         super.init()
         
         self.x = x
@@ -99,10 +117,25 @@ public class FieldChartDataEntry: ChartDataEntry {
     /// - Parameters:
     ///   - x: the x value
     ///   - y: the y value
+    ///   - fxy: magnitude  value.
+    
+    @objc public init(x: Double, y: Double, fxy: Double) {
+        super.init()
+        
+        self.x = x
+        self.y = y
+        self.data = Field(magnitude: fxy, direction: -0)
+    }
+    
+    /// An Entry represents one single entry in the chart.
+    ///
+    /// - Parameters:
+    ///   - x: the x value
+    ///   - y: the y value
     ///   - icon: icon image
     
     @objc public convenience init(x: Double, y: Double, icon: NSUIImage?) {
-        self.init(x: x, y: y, data: Field(magnitude: 0, direction: 0))
+        self.init(x: x, y: y, data: Field(magnitude: 0, direction: -0))
         self.icon = icon
     }
     
@@ -128,7 +161,12 @@ public class FieldChartDataEntry: ChartDataEntry {
     
     open override var description: String {
         if let _data = data as? Field {
-            return "FieldChartDataEntry, x: \(x), y:\(y), magnitude:\(_data.magnitude), direction:\(_data.direction)"
+            if _data.direction == 0 && _data.direction.sign == .minus {
+                return "FieldChartDataEntry, x: \(x), y:\(y), f(x,y):\(_data.magnitude)"
+            }
+            else {
+                return "FieldChartDataEntry, x: \(x), y:\(y), magnitude:\(_data.magnitude), direction:\(_data.direction)"
+            }
         }
         else {
             return "FieldChartDataEntry, x: \(x), y:\(y)"

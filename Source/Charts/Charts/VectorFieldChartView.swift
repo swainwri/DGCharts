@@ -21,7 +21,7 @@ public protocol VectorFieldChartViewDelegate: NSObjectProtocol {
 
 }
 
-public class VectorFieldChartView: BarLineChartViewBase, FieldChartDataProvider, VectorFieldChartViewDelegate {
+public class VectorFieldChartView: BarLineChartViewBase, VectorFieldChartDataProvider, VectorFieldChartViewDelegate {
     
     public override func initialize() {
         super.initialize()

@@ -91,4 +91,50 @@ public class DefaultPointFormatter: NSObject, PointFormatter {
             }
         }
     }
+    
+    public func stringForDataAtPoint(entry: ChartDataEntry, dataSetIndex: Int, viewPortHandler: ViewPortHandler?) -> String {
+        if let block = block {
+            return block(entry, dataSetIndex, viewPortHandler)
+        }
+        else if let _data = entry.data as? Field {
+            if let _formatter = formatter {
+                if _data.direction == 0.0 && _data.direction.sign == .minus {
+                    if let _fxy = _formatter.string(from: NSNumber(floatLiteral: _data.magnitude)) {
+                        return _fxy
+                    }
+                    else {
+                        return "\(_data.magnitude)"
+                    }
+                }
+                else {
+                    if let _magnitude = _formatter.string(from: NSNumber(floatLiteral: _data.magnitude)),
+                       let _direction = _formatter.string(from: NSNumber(floatLiteral: _data.direction)){
+                        return _magnitude + "\n" + _direction
+                    }
+                    else {
+                        return "\(_data.magnitude)\n\(_data.direction)"
+                    }
+                }
+            }
+            else {
+                return "\(_data.magnitude)\n\(_data.direction)"
+            }
+        }
+        else if let _data = entry.data as? Double {
+            if let _formatter = formatter {
+                if let _magnitude = _formatter.string(from: NSNumber(floatLiteral: _data)) {
+                    return _magnitude
+                }
+                else {
+                    return "\(_data)"
+                }
+            }
+            else {
+                return "\(_data)"
+            }
+        }
+        else {
+            return ""
+        }
+    }
 }

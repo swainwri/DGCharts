@@ -133,14 +133,29 @@
 		5BEAED401ABC1AC60013F194 /* SinusBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BEAED3E1ABC1AC60013F194 /* SinusBarChartViewController.m */; };
 		5BEAED411ABC1AC60013F194 /* SinusBarChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5BEAED3F1ABC1AC60013F194 /* SinusBarChartViewController.xib */; };
 		B64D06EB1FB199130067418D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B64D06EA1FB199130067418D /* Launch Screen.storyboard */; };
+		E330280D29F76E820089D4A4 /* ContourMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E330280C29F76E820089D4A4 /* ContourMarkerView.swift */; };
 		E340C92229E238E500E3D66B /* VectorFieldChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E340C92029E238E500E3D66B /* VectorFieldChartViewController.swift */; };
 		E340C92529E23D2800E3D66B /* VectorFieldChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E340C92429E23D2800E3D66B /* VectorFieldChartViewController.xib */; };
 		E340C92629E23D2800E3D66B /* VectorFieldChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E340C92429E23D2800E3D66B /* VectorFieldChartViewController.xib */; };
+		E37AA6C329EB8A8F0048607E /* ContourChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37AA6C229EB8A8F0048607E /* ContourChartViewController.swift */; };
+		E37AA77329EB8BB40048607E /* ContourChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E37AA77229EB8BB40048607E /* ContourChartViewController.xib */; };
+		E37AA77629EB8CBD0048607E /* KDTree in Frameworks */ = {isa = PBXBuildFile; productRef = E37AA77529EB8CBD0048607E /* KDTree */; };
+		E37AA78A29EB982D0048607E /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37AA78929EB982D0048607E /* SpinnerView.swift */; };
 		E37E97EA29E4491300748D6C /* VectorFieldMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37E97E929E4491300748D6C /* VectorFieldMarkerView.swift */; };
 		E37E97ED29E44B9200748D6C /* DegreesFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37E97EC29E44B9200748D6C /* DegreesFormatter.swift */; };
 		E39995DB29D9D5FB00F6B34A /* PolarChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39995DA29D9D5FB00F6B34A /* PolarChartViewController.swift */; };
 		E39995DD29D9D6CC00F6B34A /* PiNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E39995DC29D9D6CC00F6B34A /* PiNumberFormatter.swift */; };
 		E39995F729D9E00300F6B34A /* PolarChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E39995F629D9E00300F6B34A /* PolarChartViewController.xib */; };
+		E3E337A329F23ED400A0CCFF /* Kriging.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E6459729EBC2F2007C84CF /* Kriging.swift */; };
+		E3E6458E29EBC2B1007C84CF /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E6458529EBC2AD007C84CF /* Point.swift */; };
+		E3E6458F29EBC2B1007C84CF /* NeighbourhoodPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E6458629EBC2AE007C84CF /* NeighbourhoodPoint.swift */; };
+		E3E6459029EBC2B1007C84CF /* Triangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E6458729EBC2AE007C84CF /* Triangle.swift */; };
+		E3E6459129EBC2B1007C84CF /* Delaunay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E6458829EBC2AF007C84CF /* Delaunay.swift */; };
+		E3E6459229EBC2B1007C84CF /* Circumcircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E6458929EBC2AF007C84CF /* Circumcircle.swift */; };
+		E3E6459329EBC2B1007C84CF /* TriangleInterpolation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E6458A29EBC2B0007C84CF /* TriangleInterpolation.swift */; };
+		E3E6459429EBC2B1007C84CF /* Polygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E6458B29EBC2B0007C84CF /* Polygon.swift */; };
+		E3E6459529EBC2B1007C84CF /* Edge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E6458C29EBC2B1007C84CF /* Edge.swift */; };
+		E3E6459629EBC2B1007C84CF /* PointNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E6458D29EBC2B1007C84CF /* PointNode.swift */; };
 		E3EC355229E67C1700F9934C /* PolarMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EC355129E67C1700F9934C /* PolarMarkerView.swift */; };
 /* End PBXBuildFile section */
 
@@ -329,13 +344,27 @@
 		5BEAED3E1ABC1AC60013F194 /* SinusBarChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinusBarChartViewController.m; sourceTree = "<group>"; };
 		5BEAED3F1ABC1AC60013F194 /* SinusBarChartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SinusBarChartViewController.xib; sourceTree = "<group>"; };
 		B64D06EA1FB199130067418D /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		E330280C29F76E820089D4A4 /* ContourMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContourMarkerView.swift; sourceTree = "<group>"; };
 		E340C92029E238E500E3D66B /* VectorFieldChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorFieldChartViewController.swift; sourceTree = "<group>"; };
 		E340C92429E23D2800E3D66B /* VectorFieldChartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VectorFieldChartViewController.xib; sourceTree = "<group>"; };
+		E37AA6C229EB8A8F0048607E /* ContourChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContourChartViewController.swift; sourceTree = "<group>"; };
+		E37AA77229EB8BB40048607E /* ContourChartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContourChartViewController.xib; sourceTree = "<group>"; };
+		E37AA78929EB982D0048607E /* SpinnerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
 		E37E97E929E4491300748D6C /* VectorFieldMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorFieldMarkerView.swift; sourceTree = "<group>"; };
 		E37E97EC29E44B9200748D6C /* DegreesFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DegreesFormatter.swift; sourceTree = "<group>"; };
 		E39995DA29D9D5FB00F6B34A /* PolarChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolarChartViewController.swift; sourceTree = "<group>"; };
 		E39995DC29D9D6CC00F6B34A /* PiNumberFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PiNumberFormatter.swift; sourceTree = "<group>"; };
 		E39995F629D9E00300F6B34A /* PolarChartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PolarChartViewController.xib; sourceTree = "<group>"; };
+		E3E6458529EBC2AD007C84CF /* Point.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
+		E3E6458629EBC2AE007C84CF /* NeighbourhoodPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NeighbourhoodPoint.swift; sourceTree = "<group>"; };
+		E3E6458729EBC2AE007C84CF /* Triangle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Triangle.swift; sourceTree = "<group>"; };
+		E3E6458829EBC2AF007C84CF /* Delaunay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delaunay.swift; sourceTree = "<group>"; };
+		E3E6458929EBC2AF007C84CF /* Circumcircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Circumcircle.swift; sourceTree = "<group>"; };
+		E3E6458A29EBC2B0007C84CF /* TriangleInterpolation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriangleInterpolation.swift; sourceTree = "<group>"; };
+		E3E6458B29EBC2B0007C84CF /* Polygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Polygon.swift; sourceTree = "<group>"; };
+		E3E6458C29EBC2B1007C84CF /* Edge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Edge.swift; sourceTree = "<group>"; };
+		E3E6458D29EBC2B1007C84CF /* PointNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointNode.swift; sourceTree = "<group>"; };
+		E3E6459729EBC2F2007C84CF /* Kriging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Kriging.swift; sourceTree = "<group>"; };
 		E3EC355129E67C1700F9934C /* PolarMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolarMarkerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -351,6 +380,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E37AA77629EB8CBD0048607E /* KDTree in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -369,6 +399,8 @@
 		225B361E1F6EB9A50005B3D5 /* Swift */ = {
 			isa = PBXGroup;
 			children = (
+				E3E6459829EBC2F2007C84CF /* Kriging */,
+				E3E6458429EBC268007C84CF /* Triangulation */,
 				225B361F1F6EB9A50005B3D5 /* AppDelegate.swift */,
 				225B362F1F6EB9EE0005B3D5 /* DemoBaseViewController.swift */,
 				225B36301F6EB9EE0005B3D5 /* DemoListViewController.swift */,
@@ -395,11 +427,13 @@
 		225B363C1F6EBA180005B3D5 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				E37AA78929EB982D0048607E /* SpinnerView.swift */,
 				5BD47E5A1ABB0263008FCEC6 /* BalloonMarker.swift */,
 				225B363F1F6EBA180005B3D5 /* RadarMarkerView.swift */,
 				225B363D1F6EBA180005B3D5 /* XYMarkerView.swift */,
 				E37E97E929E4491300748D6C /* VectorFieldMarkerView.swift */,
 				E3EC355129E67C1700F9934C /* PolarMarkerView.swift */,
+				E330280C29F76E820089D4A4 /* ContourMarkerView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -413,6 +447,7 @@
 				225B365A1F6EBA410005B3D5 /* CandleStickChartViewController.swift */,
 				225B36481F6EBA410005B3D5 /* ColoredLineChartViewController.swift */,
 				225B36571F6EBA410005B3D5 /* CombinedChartViewController.swift */,
+				E37AA6C229EB8A8F0048607E /* ContourChartViewController.swift */,
 				225B36531F6EBA410005B3D5 /* CubicLineChartViewController.swift */,
 				225B36461F6EBA410005B3D5 /* HalfPieChartViewController.swift */,
 				225B36551F6EBA410005B3D5 /* HorizontalBarChartViewController.swift */,
@@ -455,6 +490,7 @@
 				5BEAED2B1ABC160F0013F194 /* CandleStickChartViewController.xib */,
 				5BEAED3A1ABC199F0013F194 /* ColoredLineChartViewController.xib */,
 				5BDEDC461ABB871E007D3A60 /* CombinedChartViewController.xib */,
+				E37AA77229EB8BB40048607E /* ContourChartViewController.xib */,
 				5BEAED301ABC18F00013F194 /* CubicLineChartViewController.xib */,
 				5BE6737F1D5B496500A87BA2 /* HalfPieChartViewController.xib */,
 				5BDEDC401ABB7F73007D3A60 /* HorizontalBarChartViewController.xib */,
@@ -621,6 +657,30 @@
 			path = Formatters;
 			sourceTree = "<group>";
 		};
+		E3E6458429EBC268007C84CF /* Triangulation */ = {
+			isa = PBXGroup;
+			children = (
+				E3E6458629EBC2AE007C84CF /* NeighbourhoodPoint.swift */,
+				E3E6458A29EBC2B0007C84CF /* TriangleInterpolation.swift */,
+				E3E6458929EBC2AF007C84CF /* Circumcircle.swift */,
+				E3E6458C29EBC2B1007C84CF /* Edge.swift */,
+				E3E6458529EBC2AD007C84CF /* Point.swift */,
+				E3E6458B29EBC2B0007C84CF /* Polygon.swift */,
+				E3E6458D29EBC2B1007C84CF /* PointNode.swift */,
+				E3E6458729EBC2AE007C84CF /* Triangle.swift */,
+				E3E6458829EBC2AF007C84CF /* Delaunay.swift */,
+			);
+			path = Triangulation;
+			sourceTree = "<group>";
+		};
+		E3E6459829EBC2F2007C84CF /* Kriging */ = {
+			isa = PBXGroup;
+			children = (
+				E3E6459729EBC2F2007C84CF /* Kriging.swift */,
+			);
+			path = Kriging;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -658,6 +718,9 @@
 				0630AE541D81271B008859B0 /* PBXTargetDependency */,
 			);
 			name = "ChartsDemo-iOS";
+			packageProductDependencies = (
+				E37AA77529EB8CBD0048607E /* KDTree */,
+			);
 			productName = chartstest;
 			productReference = 5B57BBAF1A9B26AA0036A6CC /* ChartsDemo-iOS.app */;
 			productType = "com.apple.product-type.application";
@@ -694,6 +757,9 @@
 				Base,
 			);
 			mainGroup = 5B57BBA61A9B26AA0036A6CC;
+			packageReferences = (
+				E37AA77429EB8CBD0048607E /* XCRemoteSwiftPackageReference "KDTree" */,
+			);
 			productRefGroup = 5B57BBB01A9B26AA0036A6CC /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -742,6 +808,7 @@
 				225B367A1F6EBA640005B3D5 /* CubicLineChartViewController.xib in Resources */,
 				225B368B1F6EBA640005B3D5 /* StackedBarChartViewController.xib in Resources */,
 				E340C92629E23D2800E3D66B /* VectorFieldChartViewController.xib in Resources */,
+				E37AA77329EB8BB40048607E /* ContourChartViewController.xib in Resources */,
 				225B36821F6EBA640005B3D5 /* MultipleLinesChartViewController.xib in Resources */,
 				E39995F729D9E00300F6B34A /* PolarChartViewController.xib in Resources */,
 				068A9B191FBBF351003CF1AD /* Images.xcassets in Resources */,
@@ -810,19 +877,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3E6459629EBC2B1007C84CF /* PointNode.swift in Sources */,
 				E37E97ED29E44B9200748D6C /* DegreesFormatter.swift in Sources */,
 				225B365E1F6EBA470005B3D5 /* LineChartTimeViewController.swift in Sources */,
 				225B36311F6EB9EE0005B3D5 /* DemoBaseViewController.swift in Sources */,
 				225B36391F6EBA040005B3D5 /* DayAxisValueFormatter.swift in Sources */,
+				E330280D29F76E820089D4A4 /* ContourMarkerView.swift in Sources */,
 				225B36661F6EBA470005B3D5 /* LineChartFilledViewController.swift in Sources */,
 				225B366A1F6EBA470005B3D5 /* CubicLineChartViewController.swift in Sources */,
 				225B36671F6EBA470005B3D5 /* PositiveNegativeBarChartViewController.swift in Sources */,
+				E3E6459029EBC2B1007C84CF /* Triangle.swift in Sources */,
 				225B363A1F6EBA040005B3D5 /* DateValueFormatter.swift in Sources */,
 				5B442CD223D9B0A300B1F801 /* BalloonMarker.swift in Sources */,
 				E39995DB29D9D5FB00F6B34A /* PolarChartViewController.swift in Sources */,
 				225B366D1F6EBA470005B3D5 /* PiePolylineChartViewController.swift in Sources */,
+				E3E6459229EBC2B1007C84CF /* Circumcircle.swift in Sources */,
 				E3EC355229E67C1700F9934C /* PolarMarkerView.swift in Sources */,
 				225B366F1F6EBA470005B3D5 /* BarChartViewController.swift in Sources */,
+				E3E6458F29EBC2B1007C84CF /* NeighbourhoodPoint.swift in Sources */,
 				225B36601F6EBA470005B3D5 /* LineChart2ViewController.swift in Sources */,
 				225B366C1F6EBA470005B3D5 /* HorizontalBarChartViewController.swift in Sources */,
 				225B36401F6EBA1D0005B3D5 /* XYMarkerView.swift in Sources */,
@@ -833,18 +905,26 @@
 				225B36611F6EBA470005B3D5 /* LineChart1ViewController.swift in Sources */,
 				225B36691F6EBA470005B3D5 /* PieChartViewController.swift in Sources */,
 				225B365B1F6EBA470005B3D5 /* MultipleLinesChartViewController.swift in Sources */,
+				E3E337A329F23ED400A0CCFF /* Kriging.swift in Sources */,
 				225B365F1F6EBA470005B3D5 /* ColoredLineChartViewController.swift in Sources */,
+				E3E6459329EBC2B1007C84CF /* TriangleInterpolation.swift in Sources */,
 				225B36201F6EB9A50005B3D5 /* AppDelegate.swift in Sources */,
 				225B36321F6EB9EE0005B3D5 /* DemoListViewController.swift in Sources */,
+				E37AA78A29EB982D0048607E /* SpinnerView.swift in Sources */,
 				225B36711F6EBA470005B3D5 /* CandleStickChartViewController.swift in Sources */,
+				E3E6459429EBC2B1007C84CF /* Polygon.swift in Sources */,
 				225B36631F6EBA470005B3D5 /* ScatterChartViewController.swift in Sources */,
+				E37AA6C329EB8A8F0048607E /* ContourChartViewController.swift in Sources */,
 				225B365C1F6EBA470005B3D5 /* MultipleBarChartViewController.swift in Sources */,
 				225B366E1F6EBA470005B3D5 /* CombinedChartViewController.swift in Sources */,
+				E3E6458E29EBC2B1007C84CF /* Point.swift in Sources */,
 				225B36641F6EBA470005B3D5 /* StackedBarChartViewController.swift in Sources */,
 				225B36651F6EBA470005B3D5 /* BubbleChartViewController.swift in Sources */,
 				225B36381F6EBA040005B3D5 /* IntAxisValueFormatter.swift in Sources */,
 				225B365D1F6EBA470005B3D5 /* HalfPieChartViewController.swift in Sources */,
+				E3E6459129EBC2B1007C84CF /* Delaunay.swift in Sources */,
 				225B36701F6EBA470005B3D5 /* SinusBarChartViewController.swift in Sources */,
+				E3E6459529EBC2B1007C84CF /* Edge.swift in Sources */,
 				225B36681F6EBA470005B3D5 /* AnotherBarChartViewController.swift in Sources */,
 				225B36621F6EBA470005B3D5 /* NegativeStackedBarChartViewController.swift in Sources */,
 				E39995DD29D9D6CC00F6B34A /* PiNumberFormatter.swift in Sources */,
@@ -1182,6 +1262,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E37AA77429EB8CBD0048607E /* XCRemoteSwiftPackageReference "KDTree" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Bersaelor/KDTree";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E37AA77529EB8CBD0048607E /* KDTree */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E37AA77429EB8CBD0048607E /* XCRemoteSwiftPackageReference "KDTree" */;
+			productName = KDTree;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5B57BBA71A9B26AA0036A6CC /* Project object */;
 }

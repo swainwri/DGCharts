@@ -24,4 +24,14 @@ public protocol PointFormatter: AnyObject {
     ///   - viewPortHandler: provides information about the current chart state (scale, translation, ...)
     /// - Returns:                   The formatted label ready to be drawn
     func stringForPoint(entry: ChartDataEntry, dataSetIndex: Int, viewPortHandler: ViewPortHandler?) -> String
+    
+    /// Called when a value (from labels inside the chart) is formatted before being drawn.
+    ///
+    /// For performance reasons, avoid excessive calculations and memory allocations inside this method.
+    ///
+    /// - Parameters:
+    ///   - dataSetIndex:    The index of the DataSet the entry in focus belongs to
+    ///   - viewPortHandler: provides information about the current chart state (scale, translation, ...)
+    /// - Returns:                   The formatted label of the data value of entry ready to be drawn
+    func stringForDataAtPoint(entry: ChartDataEntry, dataSetIndex: Int, viewPortHandler: ViewPortHandler?) -> String
 }

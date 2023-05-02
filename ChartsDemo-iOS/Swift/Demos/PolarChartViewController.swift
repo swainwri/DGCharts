@@ -35,8 +35,7 @@ class PolarChartViewController: DemoBaseViewController {
                         .toggleData,
                         .togglePolarMode,
                         .togglePolarCurvedInterpolationOption,
-                        .togglePolarHistogramOption
-            ]
+                        .togglePolarHistogramOption ]
         
         
         chartView?.delegate = self
@@ -183,95 +182,96 @@ class PolarChartViewController: DemoBaseViewController {
     }
     
     override func optionTapped(_ option: Option) {
-        guard let _chartView = chartView,
-            let data = chartView?.data else { return }
-
-        switch option {
-        case .toggleMajorMinorLabels:
-            _chartView.majorAxis.drawLabelsEnabled = !_chartView.majorAxis.drawLabelsEnabled
-            _chartView.minorAxis.drawLabelsEnabled = !_chartView.minorAxis.drawLabelsEnabled
+        if let _chartView = chartView,
+           let _data = chartView?.data {
             
-            _chartView.data?.notifyDataChanged()
-            _chartView.notifyDataSetChanged()
-            _chartView.setNeedsDisplay()
-            
-        case .toggleRadialLabels:
-            _chartView.radialAxis.drawLabelsEnabled = !_chartView.radialAxis.drawLabelsEnabled
-            _chartView.setNeedsDisplay()
-            
-        case .toggleRotate:
-            _chartView.rotationEnabled = !_chartView.rotationEnabled
-            
-        case .toggleFilled:
-            for case let set as PolarChartDataSet in data {
-                set.drawFilledEnabled = !set.drawFilledEnabled
-            }
-            
-            _chartView.setNeedsDisplay()
-            
-        case .toggleHighlightCircle:
-            for case let set as PolarChartDataSet in data {
-                set.drawHighlightCircleEnabled = !set.drawHighlightCircleEnabled
-            }
-            _chartView.setNeedsDisplay()
-            
-        case .animateX:
-            _chartView.animate(xAxisDuration: 1.4)
-            
-        case .animateY:
-            _chartView.animate(yAxisDuration: 1.4)
-            
-        case .animateXY:
-            _chartView.animate(xAxisDuration: 1.4, yAxisDuration: 1.4)
-            
-        case .spin:
-            _chartView.spin(duration: 2, fromAngle: _chartView.rotationAngle, toAngle: _chartView.rotationAngle + 360, easingOption: .easeInCubic)
-            
-        case .togglePolarMode:
-            if let polarData = data as? PolarChartData,
-               let dataSets = polarData.dataSets as? [PolarChartDataSetProtocol] {
+            switch option {
+            case .toggleMajorMinorLabels:
+                _chartView.majorAxis.drawLabelsEnabled = !_chartView.majorAxis.drawLabelsEnabled
+                _chartView.minorAxis.drawLabelsEnabled = !_chartView.minorAxis.drawLabelsEnabled
                 
-                for set in dataSets {
-                    var option: Int = set.polarMode.rawValue
-                    option = option + 1 == PolarChartDataSet.Mode.optionCount.rawValue ? 0 : option + 1
-                    set.polarMode = PolarChartDataSet.Mode(rawValue: option)!
+                _chartView.data?.notifyDataChanged()
+                _chartView.notifyDataSetChanged()
+                _chartView.setNeedsDisplay()
+                
+            case .toggleRadialLabels:
+                _chartView.radialAxis.drawLabelsEnabled = !_chartView.radialAxis.drawLabelsEnabled
+                _chartView.setNeedsDisplay()
+                
+            case .toggleRotate:
+                _chartView.rotationEnabled = !_chartView.rotationEnabled
+                
+            case .toggleFilled:
+                for case let set as PolarChartDataSet in _data {
+                    set.drawFilledEnabled = !set.drawFilledEnabled
+                }
+                
+                _chartView.setNeedsDisplay()
+                
+            case .toggleHighlightCircle:
+                for case let set as PolarChartDataSet in _data {
+                    set.drawHighlightCircleEnabled = !set.drawHighlightCircleEnabled
                 }
                 _chartView.setNeedsDisplay()
-            }
-        case .togglePolarCurvedInterpolationOption:
-            if let polarData = data as? PolarChartData,
-               let dataSets = polarData.dataSets as? [PolarChartDataSetProtocol] {
-                var needsRedraw = false
-                for set in dataSets {
-                    if set.polarMode == .cubic {
-                        var option: Int = set.polarCurvedInterpolation.rawValue
-                        option = option + 1 == PolarChartDataSet.CurvedInterpolationOption.optionCount.rawValue ? 0 : option + 1
-                        set.polarCurvedInterpolation = PolarChartDataSet.CurvedInterpolationOption(rawValue: option)!
-                        needsRedraw = true
+                
+            case .animateX:
+                _chartView.animate(xAxisDuration: 1.4)
+                
+            case .animateY:
+                _chartView.animate(yAxisDuration: 1.4)
+                
+            case .animateXY:
+                _chartView.animate(xAxisDuration: 1.4, yAxisDuration: 1.4)
+                
+            case .spin:
+                _chartView.spin(duration: 2, fromAngle: _chartView.rotationAngle, toAngle: _chartView.rotationAngle + 360, easingOption: .easeInCubic)
+                
+            case .togglePolarMode:
+                if let polarData = _data as? PolarChartData,
+                   let dataSets = polarData.dataSets as? [PolarChartDataSetProtocol] {
+                    
+                    for set in dataSets {
+                        var option: Int = set.polarMode.rawValue
+                        option = option + 1 == PolarChartDataSet.Mode.count ? 0 : option + 1
+                        set.polarMode = PolarChartDataSet.Mode(rawValue: option)!
                     }
-                }
-                if needsRedraw {
                     _chartView.setNeedsDisplay()
                 }
-            }
-        case .togglePolarHistogramOption:
-            if let polarData = data as? PolarChartData,
-               let dataSets = polarData.dataSets as? [PolarChartDataSetProtocol] {
-                var needsRedraw = false
-                for set in dataSets {
-                    if set.polarMode == .histogram {
-                        var option: Int = set.polarHistogram.rawValue
-                        option = option + 1 == PolarChartDataSet.HistogramOption.optionCount.rawValue ? 0 : option + 1
-                        set.polarHistogram = PolarChartDataSet.HistogramOption(rawValue: option)!
-                        needsRedraw = true
+            case .togglePolarCurvedInterpolationOption:
+                if let polarData = _data as? PolarChartData,
+                   let dataSets = polarData.dataSets as? [PolarChartDataSetProtocol] {
+                    var needsRedraw = false
+                    for set in dataSets {
+                        if set.polarMode == .cubic {
+                            var option: Int = set.polarCurvedInterpolation.rawValue
+                            option = option + 1 == PolarChartDataSet.CubicInterpolation.count ? 0 : option + 1
+                            set.polarCurvedInterpolation = PolarChartDataSet.CubicInterpolation(rawValue: option)!
+                            needsRedraw = true
+                        }
+                    }
+                    if needsRedraw {
+                        _chartView.setNeedsDisplay()
                     }
                 }
-                if needsRedraw {
-                    _chartView.setNeedsDisplay()
+            case .togglePolarHistogramOption:
+                if let polarData = _data as? PolarChartData,
+                   let dataSets = polarData.dataSets as? [PolarChartDataSetProtocol] {
+                    var needsRedraw = false
+                    for set in dataSets {
+                        if set.polarMode == .histogram {
+                            var option: Int = set.polarHistogram.rawValue
+                            option = option + 1 == PolarChartDataSet.HistogramOption.count ? 0 : option + 1
+                            set.polarHistogram = PolarChartDataSet.HistogramOption(rawValue: option)!
+                            needsRedraw = true
+                        }
+                    }
+                    if needsRedraw {
+                        _chartView.setNeedsDisplay()
+                    }
                 }
+            default:
+                super.handleOption(option, forChartView: _chartView)
             }
-        default:
-            super.handleOption(option, forChartView: _chartView)
         }
     }
     

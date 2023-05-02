@@ -30,26 +30,18 @@
                         <action selector="optionsButtonTapped:" destination="-1" eventType="touchUpInside" id="ig5-8o-JhO"/>
                     </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YOUR PREFERENCES" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="91q-nl-kWu">
-                    <rect key="frame" x="83.5" y="66.5" width="208" height="25"/>
-                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="21"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oqd-Ej-1xl" customClass="PolarChartView" customModule="DGCharts">
-                    <rect key="frame" x="0.0" y="133.5" width="375" height="533.5"/>
-                    <color key="backgroundColor" red="0.23529411764705882" green="0.25490196078431371" blue="0.32156862745098036" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <rect key="frame" x="0.0" y="68" width="375" height="599"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="U0u-dc-rt0"/>
-            <color key="backgroundColor" red="0.23529411759999999" green="0.25490196079999999" blue="0.32156862749999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="Oqd-Ej-1xl" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="bottom" multiplier="0.2" id="3NA-if-rAO"/>
                 <constraint firstItem="Oqd-Ej-1xl" firstAttribute="leading" secondItem="U0u-dc-rt0" secondAttribute="leading" id="6Mc-iO-BuY"/>
                 <constraint firstItem="U0u-dc-rt0" firstAttribute="bottom" secondItem="Oqd-Ej-1xl" secondAttribute="bottom" id="Cb0-QN-VFO"/>
-                <constraint firstItem="91q-nl-kWu" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Gs0-CZ-bRs"/>
+                <constraint firstItem="Oqd-Ej-1xl" firstAttribute="top" secondItem="U0u-dc-rt0" secondAttribute="top" constant="48" id="EeS-aI-th2"/>
                 <constraint firstItem="Zdz-nd-u7k" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="4" id="QYu-uI-rC8"/>
-                <constraint firstItem="91q-nl-kWu" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="bottom" multiplier="0.1" id="ffS-cp-Pm3"/>
                 <constraint firstItem="U0u-dc-rt0" firstAttribute="trailing" secondItem="Zdz-nd-u7k" secondAttribute="trailing" constant="8" id="hkP-f4-aXC"/>
                 <constraint firstItem="U0u-dc-rt0" firstAttribute="trailing" secondItem="Oqd-Ej-1xl" secondAttribute="trailing" id="mC3-xy-2CS"/>
             </constraints>

@@ -195,6 +195,10 @@ open class XAxisRenderer: NSObject, AxisRenderer
         case .bothSided:
             drawLabels(context: context, pos: viewPortHandler.contentTop - yOffset, anchor: CGPoint(x: 0.5, y: 1.0))
             drawLabels(context: context, pos: viewPortHandler.contentBottom + yOffset, anchor: CGPoint(x: 0.5, y: 0.0))
+        
+        case .bothInsided:
+            drawLabels(context: context, pos: viewPortHandler.contentTop + yOffset, anchor: CGPoint(x: 0.5, y: 0.0))
+            drawLabels(context: context, pos: viewPortHandler.contentBottom - yOffset, anchor: CGPoint(x: 0.5, y: 1.0))
         }
     }
     

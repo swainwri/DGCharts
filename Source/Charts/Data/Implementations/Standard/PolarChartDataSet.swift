@@ -17,21 +17,46 @@ public class PolarChartDataSet: RadarChartDataSet, PolarChartDataSetProtocol {
         case stepped
         case histogram
         case cubic
-        case optionCount///< The number of Mode options available.
+        
+        public static var count: Int {
+            return Int(CubicInterpolation.hermite.rawValue + 1)
+        }
     }
     
     /**
      *  @brief Enumration of polar plot curved interpolation style options
      **/
-    @objc(PolarChartCurvedInterpolationOption)
-    public enum CurvedInterpolationOption: Int {
+    @objc(PolarChartCubicInterpolation)
+    public enum CubicInterpolation: Int, CaseIterable {
         case normal              ///< Standard Curved Interpolation (Bezier Curve)
         case catmullRomUniform   ///< Catmull-Rom Spline Interpolation with alpha = @num{0.0}.
         case catmullRomCentripetal ///< Catmull-Rom Spline Interpolation with alpha = @num{0.5}.
         case catmullRomChordal    ///< Catmull-Rom Spline Interpolation with alpha = @num{1.0}.
         case catmullCustomAlpha  ///< Catmull-Rom Spline Interpolation with a custom alpha value.
         case hermite       ///< Hermite Cubic Spline Interpolation
-        case optionCount///< The number of cubic interpolations options available.
+        
+        public var description: String {
+            get {
+                switch self {
+                    case .normal:
+                        return "Bezier"
+                    case .catmullRomUniform:
+                        return "Catmull Rom Uniform"
+                    case .catmullRomCentripetal:
+                        return "Catmull Rom Centripetal"
+                    case .catmullRomChordal:
+                        return "Catmull Rom Chordal"
+                    case .catmullCustomAlpha:
+                        return "Catmull Rom Chordal Alpha"
+                    case .hermite:
+                        return "Hermite"
+                }
+            }
+        }
+        
+        public static var count: Int {
+            return Int(CubicInterpolation.hermite.rawValue + 1)
+        }
     }
 
     /**
@@ -42,7 +67,10 @@ public class PolarChartDataSet: RadarChartDataSet, PolarChartDataSetProtocol {
         case normal   ///< Standard histogram.
         case skipFirst ///< Skip the first step of the histogram.
         case skipSecond///< Skip the second step of the histogram.
-        case optionCount///< The number of histogram options available.
+        
+        public static var count: Int {
+            return Int(HistogramOption.skipSecond.rawValue + 1)
+        }
     }
 
     
@@ -142,7 +170,7 @@ public class PolarChartDataSet: RadarChartDataSet, PolarChartDataSetProtocol {
     /// The drawing option for this cubic line dataset
     ///
     /// **default**: normal bezier curve
-    public var polarCurvedInterpolation: PolarChartDataSet.CurvedInterpolationOption = .normal
+    public var polarCurvedInterpolation: PolarChartDataSet.CubicInterpolation = .normal
     
     private var _polarCatmullCustomAlpha: Double = 0
     /// The drawing alpha option for this catmullCustomAlpha cubic line
