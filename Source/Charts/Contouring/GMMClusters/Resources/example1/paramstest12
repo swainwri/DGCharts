@@ -1,0 +1,21 @@
+title: test signature set
+nbands: 2
+class:
+ classnum: 0
+ classtitle: test class signature
+ classtype: 1
+ subclass:
+  pi: 0.544804
+  means: 1.84853 -0.0708908
+  covar:
+    10.4887 6.66883
+    6.66883 5.11937
+ endsubclass:
+ subclass:
+  pi: 0.455196
+  means: -0.202793 0.579197
+  covar:
+    5.16165 4.03267
+    4.03267 4.12804
+ endsubclass:
+endclass:

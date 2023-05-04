@@ -15,9 +15,6 @@ public class MinorAxis: AxisBase {
     public enum LabelPosition: Int {
         case left
         case right
-        case bothSided
-        case leftInside
-        case rightInside
     }
     
     /// width of the minor-axis labels in pixels - this is automatically calculated by the `computeSize()` methods in the renderers

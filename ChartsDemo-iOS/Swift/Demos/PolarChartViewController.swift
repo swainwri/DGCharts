@@ -146,13 +146,14 @@ class PolarChartViewController: DemoBaseViewController {
         set1.lineWidth = 2
         set1.drawHighlightCircleEnabled = true
         set1.drawValuesEnabled = true
-        set1.highlightCircleStrokeColor = UIColor.red
+        set1.drawCirclesEnabled = true
+        set1.circleColors = [UIColor.brown]
+        set1.highlightCircleStrokeColor = UIColor.brown
         set1.setDrawHighlightIndicators(false)
         set1.polarMode = .cubic
         set1.polarCurvedInterpolation = .normal
         set1.polarHistogram = .skipFirst
         set1.polarClosePath = true
-        set1.setCircleColor(.red)
         
         let set2 = PolarChartDataSet(entries: entries2, label: "Sin Wave")
         set2.setColor(UIColor.orange)
@@ -160,15 +161,15 @@ class PolarChartViewController: DemoBaseViewController {
         set2.drawFilledEnabled = false
         set2.fillAlpha = 0.7
         set2.lineWidth = 2
-        set2.drawCirclesEnabled = false
-        set2.drawHighlightCircleEnabled = true
+        set2.drawCirclesEnabled = true
+        set2.circleColors = [UIColor.blue]
+        set2.drawHighlightCircleEnabled = false
         set2.highlightCircleStrokeColor = UIColor.orange
         set2.setDrawHighlightIndicators(false)
         set2.polarMode = .cubic
         set2.polarCurvedInterpolation = .normal
         set2.polarCatmullCustomAlpha = 0.7
-//        set2.polarClosePath = true
-        set2.setCircleColor(.orange)
+        set2.polarClosePath = true
 //        set2.drawValuesEnabled = true
         
         let data: PolarChartData = [set1, set2]
@@ -198,8 +199,6 @@ class PolarChartViewController: DemoBaseViewController {
                 _chartView.radialAxis.drawLabelsEnabled = !_chartView.radialAxis.drawLabelsEnabled
                 _chartView.setNeedsDisplay()
                 
-            case .toggleRotate:
-                _chartView.rotationEnabled = !_chartView.rotationEnabled
                 
             case .toggleFilled:
                 for case let set as PolarChartDataSet in _data {
@@ -222,9 +221,6 @@ class PolarChartViewController: DemoBaseViewController {
                 
             case .animateXY:
                 _chartView.animate(xAxisDuration: 1.4, yAxisDuration: 1.4)
-                
-            case .spin:
-                _chartView.spin(duration: 2, fromAngle: _chartView.rotationAngle, toAngle: _chartView.rotationAngle + 360, easingOption: .easeInCubic)
                 
             case .togglePolarMode:
                 if let polarData = _data as? PolarChartData,

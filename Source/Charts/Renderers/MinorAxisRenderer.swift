@@ -200,17 +200,7 @@ public class MinorAxisRenderer: NSObject, AxisRenderer {
             case .left:
                 drawLabels(context: context, pos: viewPortHandler.contentCenter.x - xOffset, anchor: CGPoint(x: 0.5, y: 1.0))
                 
-            case .leftInside:
-                drawLabels(context: context, pos: viewPortHandler.contentCenter.x + xOffset + axis.labelRotatedHeight, anchor: CGPoint(x: 0.5, y: 1.0))
-                
             case .right:
-                drawLabels(context: context, pos: viewPortHandler.contentCenter.x + xOffset, anchor: CGPoint(x: 0.5, y: 0.0))
-                
-            case .rightInside:
-                drawLabels(context: context, pos: viewPortHandler.contentCenter.x - xOffset - axis.labelRotatedHeight, anchor: CGPoint(x: 0.5, y: 0.0))
-                
-            case .bothSided:
-                drawLabels(context: context, pos: viewPortHandler.contentCenter.x - xOffset, anchor: CGPoint(x: 0.5, y: 1.0))
                 drawLabels(context: context, pos: viewPortHandler.contentCenter.x + xOffset, anchor: CGPoint(x: 0.5, y: 0.0))
             }
         }

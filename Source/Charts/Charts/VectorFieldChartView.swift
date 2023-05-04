@@ -28,7 +28,6 @@ public class VectorFieldChartView: BarLineChartViewBase, VectorFieldChartDataPro
         
         renderer = VectorFieldChartRenderer(dataProvider: self, animator: chartAnimator, viewPortHandler: viewPortHandler)
         
-        
         xAxis.spaceMin = 0.5
         xAxis.spaceMax = 0.5
         

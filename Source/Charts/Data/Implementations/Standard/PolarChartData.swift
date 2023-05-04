@@ -8,7 +8,7 @@
 import Foundation
 import CoreGraphics
 
-public class PolarChartData: RadarChartData {
+public class PolarChartData: ChartData {
 
     @objc public internal(set) var radialMax: Double {
         get {
@@ -167,7 +167,7 @@ public class PolarChartData: RadarChartData {
         }
     }
     
-    @objc public func getRadialMax(axis: RadialAxis.PolarAxisDependency) -> Double {
+    @objc public func getRadialMax(axis: RadialAxis.AxisDependency) -> Double {
         if axis == .major {
             if majorAxisMax == -.greatestFiniteMagnitude {
                 return minorAxisMax

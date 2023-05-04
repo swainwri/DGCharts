@@ -20,14 +20,15 @@ public class RadialAxis: AxisBase {
         case centre
     }
     
-    @objc(RadialAxisPolarRadialAngleMode)
-    public enum PolarRadialAngleMode: Int {
+    @objc(RadialAxisRadialAngleMode)
+    public enum RadialAngleMode: Int {
         case radians
         case degrees
     }
     
     ///  Enum that specifies the axis a DataSet should be plotted against, either major or minor.
-    @objc public enum PolarAxisDependency: Int {
+    @objc(RadialAxisAxisDependency)
+    public enum AxisDependency: Int {
         case none
         case major
         case minor
@@ -91,9 +92,9 @@ public class RadialAxis: AxisBase {
     @objc public var gridLinesToChartRectEdges = false
     
     /// the side this axis object represents
-    private var _axisDependency = PolarAxisDependency.major
+    private var _axisDependency = AxisDependency.major
     
-    @objc public init(position: PolarAxisDependency) {
+    @objc public init(position: AxisDependency) {
         super.init()
         
         _axisDependency = position
@@ -101,7 +102,7 @@ public class RadialAxis: AxisBase {
         self.yOffset = 0.0
     }
     
-    @objc open var axisDependency: PolarAxisDependency {
+    @objc open var axisDependency: AxisDependency {
         get {
             return _axisDependency
         }
@@ -135,7 +136,7 @@ public class RadialAxis: AxisBase {
         }
     }
     
-    @objc public var radialAngleMode: PolarRadialAngleMode = .radians
+    @objc public var radialAngleMode: RadialAngleMode = .radians
     
     @objc public var reversed: Bool = false
     

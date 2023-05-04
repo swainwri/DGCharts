@@ -70,7 +70,6 @@ public class ContourChartRenderer: LineScatterCandleRadarRenderer {
             let trans = dataProvider.getTransformer(forAxis: dataSet.axisDependency)
             let valueToPixelMatrix = trans.valueToPixelMatrix
             let pixelToValueMatrix = trans.pixelToValueMatrix
-            let phaseY = animator.phaseY
             
             var currentContext: CGContext = context
             
@@ -831,48 +830,6 @@ public class ContourChartRenderer: LineScatterCandleRadarRenderer {
                     }
                 }
             }
-        }
-    }
-    
-    public override func drawHighlighted(context: CGContext, indices: [Highlight]) {
-        if let dataProvider = dataProvider,
-           let contourData = dataProvider.contourData {
-            
-            context.saveGState()
-            
-            for high in indices {
-                guard
-                    let set = contourData[high.dataSetIndex] as? ContourChartDataSetProtocol,
-                    set.isHighlightEnabled
-                else { continue }
-                
-                guard let entry = set.entryForXValue(high.x, closestToY: high.y) else { continue }
-                
-                if !isInBoundsX(entry: entry, dataSet: set) || !isInBoundsY(entry: entry, dataSet: set) { continue }
-                
-                context.setStrokeColor(set.highlightColor.cgColor)
-                context.setLineWidth(set.highlightLineWidth)
-                if let _highlightLineDashLengths = set.highlightLineDashLengths {
-                    context.setLineDash(phase: set.highlightLineDashPhase, lengths: _highlightLineDashLengths)
-                }
-                else {
-                    context.setLineDash(phase: 0.0, lengths: [])
-                }
-                
-                let x = entry.x // get the x-position
-                let y = entry.y * Double(animator.phaseY)
-                
-                let trans = dataProvider.getTransformer(forAxis: set.axisDependency)
-                
-                let pt = trans.pixelForValues(x: x, y: y)
-                
-                high.setDraw(pt: pt)
-                
-                // draw the lines
-                drawHighlightLines(context: context, point: pt, set: set)
-            }
-            
-            context.restoreGState()
         }
     }
     

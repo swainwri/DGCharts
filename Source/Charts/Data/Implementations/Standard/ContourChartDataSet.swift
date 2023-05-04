@@ -659,7 +659,7 @@ public class ContourChartDataSet: LineRadarChartDataSet, ContourChartDataSetProt
                             self.isoCurvesColourFills?.append(colourFill)
                         }
                     }
-                    var colourFill = ColorFill(color: self.isoCurvesLineColours?[self.noActualIsoCurves-1].withAlphaComponent(0.4) ?? .clear)
+                    let colourFill = ColorFill(color: self.isoCurvesLineColours?[self.noActualIsoCurves-1].withAlphaComponent(0.4) ?? .clear)
                     
                     self.isoCurvesColourFills?.append(colourFill)
                 }

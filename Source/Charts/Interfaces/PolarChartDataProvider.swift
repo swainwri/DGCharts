@@ -33,7 +33,7 @@ public protocol PolarChartDataProvider {
     
     var polarData: PolarChartData? { get }
     
-    func getTransformer(forAxis: RadialAxis.PolarAxisDependency) -> Transformer
+    func getTransformer(forAxis: RadialAxis.AxisDependency) -> Transformer
     func isInverted() -> Bool
     
     var lowestVisibleTheta: Double { get }
